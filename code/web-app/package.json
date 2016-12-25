@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "web-app",
+  "scripts": {
+    "play": "vue-play start ./src/play/index.js --standalone",
+    "play:build": "vue-play build ./src/play/index.js",
+    "dev": "vbuild --dev",
+    "build": "vbuild"
+  },
+  "dependencies": {
+    "node-sass": "^4.1.1",
+    "sass-loader": "^4.1.1",
+    "tachyons": "^4.6.1",
+    "vue": "2.1.5"
+  },
+  "devDependencies": {
+    "vue-loader": "10.0.2",
+    "vue-play": "^2.2.0",
+    "vue-play-cli": "^1.0.4",
+    "vue-template-compiler": "2.1.5"
+  }
+}
