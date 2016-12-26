@@ -1,16 +1,16 @@
 <template>
   <div>
-    <header-component active-item-id="home"></header-component>
-    <div class="mt3">
-      <layout-component>
-        <div slot="main">
-          wow
-        </div>
-        <div slot="sidebar">
-          sidebar!
-        </div>
-      </layout-component>
-    </div>
+    <layout-component>
+      <div slot="header">
+        <header-component active-item-id="home"></header-component>
+      </div>
+      <div slot="main">
+        wow
+      </div>
+      <div slot="sidebar">
+        sidebar!
+      </div>
+    </layout-component>
   </div>
 </template>
 <script>

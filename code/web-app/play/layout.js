@@ -2,6 +2,10 @@ import PureLayoutWithSidebar from '../src/components/pure/layout/LayoutWithSideb
 
 const renderSidebar = () => `
   <layout-with-sidebar>
+    <div slot="header" class="f3">
+    header: Non aut asperiores qui et ipsum. Excepturi tempora doloremque corporis cum quaerat. Aut non rerum est laborum dolor et ut quia. Magnam iste libero est possimus aut alias. Officiis maiores ipsa quod sint itaque blanditiis.
+Ipsum ut ea praesentium eum. Quo et commodi ratione doloremque. Tenetur rem voluptas fugit et modi.
+    </div>
     <div slot="main" class="f3">
 Non aut asperiores qui et ipsum. Excepturi tempora doloremque corporis cum quaerat. Aut non rerum est laborum dolor et ut quia. Magnam iste libero est possimus aut alias. Officiis maiores ipsa quod sint itaque blanditiis.
 Ipsum ut ea praesentium eum. Quo et commodi ratione doloremque. Tenetur rem voluptas fugit et modi.
