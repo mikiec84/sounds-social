@@ -34,13 +34,14 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import LoginComponent from './LoginBox.vue'
+  import LoginComponent from '../stateful/LoginBox.vue'
 
   import TrackListComponent from '../pure/track/TrackList.vue'
   import HeaderComponent from '../pure/Header.vue'
   import SubHeaderComponent from '../pure/SubHeader.vue'
   import LayoutComponent from '../pure/layout/LayoutWithSidebar.vue'
 
+  // TODO: put TrackList with state into stateful when data integration is happening
   export default {
     components: {
       HeaderComponent,
