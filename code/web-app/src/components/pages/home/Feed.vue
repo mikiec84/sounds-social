@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="isLoggedIn">
-      <!-- TODO: add subheader with: feed, discover and competitions -->
       <layout-component>
         <div slot="header">
           <header-component active-item-id="sounds"></header-component>
@@ -34,14 +33,14 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import LoginComponent from '../stateful/LoginBox.vue'
+  import LoginComponent from '../../stateful/LoginBox.vue'
 
-  import TrackListComponent from '../pure/track/TrackList.vue'
-  import HeaderComponent from '../pure/Header.vue'
-  import SubHeaderComponent from '../pure/SubHeader.vue'
-  import LayoutComponent from '../pure/layout/LayoutWithSidebar.vue'
+  import TrackListComponent from '../../pure/track/TrackList.vue'
+  import HeaderComponent from '../../pure/Header.vue'
+  import SubHeaderComponent from '../../pure/SubHeader.vue'
+  import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
-  // TODO: put TrackList with state into stateful when data integration is happening
+  // TODO: put TrackList with state into stateful component with apollo
   export default {
     components: {
       HeaderComponent,

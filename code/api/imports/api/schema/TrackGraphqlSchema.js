@@ -3,8 +3,10 @@ import { Random } from 'meteor/random'
 export const typeDefs = [
   `
   type Track {
-    name: String,
-    username: String,
+    name: String
+    user: User
+    tags: [Tag]
+    description: String
     uploadedAt: String
   }
   `
