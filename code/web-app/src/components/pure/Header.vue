@@ -1,5 +1,5 @@
 <template>
-  <nav class="dt w-100 mw8 center bg-dark-blue">
+  <nav class="dt w-100 center bg-dark-blue">
     <div class="dtc v-mid pa3 w3">
       <a href="/" class="dib w2 h2 pa1 b--white-90 grow-large border-box">
         <!-- TODO: svg logo -->
@@ -41,6 +41,11 @@
     data() {
       return {
         menuItems: [
+          {
+            id: 'upload',
+            href: '/',
+            label: 'Upload',
+          },
           {
             id: 'timeline',
             href: '/',

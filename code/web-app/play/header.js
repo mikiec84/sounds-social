@@ -1,4 +1,4 @@
-import PureHeader from '../components/pure/Header.vue'
+import PureHeader from '../src/components/pure/Header.vue'
 
 export default function (play, m) {
   play(PureHeader, m)

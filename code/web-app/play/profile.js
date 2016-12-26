@@ -1,4 +1,4 @@
-import PureProfileImage from '../components/pure/profile/ProfileImage.vue'
+import PureProfileImage from '../src/components/pure/profile/ProfileImage.vue'
 
 export default function (play, m) {
   play(PureProfileImage, m)
