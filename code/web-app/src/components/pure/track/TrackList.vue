@@ -2,7 +2,7 @@
   <div>
     <div v-for="(track, index) in tracks" :class="{ 'mt3': index !== 0  }">
       <track-component
-              :time-ago="track.timeAgoe"
+              :time-ago="track.timeAgo"
               :label="track.label"
               :username="track.username"
               @open-profile="console.log('open profile')"

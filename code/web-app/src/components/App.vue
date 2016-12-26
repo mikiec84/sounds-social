@@ -1,17 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" class="avenir">
     <router-view></router-view>
   </div>
 </template>
-
-<script>
-  export default {
-    mounted() {
-      console.log('welcome!')
-    }
-  }
-</script>
-
 <style lang="sass">
   @import '../styles/index.scss';
+</style>
+<style>
+  @import 'https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css';
 </style>

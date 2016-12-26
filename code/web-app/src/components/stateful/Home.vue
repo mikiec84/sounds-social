@@ -1,15 +1,18 @@
 <template>
-  <div class="avenir">
+  <div>
     <div v-if="isLoggedIn">
+      <!-- TODO: add subheader with: feed, discover and competitions -->
       <layout-component>
         <div slot="header">
-          <header-component active-item-id="timeline"></header-component>
+          <header-component active-item-id="sounds"></header-component>
         </div>
         <div slot="main">
+          <h1 class="f-headline mv3">Sounds</h1>
+          <div class="pb3"><sub-header-component :items="homeSubHeaderItems"></sub-header-component></div>
           <track-list-component :tracks="tracks"></track-list-component>
         </div>
         <div slot="sidebar">
-          sidebar!
+          Hi Matteo!
         </div>
       </layout-component>
     </div>
@@ -30,16 +33,40 @@
     </div>
   </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
   import LoginComponent from './LoginBox.vue'
 
   import TrackListComponent from '../pure/track/TrackList.vue'
   import HeaderComponent from '../pure/Header.vue'
+  import SubHeaderComponent from '../pure/SubHeader.vue'
   import LayoutComponent from '../pure/layout/LayoutWithSidebar.vue'
 
   export default {
-    components: { HeaderComponent, LayoutComponent, LoginComponent, TrackListComponent },
+    components: {
+      HeaderComponent,
+      SubHeaderComponent,
+      LayoutComponent,
+      LoginComponent,
+      TrackListComponent,
+    },
     computed: {
+      homeSubHeaderItems() {
+        return [
+          {
+            label: 'Feed',
+            href: '/',
+            active: true,
+          },
+          {
+            label: 'Discover',
+            href: '/discover',
+          },
+          {
+            label: 'Competitions',
+            href: '/competitions',
+          },
+        ]
+      },
       tracks() {
         // TODO: use apollo client for mocked data
         return [
@@ -59,6 +86,12 @@
             timeAgo: '2 hours ago',
             label: 'Categorized',
             username: 'Insan3Lik3',
+            waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
+          },
+          {
+            timeAgo: '4 hours ago',
+            label: 'Another one',
+            username: 'Wow',
             waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
           },
         ]

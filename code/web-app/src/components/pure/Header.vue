@@ -47,14 +47,9 @@
             label: 'Upload',
           },
           {
-            id: 'timeline',
+            id: 'sounds',
             href: '/',
-            label: 'Timeline',
-          },
-          {
-            id: 'discover',
-            href: '/',
-            label: 'Discover',
+            label: 'Sounds',
           },
           {
             id: 'profile',

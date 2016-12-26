@@ -48,7 +48,12 @@ export default function (play, m, wrap) {
           }
         },
         template: wrap(
-          `<pure-track-list :tracks="tracks"></pure-track-list>`
+          `
+          <pure-track-list :tracks="tracks"></pure-track-list>
+          <style>
+            @import 'https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css';
+          </style>
+          `
         ),
       }
     )
