@@ -1,4 +1,4 @@
 module.exports = {
-  title: 'web-app',
+  title: 'Sound Social',
   resolve: true
 }

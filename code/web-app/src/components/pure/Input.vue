@@ -1,9 +1,18 @@
 <template>
-  <input @keyup="keyupMethod($event)" type="text" class="input-reset ba b--light-gray pa1" :placeholder="placeholder" />
+  <input
+      @keyup="keyupMethod($event)"
+      :type="type"
+      class="input-reset h2 ba b--light-gray ph2 pv3 w-100"
+      :placeholder="placeholder" />
 </template>
 <script>
   export default {
     props: {
+      type: {
+        type: String,
+        default: 'text',
+        required: false,
+      },
       placeholder: {
         type: String,
         default: '',

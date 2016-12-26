@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "apollo-client": "^0.5.25",
+    "asteroid": "^2.0.3",
     "node-sass": "^4.1.1",
     "sass-loader": "^4.1.1",
     "tachyons": "^4.6.1",

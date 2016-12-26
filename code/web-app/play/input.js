@@ -5,4 +5,5 @@ export default function (play, m, wrap) {
     .name('pure-input')
     .add('empty input', wrap('<pure-input @keyup="$log(arguments[0])"></pure-input>'))
     .add('input with placeholder', wrap('<pure-input  @keyup="$log(arguments[0])" placeholder="Search"></pure-input>'))
+    .add('password input', wrap('<pure-input @keyup="$log(arguments[0])" type="password"></pure-input>'))
 }

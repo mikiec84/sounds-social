@@ -197,6 +197,14 @@ ast-types@0.9.2:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.9.2.tgz#2cc19979d15c655108bf565323b8e7ee38751f6b"
 
+asteroid@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/asteroid/-/asteroid-2.0.3.tgz#f07807e3d53f3759c46ea4a5d12546a7b1bc14e3"
+  dependencies:
+    ddp.js "^2.2.0"
+    lodash.assign "^4.2.0"
+    wolfy87-eventemitter "^5.1.0"
+
 async-each@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
@@ -1350,6 +1358,12 @@ dashdash@^1.12.0:
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
+
+ddp.js@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ddp.js/-/ddp.js-2.2.0.tgz#8ff0507428fdcaafd4777bd6f29cf23fdef75f95"
+  dependencies:
+    wolfy87-eventemitter "^4.3.0"
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -4579,6 +4593,14 @@ window-size@0.1.0:
 window-size@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
+
+wolfy87-eventemitter@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-4.3.0.tgz#6497396c95e74359f06b6e35409339318d8d964f"
+
+wolfy87-eventemitter@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.1.0.tgz#35c1ac0dd1ac0c15e35d981508fc22084a13a011"
 
 wordwrap@0.0.2:
   version "0.0.2"
