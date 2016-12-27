@@ -8,7 +8,6 @@ import profile from './profile'
 import track from './track'
 import layout from './layout'
 
-// TODO: add patch-play.css that uses avenir font family
 const wrap = (html) => `<div class="ma2">${html}</div>`
 
 button(play, module, wrap)

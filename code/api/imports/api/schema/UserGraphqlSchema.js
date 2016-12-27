@@ -1,16 +1,13 @@
-import { Random } from 'meteor/random'
-
 export const typeDefs = [
   `
 type User {
+  id: String
   username: String
   tracks: [Track]
-  _id: String
 }
   `
 ]
 
 export const resolvers = {
-  User: {
-  },
+  User: {},
 }

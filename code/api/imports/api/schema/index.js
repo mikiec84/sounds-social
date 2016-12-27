@@ -1,4 +1,7 @@
-import { Random } from 'meteor/random'
+import {
+  typeDefs as commentTypeDefs,
+  resolvers as commentResolvers,
+} from './CommentGraphqlSchema'
 
 import {
   typeDefs as trackTypeDefs,
@@ -16,6 +19,7 @@ import {
 } from './TagGraphqlSchema'
 
 export const typeDefs = [
+  ...commentTypeDefs,
   ...trackTypeDefs,
   ...userTypeDefs,
   ...tagTypeDefs,
@@ -24,9 +28,9 @@ export const typeDefs = [
     # current user
     user(id: String!): User,
     # tracks of the logged in user
-    feedTracks: [Track]
+    feedTracks(skip: Int = 0, limit: Int = 10): [Track]
     # track search
-    searchTracks(q: String!): [Track]
+    searchTracks(q: String!, skip: Int = 0, limit: Int = 10): [Track]
   }
 
   schema {
@@ -36,6 +40,7 @@ export const typeDefs = [
 ]
 
 export const resolvers = {
+  ...commentResolvers,
   ...trackResolvers,
   ...userResolvers,
   ...tagResolvers,

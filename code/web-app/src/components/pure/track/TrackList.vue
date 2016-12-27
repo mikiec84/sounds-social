@@ -5,8 +5,8 @@
               :time-ago="track.timeAgo"
               :label="track.label"
               :username="track.username"
-              @open-profile="console.log('open profile')"
-              @open-track="console.log('open track')"
+              @open-profile="$emit('open-profile')"
+              @open-track="$emit('open-track', track)"
               :waveform-src="track.waveformSrc"></track-component>
     </div>
   </div>

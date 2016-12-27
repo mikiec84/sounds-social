@@ -5,6 +5,8 @@ import FeedComponent from './components/pages/home/Feed.vue'
 import UploadComponent from './components/pages/Upload.vue'
 import ProfileComponent from './components/pages/Profile.vue'
 
+import TrackDetailComponent from './components/pages/track/TrackDetail.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -13,5 +15,6 @@ export default new Router({
     { path: '/', component: FeedComponent },
     { path: '/upload', component: UploadComponent },
     { path: '/profile/:id', component: ProfileComponent },
+    { path: '/tracks/:id', component: TrackDetailComponent },
   ],
 })

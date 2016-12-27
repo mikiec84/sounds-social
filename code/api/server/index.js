@@ -1,6 +1,6 @@
-import { sampleSize } from 'lodash'
 import { createApolloServer } from 'meteor/apollo'
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
+import { makeExecutableSchema } from 'graphql-tools'
+import { mockSchema } from '../imports/api/mock-schema'
 
 import { typeDefs, resolvers } from '../imports/api/schema'
 
@@ -9,20 +9,7 @@ const schema = makeExecutableSchema({
   resolvers,
 })
 
-addMockFunctionsToSchema({
-  schema,
-  mocks: {
-    Track: () => ({
-      name: () => sampleSize(['Track name', 'Darkness in Light', 'Other track'])[0],
-    }),
-    User: () => ({
-      username: () => sampleSize(['franz', 'matteodem', 'hans'])[0],
-    }),
-    Tag: () => ({
-      label: () => sampleSize(['Trap', 'Electro House', 'Awesome sound', 'Free release'])[0]
-    })
-  },
-})
+mockSchema(schema)
 
 createApolloServer({
   schema,

@@ -36,5 +36,6 @@ Ipsum ut ea praesentium eum. Quo et commodi ratione doloremque. Tenetur rem volu
 export default (play, m, wrap) => {
   play(PureLayoutWithSidebar, m)
     .name('layout-with-sidebar')
+    .displayName('Layout with Sidebar')
     .add('default', renderSidebar())
 }

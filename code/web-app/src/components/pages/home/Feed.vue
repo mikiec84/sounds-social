@@ -8,10 +8,16 @@
         <div slot="main">
           <h1 class="f-headline mv3">Sounds</h1>
           <div class="pb3"><sub-header-component :items="homeSubHeaderItems"></sub-header-component></div>
-          <track-list-component :tracks="tracks"></track-list-component>
+          <track-list-component
+            :tracks="tracks"
+            @open-track="$router.push('/tracks/fakeid')"
+          ></track-list-component>
         </div>
         <div slot="sidebar">
           Hi Matteo!
+
+          <p>Add List Filters (no repost)</p>
+          <p>Other Infos</p>
         </div>
       </layout-component>
     </div>
@@ -40,7 +46,9 @@
   import SubHeaderComponent from '../../pure/SubHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
-  // TODO: put TrackList with state into stateful component with apollo
+  // TODO: put TrackList with state into stateful component with apollo and implement infite scrolling logic
+  // TODO: design pure TrackDetail.vue and ProfileSidebar.vue
+  // TODO: brainstorm on monetization logic
   export default {
     components: {
       HeaderComponent,
