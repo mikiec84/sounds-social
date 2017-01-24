@@ -3,10 +3,11 @@ export const typeDefs = [
   type Track {
     id: String
     name: String
-    user: User
+    uploader: User
     tags: [Tag]
     description: String
     comments: [Comment]
+    waveformSrc: String
     uploadedAt: String
   }
   `

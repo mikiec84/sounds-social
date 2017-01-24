@@ -1,12 +1,18 @@
-import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client'
+import ApolloClient, { createNetworkInterface } from 'apollo-client'
+
+const networkInterface = createNetworkInterface({
+  uri: `http://localhost:3000/graphql`,
+})
 
 const apolloClient = new ApolloClient({
-  networkInterface: createNetworkInterface({
-    uri: `http://localhost:5500/graphql`,
-    transportBatching: true,
-  }),
-  queryTransformer: addTypename,
-  dataIdFromObject: r => r.id,
+  networkInterface,
+  dataIdFromObject: (result) => {
+    if (result._id && result.__typename) {
+      return result.__typename + result._id
+    }
+
+    return null
+  },
 })
 
 export { apolloClient }

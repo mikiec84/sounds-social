@@ -38,10 +38,10 @@ minifier-css@1.2.15
 minifier-js@1.2.15
 minimongo@1.0.19
 modules@0.7.7
-modules-runtime@0.7.7
+modules-runtime@0.7.8
 mongo@1.1.14
 mongo-id@1.0.6
-npm-mongo@2.2.11_2
+npm-mongo@2.2.16_1
 observe-sequence@1.0.14
 ordered-dict@1.0.9
 promise@0.8.8

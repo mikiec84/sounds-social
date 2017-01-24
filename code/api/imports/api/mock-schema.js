@@ -7,6 +7,7 @@ export const mockSchema = (schema) => addMockFunctionsToSchema({
   mocks: {
     Track: () => ({
       id: () => Random.id(4),
+      waveformSrc: () => 'http://i.imgur.com/oNy41Cr.png',
       name: () => sampleSize(['Track name', 'Darkness in Light', 'Other track'])[0],
     }),
     User: () => ({

@@ -11,6 +11,13 @@ const schema = makeExecutableSchema({
 
 mockSchema(schema)
 
+WebApp.connectHandlers.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  next()
+})
+
 createApolloServer({
+  graphiql: true,
+  pretty: true,
   schema,
 })

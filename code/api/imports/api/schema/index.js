@@ -26,7 +26,9 @@ export const typeDefs = [
   `
   type Query {
     # current user
-    user(id: String!): User,
+    user(id: String!): User
+    # track by id
+    track(id: String!): Track
     # tracks of the logged in user
     feedTracks(skip: Int = 0, limit: Int = 10): [Track]
     # track search
