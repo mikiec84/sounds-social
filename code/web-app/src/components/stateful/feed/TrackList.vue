@@ -18,6 +18,7 @@
         id
         name
         uploadedAt
+        waveformSrc
         uploader {
           username
         }
@@ -34,6 +35,7 @@
     apollo: {
       tracks: {
         query,
+        update: ({ feedTracks: tracks }) => tracks.map(({uploadedAt, uploader, name, ...rest}) => ({timeAgo: uploadedAt, username: uploader.username, label: name, ...rest})),
         loadingKey: 'loading',
       },
     },
