@@ -3,8 +3,8 @@
   <div>
     <div v-if="!loading">
       <track-list-component
-              @open-track="$router.push('/tracks/fakeid')"
-              :tracks="tracks"></track-list-component>
+              @open-track="$router.push('/tracks/' + arguments[0].id)"
+              :tracks="mapTracks(allTracks)"></track-list-component>
     </div>
   </div>
 </template>
@@ -12,14 +12,17 @@
   import gql from 'graphql-tag'
   import TrackListComponent from '../../pure/track/TrackList.vue'
 
+  // TODO: use moment to format createdAt
+
   const query = gql`
     query allFeedTracks {
-      feedTracks {
+      allTracks {
         id
         name
-        uploadedAt
+        description
+        createdAt
         waveformSrc
-        uploader {
+        creator {
           username
         }
       }
@@ -33,10 +36,21 @@
       loading: 0,
     }),
     apollo: {
-      tracks: {
+      allTracks: {
         query,
-        update: ({ feedTracks: tracks }) => tracks.map(({uploadedAt, uploader, name, ...rest}) => ({timeAgo: uploadedAt, username: uploader.username, label: name, ...rest})),
         loadingKey: 'loading',
+      },
+    },
+    methods: {
+      mapTracks(tracks) {
+        return tracks.map(({ name, creator, createdAt, ...data }) => (
+          {
+            ...data,
+            label: name,
+            username: creator.username,
+            timeAgo: createdAt,
+          })
+        )
       },
     },
   };

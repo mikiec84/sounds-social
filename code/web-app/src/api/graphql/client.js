@@ -1,7 +1,7 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 
 const networkInterface = createNetworkInterface({
-  uri: `http://localhost:3000/graphql`,
+  uri: `https://api.graph.cool/simple/v1/ciza7bn1537xm016692k04bgn`,
 })
 
 const apolloClient = new ApolloClient({

@@ -1,7 +1,7 @@
 <template>
   <layout-component>
     <div slot="header">
-      <header-component active-item-id=""></header-component>
+      <header-component active-item-id="sounds"></header-component>
     </div>
     <div slot="main">
       <track-component

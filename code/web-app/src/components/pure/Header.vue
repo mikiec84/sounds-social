@@ -18,7 +18,7 @@
               :class="{ 'white-70 hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"
               v-text="item.label"></router-link>
-      <div class="pointer f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba">Logout</div>
+      <div class="pointer f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba" @click="$emit('logout')">Logout</div>
     </div>
   </nav>
 </template>

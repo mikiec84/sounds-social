@@ -5,7 +5,7 @@ export default function (play, m) {
   play(PureHeader, m)
     .name('pure-header')
     .displayName('Header')
-    .add('sounds active', `<pure-header active-item-id="sounds"></pure-header>`)
+    .add('sounds active', `<pure-header @logout="$log('logout')" active-item-id="sounds"></pure-header>`)
     .add('profile active', `<pure-header active-item-id="profile"></pure-header>`)
 
   play(PureSubHeader, m)
