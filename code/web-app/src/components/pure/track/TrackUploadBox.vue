@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-if="hasFile" class="ba bw1 b--light-gray br2 ph3 mw8">
-      <div class="pv3 b" v-if="isUploading">Track uploading...</div>
+      <div class="pv3 b gray" v-if="isUploading">Track uploading...</div>
+      <div class="pv3 b gray i" v-if="!isUploading">Track uploaded</div>
 
       <div class="pointer">
         <div class="dib v-mid pr2">
@@ -13,7 +14,7 @@
                 @change="$emit('changeTitle', $event.target.value)"
                 placeholder="Track name" />
       </div>
-      <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" >{{username}}</span></div>
+      <div class="description username f5 gray"><span class="black-50">just now</span> by <span class="dim pointer" >{{username}}</span></div>
       <div class="mt3 pointer" @click="$emit('open-track')">
         <img :src="waveformSrc" class="w-100" />
       </div>
@@ -25,12 +26,12 @@
               placeholder="Track description..."></textarea>
 
       <div class="pv3">
-        <button-component :disabled="isUploading">Publish</button-component>
+        <button-component :disabled="isUploading" @click="$emit('publish')">Publish</button-component>
       </div>
     </div>
     <div v-if="!hasFile" class="ba bw1 b--light-gray br2 ph3 mw8 pa3 tc b f3 h5 pointer navy" @click="$emit('openFileDialog')">
       <div style="margin-top: 85px">
-        Drag and music file or click into box
+        Drag music file or click here
       </div>
     </div>
   </div>

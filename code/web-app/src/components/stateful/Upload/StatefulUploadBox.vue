@@ -1,37 +1,26 @@
 <template>
   <div>
-    <!-- TODO: create pure buttons with yarn play and use them here -->
-    <form @submit.prevent="saveTrack()">
-      <div class="pt3">
-        <label>
-          <div class="pb2">Name</div>
-          <input type="text" @keyup="name = $event.target.value" />
-        </label>
-      </div>
-
-      <div class="pt3">
-        <label>
-          <div class="pb2">Description</div>
-          <textarea @keyup="description = $event.target.value"></textarea>
-        </label>
-      </div>
-
-      <div class="pt3">
-        <label>
-          <div class="pb2">Upload</div>
-          <input type="file" name="data" id="fileUploadInput" />
-        </label>
-      </div>
-
-      <div class="pt3">
-        <button>Save</button>
-      </div>
-    </form>
+    <div id="trackUploadBox">
+      <track-upload-box
+        :username="username"
+        :hasFile="hasFile"
+        :isUploading="isUploading"
+        @openFileDialog="openFileDialog()"
+        @changeTitle="name = arguments[0]"
+        @changeDescription="description = arguments[0]"
+        @publish="saveTrack()"
+      ></track-upload-box>
+    </div>
+    <div class="dn-ns">
+      <input type="file" name="data" id="fileUploadInput" />
+    </div>
   </div>
 </template>
 <script>
   import gql from 'graphql-tag'
   import Dropzone from 'dropzone'
+  import TrackUploadBox from '../../pure/track/TrackUploadBox.vue'
+  import { getUsername } from '../../../api/AuthApi'
 
   const createTrackMutation = gql`
     mutation ($name: String!, $description: String!, $creatorId: ID!, $fileId: ID, $waveform: String!) {
@@ -42,8 +31,12 @@
 `
 
   export default {
+    components: { TrackUploadBox },
     data() {
       return {
+        hasFile: false,
+        isUploading: false,
+        username: '',
         name: '',
         description: '',
         fileId: '',
@@ -52,22 +45,32 @@
     mounted() {
       const componentScope = this
 
-      new Dropzone('#fileUploadInput', {
+      const dropzoneConfig = {
         init: function() {
-          this.on('addedfile', function(file) {
-            // TODO: show loader
+          this.on('addedfile', (file) => {
+            componentScope.isUploading = true
+            componentScope.hasFile = true
           })
           this.on('error', () => alert('Had error'))
           this.on('success', (file, data) => {
-            alert('Uploaded!')
+            componentScope.isUploading = false
+            componentScope.hasFile = true
             componentScope.fileId = data.id
           })
         },
         paramName: 'data',
         url: 'https://api.graph.cool/file/v1/ciza7bn1537xm016692k04bgn',
-      })
+      }
+
+      new Dropzone('#trackUploadBox', dropzoneConfig)
+      new Dropzone('#fileUploadInput', dropzoneConfig)
+
+      getUsername().then(username => this.username = username)
     },
     methods: {
+      openFileDialog() {
+        window.document.getElementById('fileUploadInput').click()
+      },
       saveTrack() {
         const { name, description, fileId } = this
 
