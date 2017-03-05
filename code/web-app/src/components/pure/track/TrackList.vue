@@ -5,7 +5,7 @@
               :time-ago="track.timeAgo"
               :label="track.label"
               :username="track.username"
-              @open-profile="$emit('open-profile')"
+              @open-profile="$emit('open-profile', track)"
               @open-track="$emit('open-track', track)"
               :waveform-src="track.waveformSrc"></track-component>
     </div>

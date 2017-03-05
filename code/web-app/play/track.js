@@ -1,5 +1,6 @@
 import PureTrack from '../src/components/pure/track/Track.vue'
 import PureTrackList from '../src/components/pure/track/TrackList.vue'
+import PureTrackUploadBox from '../src/components/pure/track/TrackUploadBox.vue'
 
 export default function (play, m, wrap) {
   play(PureTrack, m)
@@ -73,5 +74,33 @@ export default function (play, m, wrap) {
           `
         ),
       }
+    )
+
+  play(PureTrackUploadBox, m)
+    .name('pure-track-upload-box')
+    .displayName('Track Upload Box')
+    .add(
+      'default',
+      wrap(`<pure-track-upload-box 
+              username="DJ Hans" 
+              @openFileDialog="$log('open dialog')"></pure-track-upload-box>`)
+    )
+    .add(
+      'with track uploading',
+      wrap(`<pure-track-upload-box 
+              username="DJ Gretel" 
+              :hasFile="true"
+              :isUploading="true"
+              @changeTitle="$log('changing title: ' + arguments[0])"
+              @changeDescription="$log('changing description: ' + arguments[0])"></pure-track-upload-box>`)
+    )
+    .add(
+      'with track uploaded',
+      wrap(`<pure-track-upload-box 
+              username="DJ Gretel" 
+              :hasFile="true"
+              :isUploading="false"
+              @changeTitle="$log('changing title: ' + arguments[0])"
+              @changeDescription="$log('changing description: ' + arguments[0])"></pure-track-upload-box>`)
     )
 }

@@ -5,7 +5,7 @@
         <div class="dib v-mid pr2">
           <i class="fa fa-play" aria-hidden="true"></i>
         </div>
-        <h2 @click="$emit('open-track')" class="lh-copy dib v-mid black mv2 dim navy " v-text="label"></h2>
+        <h2 @click="$emit('open-track')" class="lh-copy f3 b dib v-mid black mv2 dim navy " v-text="label"></h2>
       </div>
       <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
       <div class="mt3 pointer" @click="$emit('open-track')">

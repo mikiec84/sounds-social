@@ -19,7 +19,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import TrackListComponent from '../../stateful/feed/StatefulTrackList.vue'
+  import TrackListComponent from '../../stateful/track/StatefulTrackList.vue'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../pure/SubHeader.vue'
