@@ -14,6 +14,7 @@
     <div class="dtc v-mid tr pa3">
       <router-link
               v-for="item in menuItems"
+              :key="item.id"
               class="f6 fw4 no-underline dn dib-ns pv2 ph3"
               :class="{ 'white-70 hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"

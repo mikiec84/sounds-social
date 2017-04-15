@@ -1,4 +1,4 @@
-import 'tachyons'
+import 'tachyons/css/tachyons.css'
 import './styles/index.scss'
 import app from './app'
 
