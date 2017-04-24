@@ -22,7 +22,7 @@
     methods: {
       keyupMethod(e) {
         this.$emit('keyup', e.target.value)
-      }
-    }
+      },
+    },
   }
 </script>

@@ -1,22 +1,19 @@
 import {
-  isAuthenticated,
   logOut,
-  showLoginModal,
+  doLogin,
+  createUser,
 } from '../api/AuthApi'
 
 export default {
-  data() {
-    return {
-      isAuthenticated: isAuthenticated(),
-    }
-  },
   methods: {
-    authLogIn() {
-      showLoginModal()
+    authLogIn(username, password) {
+      return doLogin(username, password)
+    },
+    authCreateUser(username, password) {
+      return createUser(username, password)
     },
     authLogOut() {
-      logOut()
-      window.location.reload()
+      return logOut()
     },
   },
 }

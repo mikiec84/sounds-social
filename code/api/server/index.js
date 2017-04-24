@@ -4,6 +4,7 @@ import { mockSchema } from '../imports/api/mock-schema'
 import cors from 'cors';
 
 import { typeDefs, resolvers } from '../imports/api/schema'
+import '../imports/methods/MeteorMethods'
 
 const schema = makeExecutableSchema({
   typeDefs,

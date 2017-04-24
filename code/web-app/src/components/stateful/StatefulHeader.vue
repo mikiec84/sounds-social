@@ -10,7 +10,7 @@
     methods: {
       doLogout() {
         this.$router.push('/')
-        this.authLogOut()
+        this.authLogOut().then(() => window.location.reload())
       },
     },
   }
