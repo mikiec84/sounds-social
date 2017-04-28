@@ -7,6 +7,7 @@
               :username="track.username"
               @open-profile="$emit('open-profile', track)"
               @open-track="$emit('open-track', track)"
+              :inListView="true"
               :fileUrl="track.fileUrl"></track-component>
     </div>
   </div>

@@ -46,6 +46,7 @@ export default function (play, m, wrap) {
           @open-track="$log('open track')"
           :no-border="true"
           :playingPos="0.3"
+          :isPlaying="true"
           description="Aut esse dignissimos at deleniti aut. Labore consequatur quibusdam molestiae quos. Possimus ad est iste maxime deserunt non est. Ipsam qui ex reiciendis vero quisquam quis fugiat et. Quia omnis qui natus.Vel commodi vitae est sunt. Hic rerum dolore adipisci consequatur est dicta. Fugiat perferendis minus aut voluptatem aut rerum praesentium. Quibusdam sapiente eum quos quaerat autem repellat dolor."
           fileUrl="https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv"></pure-track>`
       )
