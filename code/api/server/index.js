@@ -22,10 +22,16 @@ const corsOptions = {
     credentials: true
 }
 
-createApolloServer({
-  graphiql: true,
-  pretty: true,
-  schema,
+createApolloServer(request => {
+
+  return {
+    graphiql: true,
+    pretty: true,
+    schema,
+    context: {
+      userId: request.headers.soundsocialuserid,
+    },
+  }
 }, {
   configServer: graphQLServer => graphQLServer.use(cors(corsOptions)),
 })

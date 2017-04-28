@@ -39,5 +39,8 @@ export const createUser = (username, password) => asteroidClient.call('createUse
   password,
 })
 
-export const logOut = () => asteroidClient.logout()
+export const logOut = () => {
+  localStorage.removeItem('sound_social_user_id')
+  return asteroidClient.logout()
+}
 

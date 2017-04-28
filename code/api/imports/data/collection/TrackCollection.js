@@ -31,10 +31,9 @@ export const trackSchema = new SimpleSchema({
 class TrackCollection extends Mongo.Collection
 {
   insert(doc) {
-    // TODO: add userId to graphql context manually..
-    /*if (!this.graphqlContext || !this.graphqlContext.userId) {
+    if (!this.graphqlContext || !this.graphqlContext.userId) {
       return null
-    }*/
+    }
 
     doc.createdAt = new Date()
 

@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-  import { isAuthenticated } from '../../api/AuthApi'
+  import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
   import FeedComponent from './home/FeedPage.vue'
   import ButtonComponent from '../pure/Button.vue'
@@ -48,12 +48,19 @@
       }
     },
     mounted() {
-      isAuthenticated().then(d => this.isAuthenticated = (!!d && !!d._id))
+      isAuthenticated().then(d => {
+        this.isAuthenticated = (!!d && !!d._id)
+
+        if (!this.isAuthenticated) {
+          localStorage.removeItem('sound_social_user_id')
+        }
+      })
     },
     methods: {
       doLogin() {
         this.authLogIn(this.username, this.password)
           .then(id => {
+            getUserId().then(id => localStorage.setItem('sound_social_user_id', id))
             if (id) this.isAuthenticated = true
           })
           .catch(err => alert('Could not log in'))
