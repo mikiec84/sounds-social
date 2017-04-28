@@ -6,6 +6,10 @@
               @open-track="$router.push('/tracks/' + arguments[0]._id)"
               @open-profile="$router.push('/profile/' + arguments[0].creatorUserId)"
               :tracks="mapTracks(listTrack)"></track-list-component>
+
+      <div v-if="!listTrack || !listTrack.length">
+        No tracks found.
+      </div>
     </div>
   </div>
 </template>
@@ -16,25 +20,9 @@
   // TODO: pass apollo query as param and create "FeedTrackList.vue" and "ProfileTrackList.vue"
   // TODO: use moment to format createdAt
 
-  const userTracksQuery = gql`
+  const tracksQuery = gql`
     query ($userId: String!) {
       listTrack(filters: [{ key: "user", value: $userId }]) {
-        _id
-        name
-        description
-        createdAt
-        waveformSrc
-        creator {
-          _id
-          username
-        }
-      }
-    }
-  `
-
-  const allTracksQuery = gql`
-    query {
-      listTrack {
         _id
         name
         description
@@ -62,21 +50,19 @@
     }),
     apollo: {
       listTrack: {
-        query() {
-          return this.userId ? userTracksQuery : allTracksQuery
-        },
-        loadingKey: 'loading',
+        query: tracksQuery,
         forceFetch: true,
+        loadingKey: 'loading',
         variables() {
           const { userId } = this
 
-          return { userId }
+          return { userId: (userId || '') }
         }
       },
     },
     methods: {
       mapTracks(tracks) {
-        return tracks.map(({ name, creator, createdAt, ...data }) => (
+        return (tracks || []).map(({ name, creator, createdAt, ...data }) => (
           {
             ...data,
             label: name,

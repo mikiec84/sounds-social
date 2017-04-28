@@ -42,7 +42,14 @@ class TrackCollection extends Mongo.Collection
     return super.insert(doc)
   }
   find(selector) {
-    console.log(this.graphqlFilters) // TODO: filter tracks for user in feed
+    // TODO: add filter with key "loggedInFeed" and value true => then display tracks for logged in user
+    if (this.graphqlFilters && this.graphqlFilters.length > 0) {
+      const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
+
+      if (userFilter && userFilter.value) {
+        selector.creatorId = userFilter.value
+      }
+    }
 
     return super.find(selector, {
       sort: {

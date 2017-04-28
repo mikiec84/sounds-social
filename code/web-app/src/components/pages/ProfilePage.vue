@@ -4,15 +4,15 @@
       <header-component :current="$route.params.id === 'me' ? 'profile' : 'sounds'"></header-component>
     </div>
     <div slot="main">
-      <div v-if="User">
-        <track-list-component :user-id="getUserId()"></track-list-component>
+      <div v-if="getUser">
+        <track-list-component v-if="profileUserId" :userId="profileUserId"></track-list-component>
       </div>
-      <div v-if="!User">
+      <div v-if="!getUser">
         user not found
       </div>
     </div>
     <div slot="sidebar">
-      <div v-if="User">
+      <div v-if="getUser">
         <div class="tc mv4">
           <div class="dib">
             <profile-image-component source="http://tachyons.io/img/logo.jpg"></profile-image-component>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="tc">
-          <h1 class="f2 lh-copy" v-text="User.username"></h1>
+          <h1 class="f2 lh-copy" v-text="getUser.username"></h1>
         </div>
 
         Awesome sidebar! (add description and so on)
@@ -39,8 +39,8 @@
 
   const query = gql`
     query ($id: String!) {
-      User(auth0UserId: $id) {
-        id
+      getUser(_id: $id) {
+        _id
         username
       }
     }
@@ -53,22 +53,31 @@
       LayoutComponent,
       TrackListComponent,
     },
+    data() {
+      return {
+        userId: '',
+      }
+    },
+    mounted() {
+      getUserId().then(id => this.userId = id)
+    },
     apollo: {
-      User: {
+      getUser: {
         query,
         variables() {
-          return { id: this.getUserId() }
+          return { id: this.profileUserId }
         },
       },
     },
-    methods: {
-      getUserId() {
+    computed: {
+      profileUserId() {
         const id = this.$route.params.id
 
         if (id === 'me') {
-          return getUserId()
+          return this.userId
         }
 
+        console.log(id)
         return id
       }
     }
