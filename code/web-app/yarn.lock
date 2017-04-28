@@ -4421,13 +4421,9 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.5.2.tgz#a0a6c50c941d2a4abda963f2f42c337ac450ee95"
 
-vue@2.1.5:
+vue@2.1.5, vue@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.5.tgz#d2568d3e5093cf1486eef44cf37177e3f51d568d"
-
-vue@^2.1.5:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.2.6.tgz#451714b394dd6d4eae7b773c40c2034a59621aed"
 
 vuex-router-sync@next:
   version "3.0.0"
@@ -4444,6 +4440,10 @@ watchpack@^0.2.1:
     async "^0.9.0"
     chokidar "^1.0.0"
     graceful-fs "^4.1.2"
+
+waveform-data@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/waveform-data/-/waveform-data-2.0.1.tgz#306cedc9a02465e94277b213bbe0d03c7c5c989a"
 
 webpack-core@~0.6.9:
   version "0.6.9"

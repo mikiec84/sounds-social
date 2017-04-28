@@ -2,12 +2,12 @@
   <div>
     <div v-for="(track, index) in tracks" :class="{ 'mt3': index !== 0  }">
       <track-component
-              :time-ago="track.timeAgo"
+              :timeAgo="track.timeAgo"
               :label="track.label"
               :username="track.username"
               @open-profile="$emit('open-profile', track)"
               @open-track="$emit('open-track', track)"
-              :waveform-src="track.waveformSrc"></track-component>
+              :fileUrl="track.fileUrl"></track-component>
     </div>
   </div>
 </template>

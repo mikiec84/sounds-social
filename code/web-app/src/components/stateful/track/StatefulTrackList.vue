@@ -27,7 +27,7 @@
         name
         description
         createdAt
-        waveformSrc
+        fileUrl
         creator {
           _id
           username

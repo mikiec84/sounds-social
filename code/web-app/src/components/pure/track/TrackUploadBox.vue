@@ -16,7 +16,10 @@
       </div>
       <div class="description username f5 gray"><span class="black-50">just now</span> by <span class="dim pointer" >{{username}}</span></div>
       <div class="mt3 pointer" @click="$emit('open-track')">
-        <img :src="waveformSrc" class="w-100" />
+        <track-waveform v-if="fileUrl" :fileUrl="fileUrl"></track-waveform>
+        <div v-if="!fileUrl" class="gray i" style="padding-top: 50px; height: 120px">
+          No waveform generated yet.
+        </div>
       </div>
 
       <textarea
@@ -38,9 +41,10 @@
 </template>
 <script>
   import ButtonComponent from '../../pure/Button.vue'
+  import TrackWaveform from '../../pure/track/TrackWaveform.vue'
 
   export default {
-    components: { ButtonComponent },
+    components: { ButtonComponent, TrackWaveform },
     props: {
       username: {
         type: String,
@@ -53,6 +57,10 @@
       isUploading: {
         type: Boolean,
         default: true,
+      },
+      fileUrl: {
+        type: String,
+        required: false,
       },
     },
     data() {

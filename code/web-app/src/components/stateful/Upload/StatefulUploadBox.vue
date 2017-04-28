@@ -5,6 +5,7 @@
         :username="username"
         :hasFile="hasFile"
         :isUploading="isUploading"
+        :fileUrl="fileUrl"
         @openFileDialog="openFileDialog()"
         @changeTitle="name = arguments[0]"
         @changeDescription="description = arguments[0]"
@@ -23,11 +24,12 @@
   import { getUsername, getUserId } from '../../../api/AuthApi'
 
   const createTrackMutation = gql`
-    mutation ($name: String!, $description: String, $fileId: String!, $fileSecret: String!, $creatorId: String!) {
+    mutation ($name: String!, $description: String, $fileId: String!, $fileSecret: String! $fileUrl: String! $creatorId: String!) {
       createTrack(data: {
         name: $name,
-        fileId: $fileId,
         creatorId: $creatorId,
+        fileId: $fileId,
+        fileUrl: $fileUrl,
         fileSecret: $fileSecret,
         isPublic: true,
         description: $description
@@ -47,6 +49,7 @@
         name: '',
         description: '',
         userId: '',
+        fileUrl: '',
         fileData: {},
       }
     },
@@ -64,6 +67,7 @@
             componentScope.isUploading = false
             componentScope.hasFile = true
             componentScope.fileData = JSON.parse(data)
+            componentScope.fileUrl = componentScope.fileData.url
           })
         },
         paramName: 'data',
@@ -92,6 +96,7 @@
               description,
               creatorId: userId,
               fileId: fileData.id,
+              fileUrl: fileData.url,
               fileSecret: fileData.secret,
             },
           })

@@ -16,7 +16,7 @@ export default function (play, m, wrap) {
           username="Username"
           @open-profile="$log('open profile')"
           @open-track="$log('open track')"
-          waveform-src="http://i.imgur.com/oNy41Cr.png"></pure-track>`
+          fileUrl="https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv"></pure-track>`
       )
     )
     .add(
@@ -31,7 +31,7 @@ export default function (play, m, wrap) {
           @open-track="$log('open track')"
           :no-border="true"
           description="Aut esse dignissimos at deleniti aut. Labore consequatur quibusdam molestiae quos. Possimus ad est iste maxime deserunt non est. Ipsam qui ex reiciendis vero quisquam quis fugiat et. Quia omnis qui natus.Vel commodi vitae est sunt. Hic rerum dolore adipisci consequatur est dicta. Fugiat perferendis minus aut voluptatem aut rerum praesentium. Quibusdam sapiente eum quos quaerat autem repellat dolor."
-          waveform-src="http://i.imgur.com/oNy41Cr.png"></pure-track>`
+          fileUrl="https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv"></pure-track>`
       )
     )
 
@@ -48,19 +48,19 @@ export default function (play, m, wrap) {
                 timeAgo: '20 minutes ago',
                 label: 'My track',
                 username: 'matteodem',
-                waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
+                fileUrl: 'https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv',
               },
               {
                 timeAgo: '50 minutes ago',
                 label: 'Another track',
                 username: 'franz',
-                waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
+                fileUrl: 'https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv',
               },
               {
                 timeAgo: '2 hours ago',
                 label: 'Categorized',
                 username: 'Insan3Lik3',
-                waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
+                fileUrl: 'https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv',
               },
             ]
           }
@@ -100,6 +100,7 @@ export default function (play, m, wrap) {
               username="DJ Gretel" 
               :hasFile="true"
               :isUploading="false"
+              fileUrl="https://files.graph.cool/ciza7bn1537xm016692k04bgn/cj21zhmfd002x0195kaacsijv"
               @changeTitle="$log('changing title: ' + arguments[0])"
               @changeDescription="$log('changing description: ' + arguments[0])"></pure-track-upload-box>`)
     )

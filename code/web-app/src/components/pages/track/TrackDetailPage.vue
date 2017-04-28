@@ -7,12 +7,13 @@
       <div slot="main">
         <div v-if="getTrack">
           <track-component
-                  :time-ago="getTrack.createdAt"
+                  :timeAgo="getTrack.createdAt"
                   :label="getTrack.name"
                   :description="getTrack.description"
                   :username="getTrack.creator.username"
                   @open-profile="$router.push('/profile/' + getTrack.creator._id)"
-                  :no-border="true"
+                  :noBorder="true"
+                  :fileUrl="getTrack.fileUrl"
                   :waveform-src="getTrack.waveformSrc"></track-component>
         </div>
 
@@ -40,7 +41,7 @@
         name
         description
         createdAt
-        waveformSrc
+        fileUrl
         creator {
           _id
           username

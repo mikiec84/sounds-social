@@ -11,13 +11,13 @@ export const trackSchema = new SimpleSchema({
   createdAt: {
     type: Date,
   },
-  waveformSrc: {
-    type: String,
-  },
   fileId: {
     type: String,
   },
   fileSecret: {
+    type: String,
+  },
+  fileUrl: {
     type: String,
   },
   creatorId: {
@@ -36,7 +36,6 @@ class TrackCollection extends Mongo.Collection
       return null
     }*/
 
-    doc.waveformSrc = 'http://i.imgur.com/oNy41Cr.png'
     doc.createdAt = new Date()
 
     return super.insert(doc)

@@ -24,6 +24,9 @@ export default createCollectionSchema({
       fileSecret: {
         type: String,
       },
+      fileUrl: {
+        type: String,
+      },
       creatorId: {
         type: String,
       },
@@ -31,13 +34,13 @@ export default createCollectionSchema({
   },
   fields: {
     type: {
+      fileId: false,
+      creatorId: false,
+      fileSecret: false,
       createdAt: {
         type: 'String',
         resolve: root => moment(root.createdAt).fromNow(),
       },
-      fileId: false,
-      creatorId: false,
-      fileSecret: false,
       creator: {
         type: 'User',
         resolve: root => Meteor.users.findOne({_id: root.creatorId }),

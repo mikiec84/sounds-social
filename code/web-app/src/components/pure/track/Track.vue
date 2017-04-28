@@ -9,7 +9,7 @@
       </div>
       <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
       <div class="mt3 pointer" @click="$emit('open-track')">
-        <img :src="waveformSrc" class="w-100" />
+        <track-waveform :fileUrl="fileUrl"></track-waveform>
       </div>
 
       <div v-if="description" class="mt4 f5 black-80 lh-copy measure-wide" v-text="description">
@@ -19,7 +19,10 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import TrackWaveform from './TrackWaveform.vue'
+
   export default {
+    components: { TrackWaveform },
     props: {
       timeAgo: {
         type: String,
@@ -33,7 +36,7 @@
         type: String,
         required: true,
       },
-      waveformSrc: {
+      fileUrl: {
         type: String,
         required: true,
       },
