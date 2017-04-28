@@ -1,6 +1,6 @@
 <template>
   <div class="mv3">
-    <canvas height="120" width="760" ref="canvas"></canvas>
+    <canvas height="120" :width="canvasWidth" ref="canvas"></canvas>
   </div>
 </template>
 <script>
@@ -8,8 +8,15 @@
 
   export default {
     props: ['fileUrl'],
+    data() {
+      return {
+        canvasWidth: 760,
+      }
+    },
     mounted() {
       const canvas = this.$refs.canvas
+
+      canvas.onclick = (e) => this.$emit('seekSound', (e.layerX / this.canvasWidth))
 
       fetch(this.fileUrl)
         .then(res => res.arrayBuffer())

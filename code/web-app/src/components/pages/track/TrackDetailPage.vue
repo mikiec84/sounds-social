@@ -12,8 +12,12 @@
                   :description="getTrack.description"
                   :username="getTrack.creator.username"
                   @open-profile="$router.push('/profile/' + getTrack.creator._id)"
+                  @open-track="playTrack"
+                  @pauseTrack="pauseTrack"
                   :noBorder="true"
                   :fileUrl="getTrack.fileUrl"
+                  :playingPos="playingPos"
+                  :isPlaying="isPlaying"
                   :waveform-src="getTrack.waveformSrc"></track-component>
         </div>
 
@@ -29,6 +33,7 @@
 </template>
 <script>
   import gql from 'graphql-tag'
+  import { Howl } from 'howler'
 
   import TrackComponent from '../../pure/track/Track.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
@@ -50,6 +55,8 @@
     }
   `
 
+  let trackSound
+
   export default {
     components: {
       TrackComponent,
@@ -59,6 +66,9 @@
     data() {
       return {
         loading: 0,
+        playingTrackId: null,
+        isPlaying: false,
+        playingPos: 0,
       }
     },
     apollo: {
@@ -71,6 +81,43 @@
           }
         }
       }
+    },
+    watch: {
+      getTrack() {
+        if (this.getTrack && this.getTrack.fileUrl) {
+          trackSound = new Howl({
+            src: [this.getTrack.fileUrl],
+            html5: true,
+            volume: 1,
+            onend: () => this.isPlaying = false,
+          })
+        }
+      },
+    },
+    destroyed() {
+      trackSound && trackSound.stop(this.playingTrackId)
+    },
+    methods: {
+      pauseTrack() {
+        trackSound.pause(this.playingTrackId)
+        this.isPlaying = false
+      },
+      playTrack(position) {
+        this.isPlaying = true
+
+        if (!this.playingTrackId) {
+          this.playingTrackId = trackSound.play()
+          setInterval(() =>  {
+            if (this.isPlaying) {
+              this.playingPos = trackSound.seek(this.playingTrackId)
+                / trackSound.duration(this.playingTrackId)
+            }
+          }, 20)
+        } else {
+          position && trackSound.seek(trackSound.duration() * position, this.playingTrackId)
+          trackSound.play(this.playingTrackId)
+        }
+      },
     },
   };
 </script>
