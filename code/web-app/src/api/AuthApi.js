@@ -6,19 +6,27 @@ const waitForConnection = new Promise(res => {
   if (isConnected) res()
 
   asteroidClient.ddp.on('connected', () => {
-    res()
+    isConnected = true
+    setTimeout(res, 500) // TODO: why does Meteor.user return null without timeout?
   })
 })
+
+const getUser = () => asteroidClient.call('currentUser')
 
 export const getUsername = async () => {
   return 'wow'
 }
 
-export const getUserId = () => 'userId'
+export const getUserId = async () => {
+  await waitForConnection
+
+  const user = await getUser()
+  return user._id
+}
 
 export const isAuthenticated = async () => {
   await waitForConnection
-  return asteroidClient.call('currentUser')
+  return getUser()
 }
 
 export const doLogin = (username, password) => asteroidClient.loginWithPassword({

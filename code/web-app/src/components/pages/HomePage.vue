@@ -13,19 +13,19 @@
       </div>
 
       <div class="mt2 center mw5">
-        <input-component @keyup="username = arguments[0]" placeholder="Username"></input-component>
+        <input-component @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></input-component>
         <div class="mt2">
-          <input-component @keyup="password = arguments[0]" type="password" placeholder="Password"></input-component>
+          <input-component @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></input-component>
         </div>
       </div>
 
       <div class="mw8 center tc">
         <div class="pv4 dib">
-          <button-component @click="doLogin(username, password)">Login</button-component>
+          <button-component @click="doLogin">Login</button-component>
         </div>
 
         <div class="pv4 dib">
-          <button-component @click="doRegister(username, password)">Register</button-component>
+          <button-component @click="doRegister">Register</button-component>
         </div>
       </div>
     </div>
@@ -51,15 +51,15 @@
       isAuthenticated().then(d => this.isAuthenticated = (!!d && !!d._id))
     },
     methods: {
-      doLogin(username, password) {
-        this.authLogIn(username, password)
+      doLogin() {
+        this.authLogIn(this.username, this.password)
           .then(id => {
             if (id) this.isAuthenticated = true
           })
           .catch(err => alert('Could not log in'))
       },
-      doRegister(username, password) {
-        this.authCreateUser(username, password)
+      doRegister() {
+        this.authCreateUser(this.username, this.password)
           .then(data => {
             if (data.id) this.isAuthenticated = true
           })

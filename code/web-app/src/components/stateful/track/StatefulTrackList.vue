@@ -3,9 +3,9 @@
   <div>
     <div v-if="!loading">
       <track-list-component
-              @open-track="$router.push('/tracks/' + arguments[0].id)"
+              @open-track="$router.push('/tracks/' + arguments[0]._id)"
               @open-profile="$router.push('/profile/' + arguments[0].creatorUserId)"
-              :tracks="mapTracks(allTracks)"></track-list-component>
+              :tracks="mapTracks(listTrack)"></track-list-component>
     </div>
   </div>
 </template>
@@ -17,15 +17,15 @@
   // TODO: use moment to format createdAt
 
   const userTracksQuery = gql`
-    query ($userId: String) {
-      allTracks(orderBy: createdAt_ASC, filter:{ creator: { auth0UserId: $userId } }) {
-        id
+    query ($userId: String!) {
+      listTrack(filters: [{ key: "user", value: $userId }]) {
+        _id
         name
         description
         createdAt
         waveformSrc
         creator {
-          auth0UserId
+          _id
           username
         }
       }
@@ -34,14 +34,14 @@
 
   const allTracksQuery = gql`
     query {
-      allTracks(orderBy: createdAt_ASC) {
-        id
+      listTrack {
+        _id
         name
         description
         createdAt
         waveformSrc
         creator {
-          auth0UserId
+          _id
           username
         }
       }
@@ -61,7 +61,7 @@
       loading: 0,
     }),
     apollo: {
-      allTracks: {
+      listTrack: {
         query() {
           return this.userId ? userTracksQuery : allTracksQuery
         },
@@ -69,7 +69,7 @@
         forceFetch: true,
         variables() {
           const { userId } = this
-          console.log(userId)
+
           return { userId }
         }
       },
@@ -80,7 +80,7 @@
           {
             ...data,
             label: name,
-            creatorUserId: creator.auth0UserId,
+            creatorUserId: creator._id,
             username: creator.username,
             timeAgo: createdAt,
           })

@@ -1,13 +1,16 @@
-export const typeDefs = [
-  `
-type User {
-  id: String
-  username: String
-  tracks: [Track]
-}
-  `
-]
+import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 
-export const resolvers = {
-  User: {},
-}
+export default createCollectionSchema({
+  type: 'User',
+  collection: Meteor.users,
+  schema: new SimpleSchema({
+    username: {
+      type: String,
+    },
+  }),
+  crud: {
+    create: false,
+    update: false,
+    delete: false,
+  },
+})

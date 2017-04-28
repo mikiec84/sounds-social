@@ -1,6 +1,7 @@
 <template>
   <input
       @keyup="keyupMethod($event)"
+      @keyup.enter="$emit('onEnter', $event.target.value)"
       :type="type"
       class="input-reset h2 ba b--light-gray ph2 pv3 w-100"
       :placeholder="placeholder" />

@@ -5,18 +5,18 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <div v-if="Track">
+        <div v-if="getTrack">
           <track-component
-                  :time-ago="Track.createdAt"
-                  :label="Track.name"
-                  :description="Track.description"
-                  :username="Track.creator.username"
-                  @open-profile="$router.push('/profile/' + Track.creator.auth0UserId)"
+                  :time-ago="getTrack.createdAt"
+                  :label="getTrack.name"
+                  :description="getTrack.description"
+                  :username="getTrack.creator.username"
+                  @open-profile="$router.push('/profile/' + getTrack.creator._id)"
                   :no-border="true"
-                  :waveform-src="Track.waveformSrc"></track-component>
+                  :waveform-src="getTrack.waveformSrc"></track-component>
         </div>
 
-        <div v-if="!Track">
+        <div v-if="!getTrack">
           Track not found!
         </div>
       </div>
@@ -34,15 +34,15 @@
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
   const query = gql`
-    query ($id: ID!) {
-      Track(id: $id) {
-        id
+    query ($id: String!) {
+      getTrack(_id: $id) {
+        _id
         name
         description
         createdAt
         waveformSrc
         creator {
-          auth0UserId
+          _id
           username
         }
       }
@@ -61,7 +61,7 @@
       }
     },
     apollo: {
-      Track: {
+      getTrack: {
         query: query,
         loadingKey: 'loading',
         variables() {

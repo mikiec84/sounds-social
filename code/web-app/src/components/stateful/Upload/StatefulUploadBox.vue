@@ -20,12 +20,19 @@
   import gql from 'graphql-tag'
   import Dropzone from 'dropzone'
   import TrackUploadBox from '../../pure/track/TrackUploadBox.vue'
-  import { getUsername } from '../../../api/AuthApi'
+  import { getUsername, getUserId } from '../../../api/AuthApi'
 
   const createTrackMutation = gql`
-    mutation ($name: String!, $description: String!, $creatorId: ID!, $fileId: ID, $waveform: String!) {
-      createTrack(name: $name, creatorId: $creatorId, waveformSrc: $waveform, fileId: $fileId,  isPublic: true, description: $description) {
-        id
+    mutation ($name: String!, $description: String, $fileId: String!, $fileSecret: String!, $creatorId: String!) {
+      createTrack(data: {
+        name: $name,
+        fileId: $fileId,
+        creatorId: $creatorId,
+        fileSecret: $fileSecret,
+        isPublic: true,
+        description: $description
+      }) {
+        _id
       }
     }
 `
@@ -39,7 +46,8 @@
         username: '',
         name: '',
         description: '',
-        fileId: '',
+        userId: '',
+        fileData: {},
       }
     },
     mounted() {
@@ -55,7 +63,7 @@
           this.on('success', (file, data) => {
             componentScope.isUploading = false
             componentScope.hasFile = true
-            componentScope.fileId = data.id
+            componentScope.fileData = JSON.parse(data)
           })
         },
         paramName: 'data',
@@ -66,26 +74,28 @@
       new Dropzone('#fileUploadInput', dropzoneConfig)
 
       getUsername().then(username => this.username = username)
+      getUserId().then(id => this.userId = id)
     },
     methods: {
       openFileDialog() {
         window.document.getElementById('fileUploadInput').click()
       },
       saveTrack() {
-        const { name, description, fileId } = this
+        const { name, userId, description, fileData } = this
 
+        console.log(name, description, fileData)
         this.$apollo
           .mutate({
             mutation: createTrackMutation,
             variables: {
               name,
               description,
-              fileId,
-              creatorId: 'cizbpxps1v9pa0166rf8lwlg0',
-              waveform: 'http://i.imgur.com/oNy41Cr.png',
+              creatorId: userId,
+              fileId: fileData.id,
+              fileSecret: fileData.secret,
             },
           })
-          .then((data) => this.$router.push(`/tracks/${data.data.createTrack.id}`))
+          .then((data) => (data.data.createTrack ? this.$router.push(`/tracks/${data.data.createTrack._id}`) : null))
       },
     },
   }

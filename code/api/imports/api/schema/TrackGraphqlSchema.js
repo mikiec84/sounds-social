@@ -1,18 +1,47 @@
-export const typeDefs = [
-  `
-  type Track {
-    id: String
-    name: String
-    uploader: User
-    tags: [Tag]
-    description: String
-    comments: [Comment]
-    waveformSrc: String
-    uploadedAt: String
-  }
-  `
-]
+import moment from 'moment'
+import { createCollectionSchema } from 'meteor/easy:graphqlizer'
+import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
 
-export const resolvers = {
-  Track: {},
-}
+export default createCollectionSchema({
+  type: 'Track',
+  collection: trackCollection,
+  schema: {
+    type: trackSchema,
+    input: new SimpleSchema({
+      name: {
+        type: String,
+      },
+      description: {
+        type: String,
+        optional: true,
+      },
+      isPublic: {
+        type: Boolean,
+      },
+      fileId: {
+        type: String,
+      },
+      fileSecret: {
+        type: String,
+      },
+      creatorId: {
+        type: String,
+      },
+    }),
+  },
+  fields: {
+    type: {
+      createdAt: {
+        type: 'String',
+        resolve: root => moment(root.createdAt).fromNow(),
+      },
+      fileId: false,
+      creatorId: false,
+      fileSecret: false,
+      creator: {
+        type: 'User',
+        resolve: root => Meteor.users.findOne({_id: root.creatorId }),
+      },
+    },
+  },
+})
