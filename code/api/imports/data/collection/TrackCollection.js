@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo'
+import { userCollection } from './UserCollection'
 
 export const trackSchema = new SimpleSchema({
   name: {
@@ -40,12 +41,21 @@ class TrackCollection extends Mongo.Collection
     return super.insert(doc)
   }
   find(selector) {
-    // TODO: add filter with key "loggedInFeed" and value true => then display tracks for logged in user
     if (this.graphqlFilters && this.graphqlFilters.length > 0) {
       const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
+      const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
 
       if (userFilter && userFilter.value) {
         selector.creatorId = userFilter.value
+      }
+
+      if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
+        const { userId } = this.graphqlContext
+
+        selector.creatorId = { $in: [
+          ...userCollection.findFollowerIdsForUser(userId),
+          userId,
+        ] }
       }
     }
 

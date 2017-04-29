@@ -6,7 +6,7 @@
       </div>
       <div slot="main">
         <h1 class="f-headline mv3">Sounds</h1>
-        <div class="pb3"><sub-header-component :items="homeSubHeaderItems"></sub-header-component></div>
+        <div class="pb3"><sub-header-component current="feed"></sub-header-component></div>
         <track-list-component></track-list-component>
       </div>
       <div slot="sidebar">
@@ -22,7 +22,7 @@
   import TrackListComponent from '../../stateful/track/StatefulTrackList.vue'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import SubHeaderComponent from '../../pure/SubHeader.vue'
+  import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
   export default {
@@ -31,25 +31,6 @@
       SubHeaderComponent,
       LayoutComponent,
       TrackListComponent,
-    },
-    computed: {
-      homeSubHeaderItems() {
-        return [
-          {
-            label: 'Feed',
-            href: '/',
-            active: true,
-          },
-          {
-            label: 'Discover',
-            href: '/discover',
-          },
-          {
-            label: 'Competitions',
-            href: '/competitions',
-          },
-        ]
-      },
     },
   }
 </script>

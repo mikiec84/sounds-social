@@ -34,7 +34,7 @@
 <script>
   import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
-  import FeedComponent from './home/FeedPage.vue'
+  import FeedComponent from './sounds/FeedPage.vue'
   import ButtonComponent from '../pure/Button.vue'
   import InputComponent from '../pure/Input.vue'
 
@@ -59,9 +59,11 @@
     methods: {
       doLogin() {
         this.authLogIn(this.username, this.password)
-          .then(id => {
-            getUserId().then(id => localStorage.setItem('sound_social_user_id', id))
-            if (id) this.isAuthenticated = true
+          .then(() => {
+            getUserId().then(id => {
+              localStorage.setItem('sound_social_user_id', id)
+              if (id) this.isAuthenticated = true
+            })
           })
           .catch(err => alert('Could not log in'))
       },

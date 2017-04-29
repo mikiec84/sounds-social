@@ -11,7 +11,6 @@ networkInterface.use([{
     }
 
     // TODO: security
-    console.log(localStorage.getItem('sound_social_user_id'))
     req.options.headers.soundSocialUserId = localStorage.getItem('sound_social_user_id')
     next()
   }
