@@ -4,8 +4,8 @@
   "scripts": {
     "play": "vue-play start --standalone",
     "play:build": "vue-play build",
-    "dev": "vbuild src/index.js --dev",
-    "build": "vbuild src/index.js"
+    "dev": "poi src/index.js",
+    "build": "poi build src/index.js"
   },
   "dependencies": {
     "apollo-client": "^0.8.3",
@@ -17,16 +17,11 @@
     "node-sass": "^4.1.1",
     "sass-loader": "^4.1.1",
     "tachyons": "^4.6.1",
-    "vue": "2.1.5",
-    "vue-apollo": "^1.3.1",
-    "vue-router": "^2.1.1",
-    "vuex": "^2.1.1",
+    "vue": "2.3.3",
+    "vue-apollo": "^1.4.0",
+    "vue-router": "^2.3.3",
+    "vuex": "^2.3.1",
+    "vuex-router-sync": "^4.2.0",
     "waveform-data": "^2.0.1"
-  },
-  "devDependencies": {
-    "vue-loader": "10.0.2",
-    "vue-play": "2.2.0",
-    "vue-play-cli": "1.0.4",
-    "vue-template-compiler": "2.1.5"
   }
 }

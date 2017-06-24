@@ -5,10 +5,11 @@
     </div>
     <div slot="main">
       <div v-if="getUser">
+        <h1 class="f-headline mv3" v-text="getUser.username"></h1>
         <track-list-component v-if="profileUserId" :userId="profileUserId"></track-list-component>
       </div>
       <div v-if="!getUser">
-        user not found
+        <div class="i">User not found</div>
       </div>
     </div>
     <div slot="sidebar">
@@ -19,11 +20,7 @@
           </div>
         </div>
 
-        <div class="tc">
-          <h1 class="f2 lh-copy" v-text="getUser.username"></h1>
-        </div>
-
-        <div class="mv4 tc" v-if="$route.params.id !== 'me'">
+        <div class="mv4 tc" v-if="!isCurrentUser">
           <button-component @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
             <div>
               <div v-if="getUser.isFollowedByCurrentUser">Unfollow</div>
@@ -99,6 +96,9 @@
       },
     },
     computed: {
+      isCurrentUser() {
+        return this.profileUserId === this.userId
+      },
       profileUserId() {
         const id = this.$route.params.id
 
