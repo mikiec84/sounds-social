@@ -8,8 +8,6 @@ fi
 echo "Installing concurrently npm package..."
 npm install -g concurrently
 
-echo "Installing dependencies for API..."
+echo "Installing dependencies for app..."
 cd ./code/api/ && npm i && cd ../..
-echo "Installing dependencies for Web App..."
-cd ./code/web-app/ && npm i && cd ../..
 
