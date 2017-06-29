@@ -10,8 +10,6 @@ networkInterface.use([{
       req.options.headers = {}
     }
 
-    // TODO: security
-    req.options.headers.soundSocialUserId = localStorage.getItem('sound_social_user_id')
     next()
   }
 }])

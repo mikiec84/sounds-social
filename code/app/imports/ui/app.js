@@ -13,8 +13,14 @@ sync(store, router)
 Vue.mixin(AuthMixin)
 Vue.use(VueApollo, { apolloClient })
 
+const app = new Vue({
+  router,
+  store,
+  ...App,
+})
+
 export {
   router,
   store,
-  App,
+  app,
 }

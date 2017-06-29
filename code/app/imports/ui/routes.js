@@ -23,7 +23,12 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  if (process && process.env && process.env.VUE_ENV === 'server') {
+    return next()
+  }
+
   const authenticated = await isAuthenticated()
+
 
   if (to.path !== '/' && !authenticated) {
     router.push('/')

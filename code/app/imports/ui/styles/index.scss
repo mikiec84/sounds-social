@@ -1,5 +1,5 @@
 @import './functional';
 
-.dz-preview {
-  display: none;
-}
+.dz-preview { display: none; }
+[v-cloak] { display: none !important; }
+

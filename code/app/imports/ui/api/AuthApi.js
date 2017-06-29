@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 
-const resolvePromiseForCallback = (res, rej) => (err, data) => (err ? rej(err) : res(data))
+import { resolvePromiseForCallback } from '../../lib/resolvePromiseForCallback'
 
 export const getUsername = async () => {
   return 'wow'
