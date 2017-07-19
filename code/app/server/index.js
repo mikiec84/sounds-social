@@ -1,6 +1,5 @@
 import { createApolloServer } from 'meteor/apollo'
 import { makeExecutableSchema } from 'graphql-tools'
-import cors from 'cors'
 import { renderIntoElementById } from 'meteor/server-render'
 
 import { typeDefs, resolvers } from '../imports/api/schema'
@@ -23,21 +22,16 @@ const corsOptions = {
     credentials: true
 }
 
-createApolloServer(request => {
-
-  return {
-    graphiql: true,
-    pretty: true,
-    schema,
-    context: {
-      userId: request.headers.soundsocialuserid,
-    },
-  }
+createApolloServer({
+  graphiql: true,
+  pretty: true,
+  schema,
 }, {
-  configServer: graphQLServer => graphQLServer.use(cors(corsOptions)),
+  //configServer: graphQLServer => graphQLServer.use(cors(corsOptions)),
 })
 
-renderIntoElementById('app', async request => {
+// server side rendering
+/*renderIntoElementById('app', async request => {
   import fetch from 'node-fetch'
   const renderer = require('vue-server-renderer').createRenderer()
 
@@ -68,4 +62,4 @@ renderIntoElementById('app', async request => {
   return new Promise((resolve, reject) => {
     renderer.renderToString(app, resolvePromiseForCallback(resolve, reject))
   })
-})
+})*/

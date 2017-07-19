@@ -11,11 +11,16 @@ import AuthMixin from './mixins/AuthMixin'
 sync(store, router)
 
 Vue.mixin(AuthMixin)
-Vue.use(VueApollo, { apolloClient })
+Vue.use(VueApollo)
+
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+})
 
 const app = new Vue({
   router,
   store,
+  apolloProvider,
   ...App,
 })
 

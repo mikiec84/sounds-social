@@ -11,9 +11,8 @@ export const getUserId = async () => Meteor.userId()
 
 export const isAuthenticated = async () => !!Meteor.userId()
 
-export const doLogin = (username, password) => Promise.resolve(
-  Meteor.loginWithPassword(username, password),
-)
+export const doLogin = (username, password) => new Promise((res, rej) =>
+  Meteor.loginWithPassword(username, password, resolvePromiseForCallback(res, rej)))
 
 export const createUser = (username, password) => new Promise((res, rej) => Accounts.createUser({
   username,

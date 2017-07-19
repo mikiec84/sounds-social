@@ -18,7 +18,8 @@ dynamic-import
 static-html
 server-render
 
-accounts-password@1.3.6
+accounts-base
+accounts-password
 easy:graphqlizer
 aldeed:simple-schema
 aldeed:collection2

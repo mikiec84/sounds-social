@@ -50,12 +50,12 @@
     },
     data: () => ({
       tracks: [],
+      listTrack: [],
       loading: 0,
     }),
     apollo: {
       listTrack: {
         query: tracksQuery,
-        forceFetch: true,
         loadingKey: 'loading',
         variables() {
           const { isDiscover, userId } = this

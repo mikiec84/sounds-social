@@ -80,6 +80,7 @@
     },
     data() {
       return {
+        getUser: null,
         userId: '',
       }
     },
@@ -89,9 +90,10 @@
     apollo: {
       getUser: {
         query,
-        forceFetch: true,
+        fetchPolicy: 'cache-and-network',
         variables() {
-          return { id: this.profileUserId }
+          console.log(this.userId)
+          return { id: this.userId }
         },
       },
     },

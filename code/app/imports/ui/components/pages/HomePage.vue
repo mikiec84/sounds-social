@@ -58,14 +58,18 @@
               if (id) this.isAuthenticated = true
             })
           })
-          .catch(err => alert('Could not log in'))
+          .catch(err => {
+            console.log(err)
+            alert('Could not log in')
+          })
       },
       doRegister() {
         this.authCreateUser(this.username, this.password)
-          .then(data => {
-            if (data.id) this.isAuthenticated = true
+          .then(data => this.isAuthenticated = true)
+          .catch(err => {
+            console.log(err)
+            alert('Could not create user')
           })
-          .catch(err => alert('Could not create user'))
       },
     },
   }
