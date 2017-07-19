@@ -45,6 +45,10 @@ export default createCollectionSchema({
         type: 'User',
         resolve: root => Meteor.users.findOne({_id: root.creatorId }),
       },
+      isRemovable: {
+        type: 'Boolean',
+        resolve: (root, args, context) => root.creatorId === context.userId,
+      },
     },
   },
 })

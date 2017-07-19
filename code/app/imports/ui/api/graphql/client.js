@@ -1,11 +1,6 @@
-import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
+import ApolloClient from 'apollo-client'
+import { meteorClientConfig } from 'meteor/apollo'
 
-const networkInterface = createBatchingNetworkInterface({
-  uri: `http://localhost:3000/graphql`,
-})
-
-const apolloClient = new ApolloClient({
-  networkInterface,
-})
+const apolloClient = new ApolloClient(meteorClientConfig())
 
 export { apolloClient }

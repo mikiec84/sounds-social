@@ -25,3 +25,5 @@ aldeed:simple-schema
 aldeed:collection2
 fourseven:scss
 akryum:vue-component
+arkham:comments-ui
+komentify:comments-graphql

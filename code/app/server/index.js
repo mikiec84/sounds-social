@@ -1,33 +1,19 @@
 import { createApolloServer } from 'meteor/apollo'
 import { makeExecutableSchema } from 'graphql-tools'
 import { renderIntoElementById } from 'meteor/server-render'
+import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 
 import { typeDefs, resolvers } from '../imports/api/schema'
 import '../imports/methods/MeteorMethods'
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-})
-
-const whitelist = [
-    'http://localhost:4000', // allow vue app to connect to the server
-]
-
-const corsOptions = {
-    origin(origin, callback) {
-        const originIsWhitelisted = whitelist.includes(origin);
-        callback(null, originIsWhitelisted);
-    },
-    credentials: true
-}
+const schema = makeExecutableSchema(
+  wrapTypeDefsAndResolvers({ typeDefs, resolvers }),
+)
 
 createApolloServer({
   graphiql: true,
   pretty: true,
   schema,
-}, {
-  //configServer: graphQLServer => graphQLServer.use(cors(corsOptions)),
 })
 
 // server side rendering

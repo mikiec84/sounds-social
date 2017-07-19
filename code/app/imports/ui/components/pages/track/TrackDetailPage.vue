@@ -19,6 +19,12 @@
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
                   :waveform-src="getTrack.waveformSrc"></track-component>
+
+          <div class="ph3">
+            <div v-if="getTrack.isRemovable" class="mt4">
+              <button-component @click="removeTrack">Remove sound</button-component>
+            </div>
+          </div>
         </div>
 
         <div v-if="!getTrack">
@@ -36,17 +42,19 @@
   import { Howl } from 'howler'
 
   import TrackComponent from '../../pure/track/Track.vue'
+  import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
   const query = gql`
-    query ($id: String!) {
+    query DetailTrack($id: String!) {
       getTrack(_id: $id) {
         _id
         name
         description
         createdAt
         fileUrl
+        isRemovable
         creator {
           _id
           username
@@ -62,6 +70,7 @@
       TrackComponent,
       LayoutComponent,
       HeaderComponent,
+      ButtonComponent,
     },
     data() {
       return {
@@ -98,6 +107,21 @@
       trackSound && trackSound.stop(this.playingTrackId)
     },
     methods: {
+      removeTrack() {
+        this.$apollo.mutate({
+          mutation: gql`
+mutation RemoveTrack($id: String!) {
+    deleteTrack(_id: $id) {
+      _id
+    }
+}
+          `,
+          variables: {
+            id: this.getTrack._id,
+          },
+          refetchQueries: ['DetailTrack'],
+        }).then(() => this.$router.push('/profile/me'))
+      },
       pauseTrack() {
         trackSound.pause(this.playingTrackId)
         this.isPlaying = false
