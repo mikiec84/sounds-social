@@ -21,7 +21,7 @@
   // TODO: use moment to format createdAt
 
   const tracksQuery = gql`
-    query ($userId: String!, $loggedInFeed: String!) {
+    query TrackListQuery($userId: String!, $loggedInFeed: String!) {
       listTrack(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
         _id
         name
@@ -57,6 +57,7 @@
       listTrack: {
         query: tracksQuery,
         loadingKey: 'loading',
+        fetchPolicy: 'network-only',
         variables() {
           const { isDiscover, userId } = this
 

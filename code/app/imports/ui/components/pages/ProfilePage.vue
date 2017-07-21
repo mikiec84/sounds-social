@@ -90,9 +90,8 @@
     apollo: {
       getUser: {
         query,
-        fetchPolicy: 'cache-and-network',
         variables() {
-          return { id: this.userId }
+          return { id: this.profileUserId }
         },
       },
     },
@@ -117,7 +116,7 @@
           variables: {
             id: userId,
           },
-          refetchQueries: ['ProfilePage'],
+          refetchQueries: ['ProfilePage', 'TrackListQuery'],
         })
       },
       unfollow(userId) {
@@ -126,7 +125,7 @@
           variables: {
             id: userId,
           },
-          refetchQueries: ['ProfilePage'],
+          refetchQueries: ['ProfilePage', 'TrackListQuery'],
         })
       },
     },
