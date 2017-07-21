@@ -92,7 +92,6 @@
         query,
         fetchPolicy: 'cache-and-network',
         variables() {
-          console.log(this.userId)
           return { id: this.userId }
         },
       },

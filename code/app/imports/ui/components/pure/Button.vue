@@ -1,17 +1,21 @@
 <template>
   <div
-          :class="{ 'pointer dim': !disabled, 'o-50': disabled }"
-          class="f6 link br1 ph3 pv2 dib dark-blue ba b--dark-blue" href="" @click="onclick($event)">
+          :class="[{ 'pointer dim': !disabled, 'o-50': disabled }, color, `b--${color}`]"
+          class="f6 link br1 ph3 pv2 dib ba " href="" @click="onclick($event)">
     <slot></slot>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   export default {
     props: {
       disabled: {
         type: Boolean,
         default: false,
+      },
+      color: {
+        type: String,
+        default: 'dark-blue',
       },
     },
     methods: {

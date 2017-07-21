@@ -24,6 +24,9 @@
             <div v-if="getTrack.isRemovable" class="mt4">
               <button-component @click="removeTrack">Remove sound</button-component>
             </div>
+
+            <h2 class="f3 mb3 mt5">Comments</h2>
+            <comment-box :id="getTrack._id"></comment-box>
           </div>
         </div>
 
@@ -45,6 +48,7 @@
   import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
+  import CommentBox from '../../stateful/Comment/CommentBox.vue'
 
   const query = gql`
     query DetailTrack($id: String!) {
@@ -71,6 +75,7 @@
       LayoutComponent,
       HeaderComponent,
       ButtonComponent,
+      CommentBox,
     },
     data() {
       return {
