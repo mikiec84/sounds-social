@@ -24,6 +24,10 @@ export const trackSchema = new SimpleSchema({
   creatorId: {
     type: String,
   },
+  coverFileId: {
+    type: String,
+    optional: true,
+  },
   isPublic: {
     type: Boolean,
   },
@@ -64,6 +68,9 @@ class TrackCollection extends Mongo.Collection
         createdAt: -1,
       },
     })
+  }
+  updateCover(trackId, coverFileId) {
+    this.update({ _id: trackId }, { $set: { coverFileId } })
   }
 }
 

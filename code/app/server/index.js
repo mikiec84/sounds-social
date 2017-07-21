@@ -5,6 +5,7 @@ import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 
 import { typeDefs, resolvers } from '../imports/api/schema'
 import '../imports/methods/MeteorMethods'
+import '../imports/data/file/CoverStorage'
 
 const schema = makeExecutableSchema(
   wrapTypeDefsAndResolvers({ typeDefs, resolvers }),

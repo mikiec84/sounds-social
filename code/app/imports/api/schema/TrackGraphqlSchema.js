@@ -1,8 +1,10 @@
 import moment from 'moment'
+import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
+import { getFileUrl } from '../../data/file/CoverStorage'
 
-export default createCollectionSchema({
+const trackGraphqlSchema =  createCollectionSchema({
   type: 'Track',
   collection: trackCollection,
   schema: {
@@ -37,6 +39,7 @@ export default createCollectionSchema({
       fileId: false,
       creatorId: false,
       fileSecret: false,
+      coverFileId: false,
       createdAt: {
         type: 'String',
         resolve: root => moment(root.createdAt).fromNow(),
@@ -45,6 +48,10 @@ export default createCollectionSchema({
         type: 'User',
         resolve: root => Meteor.users.findOne({_id: root.creatorId }),
       },
+      coverFile: {
+        type: 'String',
+        resolve: root => getFileUrl(root.coverFileId),
+      },
       isRemovable: {
         type: 'Boolean',
         resolve: (root, args, context) => root.creatorId === context.userId,
@@ -52,3 +59,23 @@ export default createCollectionSchema({
     },
   },
 })
+
+trackGraphqlSchema.typeDefs.push(`
+extend type Mutation {
+  addCoverFileId(trackId: String! fileId: String!): Track
+}
+`)
+
+trackGraphqlSchema.resolvers.Mutation.addCoverFileId = (root, args, context) => {
+  const { trackId, fileId } = args
+  check(trackId, String)
+  check(fileId, String)
+
+  const track = trackCollection.findOne({ _id: trackId, creatorId: context.userId })
+
+  if (track) trackCollection.updateCover(trackId, fileId)
+
+  return track
+}
+
+export default trackGraphqlSchema

@@ -9,6 +9,7 @@
           <track-component
                   :timeAgo="getTrack.createdAt"
                   :label="getTrack.name"
+                  :coverFileUrl="getTrack.coverFile"
                   :description="getTrack.description"
                   :username="getTrack.creator.username"
                   @open-profile="$router.push('/profile/' + getTrack.creator._id)"
@@ -23,6 +24,9 @@
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
               <button-component @click="removeTrack">Remove sound</button-component>
+
+              <h3 class="mv3">Upload cover</h3>
+              <input type="file" @change="uploadCover($event)" />
             </div>
 
             <h2 class="f3 mb3 mt5">Comments</h2>
@@ -43,7 +47,9 @@
 <script>
   import gql from 'graphql-tag'
   import { Howl } from 'howler'
+  import { $ } from 'meteor/jquery'
 
+  import { addCoverFile } from '../../../../data/file/CoverStorage'
   import TrackComponent from '../../pure/track/Track.vue'
   import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
@@ -59,10 +65,19 @@
         createdAt
         fileUrl
         isRemovable
+        coverFile
         creator {
           _id
           username
         }
+      }
+    }
+  `
+
+  const uploadCoverMutation = gql`
+    mutation UploadCover($trackId: String!, $fileId: String!) {
+      addCoverFileId(trackId: $trackId, fileId: $fileId) {
+        _id
       }
     }
   `
@@ -146,6 +161,19 @@ mutation RemoveTrack($id: String!) {
           position && trackSound.seek(trackSound.duration() * position, this.playingTrackId)
           trackSound.play(this.playingTrackId)
         }
+      },
+      uploadCover(e) {
+        const file = $(e.target).get(0).files[0]
+
+        this.$apollo.mutate({
+          mutation: uploadCoverMutation,
+          variables: {
+            fileId: addCoverFile(file)._id,
+            trackId: this.getTrack._id,
+          },
+        }).then(track => {
+          window.location.reload()
+        })
       },
     },
   };

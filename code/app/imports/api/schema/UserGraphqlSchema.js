@@ -39,7 +39,7 @@ collectionSchema.resolvers.Mutation.followUser = (root, args, context) => {
 
   userCollection.follow(toFollowId, context.userId)
   return userCollection.findOne({ _id: context.userId })
-};
+}
 
 collectionSchema.resolvers.Mutation.unfollowUser = (root, args, context) => {
   const { toUnfollowId } = args
@@ -47,7 +47,7 @@ collectionSchema.resolvers.Mutation.unfollowUser = (root, args, context) => {
 
   userCollection.unfollow(toUnfollowId, context.userId)
   return userCollection.findOne({ _id: context.userId })
-};
+}
 
 export default collectionSchema
 
