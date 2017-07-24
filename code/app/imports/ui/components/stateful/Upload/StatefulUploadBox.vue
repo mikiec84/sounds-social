@@ -56,7 +56,7 @@
       const componentScope = this
 
       const dropzoneConfig = {
-        init: function() {
+        init() {
           this.on('addedfile', (file) => {
             componentScope.isUploading = true
             componentScope.hasFile = true
@@ -70,13 +70,13 @@
           })
         },
         paramName: 'data',
-          url: 'https://api.graph.cool/file/v1/ciza7bn1537xm016692k04bgn',
+        url: 'https://api.graph.cool/file/v1/ciza7bn1537xm016692k04bgn',
       }
 
       import Dropzone from 'dropzone/dist/dropzone'
 
       new Dropzone('#trackUploadBox', dropzoneConfig)
-      new Dropzone('#fileUploadInput', dropzoneConfig)
+      //new Dropzone('#fileUploadInput', dropzoneConfig)
 
       getUsername().then(username => this.username = username)
       getUserId().then(id => this.userId = id)

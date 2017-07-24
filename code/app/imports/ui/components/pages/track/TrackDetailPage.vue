@@ -24,9 +24,10 @@
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
               <button-component @click="removeTrack">Remove sound</button-component>
-
-              <h3 class="mv3">Upload cover</h3>
-              <input type="file" @change="uploadCover($event)" />
+              <file-upload-button
+                      buttonLabel="Upload cover"
+                      modalLabel="Click here to upload image"
+                      @upload="uploadCover(arguments[0])"></file-upload-button>
             </div>
 
             <h2 class="f3 mb3 mt5">Comments</h2>
@@ -54,6 +55,7 @@
   import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
+  import FileUploadButton from '../../pure/Upload/FileUploadButton.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
 
   const query = gql`
@@ -91,6 +93,7 @@
       HeaderComponent,
       ButtonComponent,
       CommentBox,
+      FileUploadButton,
     },
     data() {
       return {
