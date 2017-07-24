@@ -1,55 +1,41 @@
 <template>
-  <div class="mv3">
-    <canvas height="120" :width="canvasWidth" ref="canvas"></canvas>
-  </div>
+  <div class="mv3" id="waveform" ref="waveformDiv"></div>
 </template>
 <script>
-  //import WaveForm from 'waveform-data'
+  let wavesurfer
 
   export default {
-    props: ['fileUrl'],
+    props: {
+      fileUrl: {
+        type: String,
+      },
+      progress: {
+        type: Number,
+      },
+    },
     data() {
       return {
         canvasWidth: 760,
       }
     },
     mounted() {
-      const canvas = this.$refs.canvas
+      wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: '#00449e',
+        progressColor: '#a0b6e2'
+      })
 
-      canvas.onclick = (e) => this.$emit('seekSound', (e.layerX / this.canvasWidth))
+      wavesurfer.load(this.fileUrl)
 
-      return ''
-
-      fetch(this.fileUrl)
-        .then(res => res.arrayBuffer())
-        .then(buffer => {
-          const waveform = WaveForm.create(buffer)
-          const amplitude = 256
-          const ctx = canvas.getContext('2d')
-
-          const interpolateHeight = (totalHeight) => {
-            return (size) => totalHeight - ((size + (amplitude / 2)) * totalHeight) / amplitude
-          }
-
-          const y = interpolateHeight(canvas.height)
-
-          ctx.lineWidth= '1'
-          ctx.strokeStyle= '#00449e'
-
-          ctx.beginPath()
-
-          waveform.min
-            .forEach((val, x) => ctx.lineTo(x, y(val) + 0.5))
-
-          waveform.max
-            .reverse()
-            .forEach((val, x) => {
-              ctx.lineTo((waveform.offset_length - x), y(val))
-            })
-
-          ctx.closePath()
-          ctx.stroke()
-        })
+      wavesurfer.on('seek', progress => this.$emit('seekSound', progress))
+      wavesurfer.setVolume(0)
+    },
+    watch: {
+      progress() {
+        if (this.progress > 0) {
+          wavesurfer.play()
+        }
+      },
     },
   }
 </script>

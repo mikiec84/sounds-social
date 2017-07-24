@@ -23,7 +23,7 @@
 
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
-              <button-component @click="removeTrack">Remove sound</button-component>
+              <button-component @click="removeTrack" color="red">Remove sound</button-component>
               <file-upload-button
                       buttonLabel="Upload cover"
                       modalLabel="Click here to upload image"

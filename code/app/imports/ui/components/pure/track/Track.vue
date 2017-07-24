@@ -14,12 +14,10 @@
           </div>
           <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
-            <div
-                    @click="$emit('open-track', $event.layerX / 760)"
-                    v-if="playingPos > 0" class="relative" style="width: 760px">
-              <div class="bg-white absolute o-70" :style="`width: ${playingPos * 100}%; height: 120px`"></div>
-            </div>
-            <track-waveform @seekSound="$emit('open-track', arguments[0])" :fileUrl="fileUrl"></track-waveform>
+            <track-waveform
+                    @seekSound="$emit('open-track', arguments[0])"
+                    :progress="playingPos"
+                    :fileUrl="fileUrl"></track-waveform>
             <div class="mt4">
               <div v-if="isPlaying">
                 <span class="i" :class="{ 'o-50': playingPos > 0 }">Currently playing 🔉</span>
