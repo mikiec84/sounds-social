@@ -9,8 +9,8 @@
       fileUrl: {
         type: String,
       },
-      progress: {
-        type: Number,
+      isPlaying: {
+        type: Boolean,
       },
     },
     data() {
@@ -31,10 +31,8 @@
       wavesurfer.setVolume(0)
     },
     watch: {
-      progress() {
-        if (this.progress > 0) {
-          wavesurfer.play()
-        }
+      isPlaying() {
+        this.isPlaying ? wavesurfer.play() : wavesurfer.pause()
       },
     },
   }

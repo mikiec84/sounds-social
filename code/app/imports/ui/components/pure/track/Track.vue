@@ -16,7 +16,7 @@
           <div class="mt3 pointer">
             <track-waveform
                     @seekSound="$emit('open-track', arguments[0])"
-                    :progress="playingPos"
+                    :isPlaying="isPlaying"
                     :fileUrl="fileUrl"></track-waveform>
             <div class="mt4">
               <div v-if="isPlaying">
