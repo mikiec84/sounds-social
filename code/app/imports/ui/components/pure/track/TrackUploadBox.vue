@@ -16,8 +16,7 @@
       </div>
       <div class="description username f5 gray"><span class="black-50">just now</span> by <span class="dim pointer" >{{username}}</span></div>
       <div class="mt3 pointer" @click="$emit('open-track')">
-        <track-waveform v-if="fileUrl" :fileUrl="fileUrl"></track-waveform>
-        <div v-if="!fileUrl" class="gray i" style="padding-top: 50px; height: 120px">
+        <div v-if="true" class="gray i" style="padding-top: 50px; height: 120px">
           No waveform generated yet.
         </div>
       </div>
@@ -32,19 +31,20 @@
         <button-component :disabled="isUploading" @click="$emit('publish')">Publish</button-component>
       </div>
     </div>
-    <div v-if="!hasFile" class="ba bw1 b--light-gray br2 ph3 mw8 pa3 tc b f3 h5 pointer navy" @click="$emit('openFileDialog')">
-      <div style="margin-top: 85px">
-        Drag music file or click here
-      </div>
+    <div v-if="!hasFile">
+      <upload-zone
+              label="Click to upload track"
+              @upload="$emit('uploadFile', arguments[0])"></upload-zone>
     </div>
   </div>
 </template>
 <script>
   import ButtonComponent from '../../pure/Button.vue'
   import TrackWaveform from '../../pure/track/TrackWaveform.vue'
+  import UploadZone from '../Upload/UploadZone.vue'
 
   export default {
-    components: { ButtonComponent, TrackWaveform },
+    components: { ButtonComponent, TrackWaveform, UploadZone },
     props: {
       username: {
         type: String,
@@ -57,10 +57,6 @@
       isUploading: {
         type: Boolean,
         default: true,
-      },
-      fileUrl: {
-        type: String,
-        required: false,
       },
     },
     data() {

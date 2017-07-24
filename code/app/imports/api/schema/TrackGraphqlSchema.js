@@ -3,6 +3,7 @@ import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
 import { getFileUrl } from '../../data/file/CoverStorage'
+import { getFileUrl as getMusicFileUrl } from '../../data/file/MusicStorage'
 
 const trackGraphqlSchema =  createCollectionSchema({
   type: 'Track',
@@ -23,12 +24,6 @@ const trackGraphqlSchema =  createCollectionSchema({
       fileId: {
         type: String,
       },
-      fileSecret: {
-        type: String,
-      },
-      fileUrl: {
-        type: String,
-      },
       creatorId: {
         type: String,
       },
@@ -38,8 +33,11 @@ const trackGraphqlSchema =  createCollectionSchema({
     type: {
       fileId: false,
       creatorId: false,
-      fileSecret: false,
       coverFileId: false,
+      fileUrl: {
+        type: 'String',
+        resolve: root => getMusicFileUrl(root.fileId),
+      },
       createdAt: {
         type: 'String',
         resolve: root => moment(root.createdAt).fromNow(),

@@ -15,12 +15,6 @@ export const trackSchema = new SimpleSchema({
   fileId: {
     type: String,
   },
-  fileSecret: {
-    type: String,
-  },
-  fileUrl: {
-    type: String,
-  },
   creatorId: {
     type: String,
   },

@@ -22,6 +22,7 @@ coverPhotosCollection.allow({
 })
 
 export const addCoverFile = file => coverPhotosCollection.insert(file)
+
 export const getFileUrl = _id => {
   const file = coverPhotosCollection.findOne({ _id })
 
