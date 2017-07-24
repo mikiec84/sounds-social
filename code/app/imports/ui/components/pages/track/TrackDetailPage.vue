@@ -47,7 +47,6 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import { Howl } from 'howler'
   import { $ } from 'meteor/jquery'
 
   import { addCoverFile } from '../../../../data/file/CoverStorage'
@@ -84,8 +83,6 @@
     }
   `
 
-  let trackSound
-
   export default {
     components: {
       TrackComponent,
@@ -114,21 +111,6 @@
         }
       }
     },
-    watch: {
-      getTrack() {
-        if (this.getTrack && this.getTrack.fileUrl) {
-          trackSound = new Howl({
-            src: [this.getTrack.fileUrl],
-            html5: true,
-            volume: 1,
-            onend: () => this.isPlaying = false,
-          })
-        }
-      },
-    },
-    destroyed() {
-      trackSound && trackSound.stop(this.playingTrackId)
-    },
     methods: {
       removeTrack() {
         this.$apollo.mutate({
@@ -146,24 +128,10 @@ mutation RemoveTrack($id: String!) {
         }).then(() => this.$router.push('/profile/me'))
       },
       pauseTrack() {
-        trackSound.pause(this.playingTrackId)
         this.isPlaying = false
       },
-      playTrack(position) {
+      playTrack() {
         this.isPlaying = true
-
-        if (!this.playingTrackId) {
-          this.playingTrackId = trackSound.play()
-          setInterval(() =>  {
-            if (this.isPlaying) {
-              this.playingPos = trackSound.seek(this.playingTrackId)
-                / trackSound.duration(this.playingTrackId)
-            }
-          }, 20)
-        } else {
-          position && trackSound.seek(trackSound.duration() * position, this.playingTrackId)
-          trackSound.play(this.playingTrackId)
-        }
       },
       uploadCover(e) {
         const file = $(e.target).get(0).files[0]

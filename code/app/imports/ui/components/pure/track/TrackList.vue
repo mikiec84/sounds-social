@@ -8,6 +8,7 @@
               @open-profile="$emit('open-profile', track)"
               @open-track="$emit('open-track', track)"
               :inListView="true"
+              :coverFileUrl="track.coverFile"
               :fileUrl="track.fileUrl"></track-component>
     </div>
   </div>

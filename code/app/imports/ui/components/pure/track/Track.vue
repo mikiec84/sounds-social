@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="cf">
-      <div class="fl w-25" v-if="coverFileUrl" >
+    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder  }"  class="cf">
+      <div class="fl w-25 pa2" v-if="coverFileUrl" >
         <img :src="coverFileUrl" class="mw-100" />
       </div>
       <div :class="['fl', { 'w-75': coverFileUrl, 'w-100': !coverFileUrl }]">
-        <div :class="{ 'ba bw1 b--light-gray br2': !noBorder  }" class="ph3 mw8">
+        <div class="ph3 mw8">
           <div class="pointer">
             <div class="dib v-mid pr2">
               <i class="fa fa-play" aria-hidden="true"></i>
@@ -15,6 +15,7 @@
           <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
             <track-waveform
+                    v-if="!inListView"
                     @seekSound="$emit('open-track', arguments[0])"
                     :isPlaying="isPlaying"
                     :fileUrl="fileUrl"></track-waveform>

@@ -28,7 +28,11 @@
       wavesurfer.load(this.fileUrl)
 
       wavesurfer.on('seek', progress => this.$emit('seekSound', progress))
-      wavesurfer.setVolume(0)
+
+      wavesurfer.setVolume(1)
+    },
+    destroyed() {
+      wavesurfer.stop()
     },
     watch: {
       isPlaying() {
