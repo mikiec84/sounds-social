@@ -31,7 +31,6 @@ const trackGraphqlSchema =  createCollectionSchema({
   },
   fields: {
     type: {
-      fileId: false,
       creatorId: false,
       coverFileId: false,
       fileUrl: {

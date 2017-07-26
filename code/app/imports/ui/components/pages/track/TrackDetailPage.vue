@@ -23,6 +23,7 @@
 
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
+              <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)">Edit sound</button-component>
               <button-component @click="removeTrack" color="red">Remove sound</button-component>
               <file-upload-button
                       buttonLabel="Upload cover"
@@ -50,30 +51,13 @@
   import { $ } from 'meteor/jquery'
 
   import { addCoverFile } from '../../../../data/file/CoverStorage'
+  import { detailTrackQuery } from '../../../api/TrackApi'
   import TrackComponent from '../../pure/track/Track.vue'
   import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
   import FileUploadButton from '../../pure/Upload/FileUploadButton.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
-
-  const query = gql`
-    query DetailTrack($id: String!) {
-      getTrack(_id: $id) {
-        _id
-        name
-        description
-        createdAt
-        fileUrl
-        isRemovable
-        coverFile
-        creator {
-          _id
-          username
-        }
-      }
-    }
-  `
 
   const uploadCoverMutation = gql`
     mutation UploadCover($trackId: String!, $fileId: String!) {
@@ -102,7 +86,7 @@
     },
     apollo: {
       getTrack: {
-        query: query,
+        query: detailTrackQuery,
         loadingKey: 'loading',
         variables() {
           return {
@@ -142,6 +126,7 @@ mutation RemoveTrack($id: String!) {
             fileId: addCoverFile(file)._id,
             trackId: this.getTrack._id,
           },
+          fetchPolicy: 'network-only',
         }).then(track => {
           window.location.reload()
         })

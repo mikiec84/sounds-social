@@ -10,25 +10,21 @@
         </div>
         <input
                 type="text"
+                :value="name"
                 class="h2 f3 b bn lh-copy black mv2 dim navy"
                 @change="$emit('changeTitle', $event.target.value)"
                 placeholder="Track name" />
       </div>
-      <div class="description username f5 gray"><span class="black-50">just now</span> by <span class="dim pointer" >{{username}}</span></div>
-      <div class="mt3 pointer" @click="$emit('open-track')">
-        <div v-if="true" class="gray i" style="padding-top: 50px; height: 120px">
-          No waveform generated yet.
-        </div>
-      </div>
+      <div class="description username f5 gray">by <span class="dim pointer" >{{username}}</span></div>
 
       <textarea
               class="mt4 f5 black-80 lh-copy measure-wide bn w-50"
               type="text"
               @change="$emit('changeDescription', $event.target.value)"
-              placeholder="Track description..."></textarea>
+              placeholder="Track description...">{{description}}</textarea>
 
       <div class="pv3">
-        <button-component :disabled="isUploading" @click="$emit('publish')">Publish</button-component>
+        <button-component :disabled="isUploading" @click="$emit('publish')">{{buttonLabel}}</button-component>
       </div>
     </div>
     <div v-if="!hasFile">
@@ -58,10 +54,17 @@
         type: Boolean,
         default: true,
       },
-    },
-    data() {
-      return {
-        waveformSrc: 'http://i.imgur.com/oNy41Cr.png',
+      name: {
+        type: String,
+        required: false,
+      },
+      description: {
+        type: String,
+        required: false,
+      },
+      buttonLabel: {
+        type: String,
+        default: 'Publish',
       }
     },
   }

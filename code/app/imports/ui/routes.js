@@ -8,6 +8,7 @@ import UploadPage from './components/pages/UploadPage.vue'
 import ProfilePage from './components/pages/ProfilePage.vue'
 
 import TrackDetailPage from './components/pages/track/TrackDetailPage.vue'
+import TrackEditPage from './components/pages/track/TrackEditPage.vue'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ const router = new Router({
     { path: '/upload', component: UploadPage },
     { path: '/profile/:id', component: ProfilePage },
     { path: '/tracks/:id', component: TrackDetailPage },
+    { path: '/tracks/:id/edit', component: TrackEditPage },
   ],
 })
 

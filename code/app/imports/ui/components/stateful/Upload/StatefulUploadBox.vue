@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="trackUploadBox">
-      <track-upload-box
+      <track-form-box
         :username="username"
         :hasFile="hasFile"
         :isUploading="isUploading"
@@ -9,7 +9,7 @@
         @changeDescription="description = arguments[0]"
         @publish="saveTrack()"
         @uploadFile="uploadMusicFile(arguments[0])"
-      ></track-upload-box>
+      ></track-form-box>
     </div>
     <div class="dn-ns">
       <input type="file" name="data" id="fileUploadInput" />
@@ -18,7 +18,7 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import TrackUploadBox from '../../pure/track/TrackUploadBox.vue'
+  import TrackFormBox from '../../pure/track/TrackFormBox.vue'
   import { getUsername, getUserId } from '../../../api/AuthApi'
   import { addMusicFile } from '../../../../data/file/MusicStorage'
 
@@ -37,7 +37,7 @@
 `
 
   export default {
-    components: { TrackUploadBox },
+    components: { TrackFormBox },
     data() {
       return {
         hasFile: false,
