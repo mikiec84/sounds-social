@@ -16,7 +16,19 @@
       <div v-if="getUser">
         <div class="tc mv4">
           <div class="dib">
-            <profile-image-component source="http://tachyons.io/img/logo.jpg"></profile-image-component>
+            <profile-image-component
+                    :source="profileAvatarImage"></profile-image-component>
+          </div>
+        </div>
+
+        <div v-if="getUser.profile.description" v-text="getUser.profile.description" class="mt3 pl4 lh-copy">
+
+        </div>
+
+        <div v-if="getUser.profile.websiteUrl" class="mt3 pl4">
+          <span class="b">Website: </span>
+          <div class="mt2">
+            <a class="link dark-blue" :href="getUser.profile.websiteUrl" v-text="getUser.profile.websiteUrl"></a>
           </div>
         </div>
 
@@ -29,7 +41,9 @@
           </button-component>
         </div>
 
-        Awesome sidebar! (add more)
+        <div class="mv4 tc" v-if="isCurrentUser">
+          <button-component @click="$router.push('/profile/' + getUser._id + '/edit')">Edit profile</button-component>
+        </div>
       </div>
     </div>
   </layout-component>
@@ -50,6 +64,11 @@
         _id
         username
         isFollowedByCurrentUser
+        profile {
+          description
+          websiteUrl
+          avatarFileUrl
+        }
       }
     }
   `
@@ -107,6 +126,13 @@
         }
 
         return id
+      },
+      profileAvatarImage() {
+        const { avatarFileUrl } = this.getUser.profile
+
+        if (avatarFileUrl) return avatarFileUrl
+
+        return 'http://tachyons.io/img/logo.jpg'
       },
     },
     methods: {

@@ -1,6 +1,7 @@
 import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
+import { profileCollection } from '../../data/collection/ProfileCollection'
 
 const collectionSchema = createCollectionSchema({
   type: 'User',
@@ -16,6 +17,10 @@ const collectionSchema = createCollectionSchema({
         type: 'Boolean',
         resolve: (root, args, context) => userCollection
           .isFollowedByUser(root._id, context.userId),
+      },
+      profile: {
+        type: 'Profile',
+        resolve: (root, args, context) => (profileCollection.findOneUserProfile(root._id) || {}),
       },
     },
   },
