@@ -49,7 +49,6 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import { pick } from 'lodash'
 
   import ButtonComponent from '../../pure/Button.vue'
   import InputComponent from '../../pure/Input.vue'
@@ -119,7 +118,7 @@
           mutation: updateProfileMutation,
           variables: {
             profileData: {
-              ...pick(this.getUser.profile, ['description', 'websiteUrl']),
+              ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl']),
               ...this.formData,
             },
           },

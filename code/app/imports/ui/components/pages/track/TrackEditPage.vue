@@ -30,8 +30,6 @@
   </div>
 </template>
 <script>
-  import { pick } from 'lodash'
-
   import { editTrackFormQuery, updateTrackMutation } from '../../../api/TrackApi'
   import TrackFormBox from '../../pure/track/TrackFormBox.vue'
   import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
@@ -67,7 +65,7 @@
           variables: {
             id: this.$route.params.id,
             data: {
-              ...pick(this.trackToEdit, ['name', 'description', 'fileId']),
+              ...this.$_.pick(this.trackToEdit, ['name', 'description', 'fileId']),
               ...this.formData,
               isPublic: true,
               creatorId: this.trackToEdit.creator._id,
