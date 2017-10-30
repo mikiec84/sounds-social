@@ -1,6 +1,10 @@
 @import './modal';
 @import './functional';
 
+body {
+  font-family: 'avenir next', avenir, sans-serif;
+}
+
 .dz-preview { display: none; }
 [v-cloak] { display: none !important; }
 
