@@ -1,2 +1,1 @@
-cd code/app
-npm run dev
+concurrently "cd code/api && yarn dev" "cd code/web && yarn dev"
