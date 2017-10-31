@@ -3,16 +3,19 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: jshimko/meteor-launchpad:v2.2.2
+image: node:6.11.5
 
 pipelines:
   default:
     - step:
-        caches:
-          - node
         script: # Modify the commands below to build your repository.
           - cd code/web
-          - meteor npm install
-          - meteor npm test
+          - npm install
+          - npm run cli
           - cd ../api
-          - meteor npm run test-cli
+          - curl -o meteor_install_script.sh https://install.meteor.com/
+          - chmod +x meteor_install_script.sh
+          - ./meteor_install_script.sh
+          - export PATH=$PATH:~/.meteor/
+          - meteor --version
+          - meteor npm run cli

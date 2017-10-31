@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "meteor run",
     "prod": "meteor run --production",
-    "test-cli": "meteor test --once --driver-package=dispatch:mocha"
+    "test": "meteor test --once --driver-package=dispatch:mocha",
+    "cli": "meteor npm run test"
   },
   "dependencies": {
     "apollo-client": "^1.9.0-0",
