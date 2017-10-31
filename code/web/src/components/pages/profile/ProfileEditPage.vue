@@ -99,8 +99,11 @@
       uploadAvatarFileImage (e) {
         const file = e.target.files[0]
 
-        this.formData.avatarFileId = addProfileAvatarFile(file)._id
-        this.hasUploadedFile = addProfileAvatarFile(file)._id
+        addProfileAvatarFile(file).then(({ id: _id, secret, url }) => {
+          this.formData.avatarFile = { _id, secret, url }
+          console.log(this.formData.avatarFile)
+          this.hasUploadedFile = !!_id
+        })
       },
       updateProfile () {
         this.$apollo.mutate({

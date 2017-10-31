@@ -49,6 +49,7 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
+  import { get } from 'lodash/fp'
 
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
@@ -63,7 +64,9 @@
         profile {
           description
           websiteUrl
-          avatarFileUrl
+          avatarFile {
+            url
+          }
         }
       }
     }
@@ -123,7 +126,7 @@
         return id
       },
       profileAvatarImage () {
-        const { avatarFileUrl } = this.getUser.profile
+        const avatarFileUrl = get('getUser.profile.avatarFile.url')(this)
 
         if (avatarFileUrl) return avatarFileUrl
 

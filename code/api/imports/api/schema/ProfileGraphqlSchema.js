@@ -1,12 +1,12 @@
 import { check } from 'meteor/check'
 import { profileCollection } from '../../data/collection/ProfileCollection'
-import { getFileUrl } from '../../data/file/ProfileAvatarStorage'
+import { fileCollection } from '../../data/collection/FileCollection'
 
 const typeDef = `
 input ProfileData {
   websiteUrl: String
   description: String
-  avatarFileId: String
+  avatarFile: FileData
 }
 
 type Profile {
@@ -14,7 +14,7 @@ type Profile {
   description: String
   websiteUrl: String
   description: String
-  avatarFileUrl: String
+  avatarFile: File
 }
 
 extend type Mutation {
@@ -26,8 +26,8 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Profile: {
-      avatarFileUrl(root) {
-        return getFileUrl(root.avatarFileId)
+      avatarFile(root) {
+        return fileCollection.findOneById(root.avatarFileId)
       },
     },
     Mutation: {

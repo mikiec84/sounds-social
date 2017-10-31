@@ -1,4 +1,6 @@
 import { Mongo } from 'meteor/mongo'
+import { fileCollection } from './FileCollection'
+import { omit } from 'lodash/fp'
 
 export const profileSchema = new SimpleSchema({
   type: {
@@ -28,15 +30,24 @@ class ProfileCollection extends Mongo.Collection
     const selector = { referenceId, type }
     const existingProfile = this.findOne(selector)
 
+    const { avatarFile } = profileData
+
+    const omitAvatarFile = omit(['avatarFile'])
+
+    if (avatarFile) {
+      profileData.avatarFileId = fileCollection.insert({ ...avatarFile })
+    }
+
+    console.log(existingProfile)
     if (!existingProfile) {
       return this.insert({
-        ...profileData,
+        ...omitAvatarFile(profileData),
         referenceId,
         type,
       })
     }
 
-    return this.update(selector, { $set: profileData })
+    return this.update(selector, { $set: omitAvatarFile(profileData) })
   }
   findOneUserProfile(referenceId) {
     return this.findOne({
