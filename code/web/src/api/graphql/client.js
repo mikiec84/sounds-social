@@ -1,10 +1,12 @@
-import ApolloClient, { HttpLink } from 'apollo-client-preset'
+import ApolloClient, { from } from 'apollo-client-preset'
+import { httpLink } from './httpLink'
+import { authMiddleware } from './middleware/AuthMiddleware'
 
 const apolloClient = new ApolloClient({
-  networkInterface: new HttpLink({
-    uri: 'http://localhost:3000/graphql',
-  }),
-  connectToDevTools: true,
+  link: from([
+    authMiddleware,
+    httpLink,
+  ]),
 })
 
 export { apolloClient }

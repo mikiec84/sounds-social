@@ -1,13 +1,34 @@
+import gql from 'graphql-tag'
+import { get } from 'lodash/fp'
+import { logout, loginWithPassword, userId } from 'meteor-apollo-accounts'
+import { apolloClient } from './graphql/client'
+
 export const getUsername = async () => {
-  return 'wow'
+  const userData = await apolloClient.query({
+    query: gql`
+      query CurrentUser($id: String!) {
+        getUser(_id: $id) {
+          username
+        }
+      }
+    `,
+    variables: {
+      id: await getUserId(),
+    },
+  })
+
+  return get('data.getUser.username')(userData)
 }
 
-export const getUserId = async () => ''
+export const getUserId = () => userId()
 
-export const isAuthenticated = async () => false
+export const isAuthenticated = async () => !!(await userId())
 
-export const doLogin = (username, password) => new Promise((resolve, reject) => resolve({}))
+export const doLogin = (username, password) => loginWithPassword(
+  { username, password },
+  apolloClient,
+)
 
-export const createUser = (username, password) => new Promise((resolve, reject) => resolve({}))
+export const createUser = (username, password) => createUser({ username, password }, apolloClient)
 
-export const logOut = () => new Promise((resolve, reject) => resolve({}))
+export const logOut = () => logout(apolloClient)

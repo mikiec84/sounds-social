@@ -32,11 +32,23 @@ const collectionSchema = createCollectionSchema({
 })
 
 collectionSchema.typeDefs.push(`
+extend type Query {
+  currentUser: User
+}
 extend type Mutation {
   followUser(toFollowId: String!): User
   unfollowUser(toUnfollowId: String!): User
 }
 `)
+
+collectionSchema.resolvers.Query.currentUser = (root, args, context) => {
+  const { userId } = context
+
+  console.log(root, args, context)
+  if (!userId) return null
+
+  return userCollection.findOne({ _id: userId })
+}
 
 collectionSchema.resolvers.Mutation.followUser = (root, args, context) => {
   const { toFollowId } = args

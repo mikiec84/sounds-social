@@ -1,5 +1,8 @@
-import { createApolloServer } from 'meteor/apollo'
+import cors from 'cors'
 import { makeExecutableSchema } from 'graphql-tools'
+import { loadSchema, getSchema } from 'graphql-loader'
+import { createApolloServer } from 'meteor/apollo'
+import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { renderIntoElementById } from 'meteor/server-render'
 import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 
@@ -7,14 +10,18 @@ import { typeDefs, resolvers } from '../imports/api/schema'
 import '../imports/methods/MeteorMethods'
 import '../imports/data/file/CoverStorage'
 
-const schema = makeExecutableSchema(
-  wrapTypeDefsAndResolvers({ typeDefs, resolvers }),
-)
+initAccounts()
+
+loadSchema(wrapTypeDefsAndResolvers({ typeDefs, resolvers }))
+
+const schema = makeExecutableSchema(getSchema())
 
 createApolloServer({
   graphiql: true,
   pretty: true,
   schema,
+}, {
+  configServer: graphQLServer => graphQLServer.use(cors()),
 })
 
 // server side rendering
