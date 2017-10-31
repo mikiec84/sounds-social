@@ -9,7 +9,7 @@
               @open-track="$emit('open-track', track)"
               :inListView="true"
               :coverFileUrl="$_fp.get('coverFile.url')(track)"
-              :fileUrl="track.fileUrl"></track-component>
+              :fileUrl="$_fp.get('file.url')(track)"></track-component>
     </div>
   </div>
 </template>

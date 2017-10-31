@@ -16,7 +16,7 @@
                   @open-track="playTrack"
                   @pauseTrack="pauseTrack"
                   :noBorder="true"
-                  :fileUrl="getTrack.fileUrl"
+                  :fileUrl="$_fp.get('file.url')(getTrack)"
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
                   :waveform-src="getTrack.waveformSrc"></track-component>
@@ -111,7 +111,7 @@ mutation RemoveTrack($id: String!) {
       uploadCover (e) {
         const file = e.target.files[0]
 
-        addCoverFile(file).then(({ id: _id, secret, url }) => {
+        addCoverFile(file).then(({ _id, secret, url }) => {
           this.$apollo.mutate({
             mutation: uploadCoverMutation,
             variables: {

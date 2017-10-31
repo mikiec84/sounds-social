@@ -1,3 +1,4 @@
+import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
@@ -30,14 +31,18 @@ export const trackSchema = new SimpleSchema({
 
 class TrackCollection extends Mongo.Collection
 {
-  insert(doc) {
-    if (!this.graphqlContext || !this.graphqlContext.userId) {
-      return null
-    }
+  addTrack(doc, userId) {
+    doc.creatorId = userId
+    if (!doc.file) throw new Error('Need file to add track')
+    doc.fileId = fileCollection.insert({ ...doc.file })
 
     doc.createdAt = new Date()
 
-    return super.insert(doc)
+    const omitFile = omit(['file'])
+
+    const _id = this.insert(omitFile(doc))
+
+    return this.findOne({ _id })
   }
   find(selector) {
     if (this.graphqlFilters && this.graphqlFilters.length > 0) {

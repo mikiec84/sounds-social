@@ -8,7 +8,7 @@ const uploadFile = (file) => {
     body: data
   }).then(response => {
     return response.json()
-  })
+  }).then(({ id: _id, secret, url }) => ({ _id, secret, url }))
 }
 
 export const addProfileAvatarFile = uploadFile

@@ -29,7 +29,9 @@
         }
         description
         createdAt
-        fileUrl
+        file {
+          url
+        }
         creator {
           _id
           username

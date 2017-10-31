@@ -3,11 +3,13 @@ import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
-import { getFileUrl as getMusicFileUrl } from '../../data/file/MusicStorage'
 
 const trackGraphqlSchema =  createCollectionSchema({
   type: 'Track',
   collection: trackCollection,
+  crud: {
+    insert: false,
+  },
   schema: {
     type: trackSchema,
     input: new SimpleSchema({
@@ -21,21 +23,27 @@ const trackGraphqlSchema =  createCollectionSchema({
       isPublic: {
         type: Boolean,
       },
-      fileId: {
-        type: String,
-      },
       creatorId: {
         type: String,
       },
+      file: {
+        type: Object,
+        optional: true,
+      }
     }),
   },
   fields: {
+    input: {
+      file: {
+        type: 'FileData',
+      },
+    },
     type: {
       creatorId: false,
       coverFileId: false,
-      fileUrl: {
-        type: 'String',
-        resolve: root => getMusicFileUrl(root.fileId),
+      file: {
+        type: 'File',
+        resolve: root => fileCollection.findOneById(root.fileId),
       },
       createdAt: {
         type: 'String',
@@ -59,9 +67,17 @@ const trackGraphqlSchema =  createCollectionSchema({
 
 trackGraphqlSchema.typeDefs.push(`
 extend type Mutation {
+  createTrack(data: TrackInput!): Track
   addCoverFile(trackId: String! fileData: FileData!): Track
 }
 `)
+
+trackGraphqlSchema.resolvers.Mutation.createTrack = (root, args, context) => {
+  const { userId } = context
+  check(userId, String)
+
+  return trackCollection.addTrack(args.data, userId)
+}
 
 trackGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {
   const { trackId, fileData } = args

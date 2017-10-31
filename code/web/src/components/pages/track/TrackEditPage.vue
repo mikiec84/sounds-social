@@ -61,7 +61,7 @@
           variables: {
             id: this.$route.params.id,
             data: {
-              ...this.$_.pick(this.trackToEdit, ['name', 'description', 'fileId']),
+              ...this.$_.pick(this.trackToEdit, ['name', 'description']),
               ...this.formData,
               isPublic: true,
               creatorId: this.trackToEdit.creator._id,

@@ -8,7 +8,9 @@ export const detailTrackQuery = gql`
       description
       createdAt
       fileId
-      fileUrl
+      file {
+        url
+      }
       isRemovable
       coverFile {
         url

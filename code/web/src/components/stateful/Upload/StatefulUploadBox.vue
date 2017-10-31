@@ -22,11 +22,11 @@
   import { addMusicFile } from '../../../api/StorageApi'
 
   const createTrackMutation = gql`
-    mutation ($name: String! $description: String $fileId: String! $creatorId: String!) {
+    mutation ($name: String! $description: String $file: FileData! $creatorId: String!) {
       createTrack(data: {
         name: $name,
         creatorId: $creatorId,
-        fileId: $fileId,
+        file: $file,
         isPublic: true,
         description: $description
       }) {
@@ -43,6 +43,7 @@
         username: '',
         name: '',
         description: '',
+        file: {},
         userId: '',
         fileId: '',
       }
@@ -55,11 +56,15 @@
       uploadMusicFile (e) {
         const file = e.target.files[0]
 
-        this.fileId = addMusicFile(file)._id
-        this.hasFile = true
+        addMusicFile(file).then(({ _id, secret, url }) => {
+          this.file = { _id, secret, url }
+          console.log(this.file)
+          this.fileId = _id
+          this.hasFile = true
+        })
       },
       saveTrack () {
-        const { name, userId, description, fileId } = this
+        const { name, userId, description, file } = this
 
         this.$apollo
           .mutate({
@@ -67,7 +72,7 @@
             variables: {
               name,
               description,
-              fileId,
+              file,
               creatorId: userId,
             },
           })
