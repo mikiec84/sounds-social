@@ -9,16 +9,7 @@
   </div>
 </template>
 <script>
-  import ButtonComponent from '../Button.vue'
-  import Modal from '../Modal.vue'
-  import UploadZone from './UploadZone.vue'
-
   export default {
-    components: {
-      ButtonComponent,
-      Modal,
-      UploadZone,
-    },
     props: {
       modalLabel: {
         type: String,

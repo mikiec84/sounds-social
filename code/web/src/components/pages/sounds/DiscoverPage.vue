@@ -1,6 +1,6 @@
 <template>
   <div>
-    <layout-component>
+    <layout-with-sidebar>
       <div slot="header">
         <header-component current="sounds"></header-component>
       </div>
@@ -19,7 +19,7 @@
         <p>Add List Filters (no repost)</p>
         <p>Other Infos</p>
       </div>
-    </layout-component>
+    </layout-with-sidebar>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -27,13 +27,11 @@
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
-  import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
 
   export default {
     components: {
       HeaderComponent,
       SubHeaderComponent,
-      LayoutComponent,
       TrackListComponent,
     },
   }

@@ -1,5 +1,5 @@
 <template>
-  <layout-component>
+  <layout>
     <div slot="header">
       <header-component current="upload"></header-component>
     </div>
@@ -8,17 +8,15 @@
 
       <upload-box-component></upload-box-component>
     </div>
-  </layout-component>
+  </layout>
 </template>
 <script>
   import HeaderComponent from '../stateful/StatefulHeader.vue'
-  import LayoutComponent from '../pure/layout/Layout.vue'
   import UploadBoxComponent from '../stateful/Upload/StatefulUploadBox.vue'
 
   export default {
     components: {
       HeaderComponent,
-      LayoutComponent,
       UploadBoxComponent,
     },
   }

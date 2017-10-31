@@ -18,7 +18,6 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import TrackFormBox from '../../pure/track/TrackFormBox.vue'
   import { getUsername, getUserId } from '../../../api/AuthApi'
   import { addMusicFile } from '../../../api/StorageApi'
 
@@ -37,7 +36,6 @@
 `
 
   export default {
-    components: { TrackFormBox },
     data () {
       return {
         hasFile: false,

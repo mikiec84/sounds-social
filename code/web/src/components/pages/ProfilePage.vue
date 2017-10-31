@@ -1,5 +1,5 @@
 <template>
-  <layout-component>
+  <layout-with-sidebar>
     <div slot="header">
       <header-component :current="$route.params.id === 'me' ? 'profile' : 'sounds'"></header-component>
     </div>
@@ -16,8 +16,7 @@
       <div v-if="getUser">
         <div class="tc mv4">
           <div class="dib">
-            <profile-image-component
-                    :source="profileAvatarImage"></profile-image-component>
+            <profile-image :source="profileAvatarImage"></profile-image>
           </div>
         </div>
 
@@ -46,15 +45,12 @@
         </div>
       </div>
     </div>
-  </layout-component>
+  </layout-with-sidebar>
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
 
-  import ButtonComponent from '../pure/Button.vue'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
-  import ProfileImageComponent from '../pure/profile/ProfileImage.vue'
-  import LayoutComponent from '../pure/layout/LayoutWithSidebar.vue'
   import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
   import { getUserId } from '../../api/AuthApi'
 
@@ -92,10 +88,7 @@
   export default {
     components: {
       HeaderComponent,
-      ProfileImageComponent,
-      LayoutComponent,
       TrackListComponent,
-      ButtonComponent,
     },
     data () {
       return {

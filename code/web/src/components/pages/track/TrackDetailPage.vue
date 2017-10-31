@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading">
-    <layout-component>
+    <layout-with-sidebar>
       <div slot="header">
         <header-component current="sounds"></header-component>
       </div>
@@ -43,7 +43,7 @@
       <div slot="sidebar">
         Awesome sidebar! (add meta info and so on)
       </div>
-    </layout-component>
+    </layout-with-sidebar>
   </div>
 </template>
 <script>
@@ -51,11 +51,7 @@
 
   import { addCoverFile } from '../../../api/StorageApi'
   import { detailTrackQuery } from '../../../api/TrackApi'
-  import TrackComponent from '../../pure/track/Track.vue'
-  import ButtonComponent from '../../pure/Button.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
-  import FileUploadButton from '../../pure/Upload/FileUploadButton.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
 
   const uploadCoverMutation = gql`
@@ -68,12 +64,8 @@
 
   export default {
     components: {
-      TrackComponent,
-      LayoutComponent,
       HeaderComponent,
-      ButtonComponent,
       CommentBox,
-      FileUploadButton,
     },
     data () {
       return {

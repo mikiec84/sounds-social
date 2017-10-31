@@ -21,7 +21,6 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import ButtonComponent from '../../pure/Button.vue'
   import CommentComponent from './SingleComment.vue'
 
   const listCommentsQuery = gql`
@@ -40,7 +39,6 @@
 
   export default {
     components: {
-      ButtonComponent,
       CommentComponent,
     },
     props: {

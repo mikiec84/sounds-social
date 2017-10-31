@@ -1,5 +1,5 @@
 <template>
-  <layout-component>
+  <layout-with-sidebar>
     <div slot="header">
       <header-component :current="$route.params.id === 'me' ? 'profile' : 'sounds'"></header-component>
     </div>
@@ -45,17 +45,12 @@
         </div>
       </div>
     </div>
-  </layout-component>
+  </layout-with-sidebar>
 </template>
 <script>
   import gql from 'graphql-tag'
 
-  import ButtonComponent from '../../pure/Button.vue'
-  import InputComponent from '../../pure/Input.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import UploadZone from '../../pure/Upload/UploadZone.vue'
-  import ProfileImageComponent from '../../pure/profile/ProfileImage.vue'
-  import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
 
   const query = gql`
@@ -82,12 +77,7 @@
 
   export default {
     components: {
-      UploadZone,
       HeaderComponent,
-      ProfileImageComponent,
-      LayoutComponent,
-      ButtonComponent,
-      InputComponent,
     },
     data () {
       return {

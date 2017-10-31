@@ -19,10 +19,8 @@
 
 <script>
   import moment from 'moment'
-  import ButtonComponent from '../Button.vue'
 
   export default {
-    components: { ButtonComponent },
     props: {
       userId: {
         type: String,

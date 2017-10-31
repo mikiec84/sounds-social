@@ -38,10 +38,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import TrackWaveform from './TrackWaveform.vue'
-
   export default {
-    components: { TrackWaveform },
     props: {
       timeAgo: {
         type: String,

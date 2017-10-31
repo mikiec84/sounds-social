@@ -1,13 +1,10 @@
 <template>
-  <sub-header @click="$router.push(arguments[0].route)" :items="homeSubHeaderItems"></sub-header>
+  <sub-header-component @click="$router.push(arguments[0].route)" :items="homeSubHeaderItems"></sub-header-component>
 </template>
 <script>
-  import SubHeader from '../../pure/SubHeader.vue'
-
   const isActive = (key, current) => key === current
 
   export default {
-    components: { SubHeader },
     props: {
       current: {
         type: String,

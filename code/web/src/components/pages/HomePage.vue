@@ -35,11 +35,9 @@
   import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
   import FeedComponent from './sounds/FeedPage.vue'
-  import ButtonComponent from '../pure/Button.vue'
-  import InputComponent from '../pure/Input.vue'
 
   export default {
-    components: { FeedComponent, ButtonComponent, InputComponent },
+    components: { FeedComponent },
     data () {
       return {
         username: '',

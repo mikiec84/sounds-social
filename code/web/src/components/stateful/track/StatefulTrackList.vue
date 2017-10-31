@@ -2,10 +2,10 @@
   <!-- TODO add loading spinner? -->
   <div>
     <div v-if="!loading">
-      <track-list-component
+      <track-list
               @open-track="$router.push('/tracks/' + arguments[0]._id)"
               @open-profile="$router.push('/profile/' + arguments[0].creatorUserId)"
-              :tracks="mapTracks(listTrack)"></track-list-component>
+              :tracks="mapTracks(listTrack)"></track-list>
 
       <div v-if="!listTrack || !listTrack.length">
         No tracks found.
@@ -15,7 +15,6 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
-  import TrackListComponent from '../../pure/track/TrackList.vue'
 
   // TODO: pass apollo query as param and create "FeedTrackList.vue" and "ProfileTrackList.vue"
   // TODO: use moment to format createdAt
@@ -38,7 +37,6 @@
   `
 
   export default {
-    components: { TrackListComponent },
     props: {
       userId: {
         type: String,

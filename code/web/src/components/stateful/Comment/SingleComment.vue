@@ -1,17 +1,16 @@
 <template>
   <div>
-    <comment-component
+    <single-comment
             :userId="userId"
             :userDisplayName="userDisplayName"
             :createdAt="createdAt"
             :isRemovable="currentUserId === userId"
             @remove="removeComment"
-            :content="content"></comment-component>
+            :content="content"></single-comment>
   </div>
 </template>
 <script>
   import gql from 'graphql-tag'
-  import CommentComponent from '../../pure/Comment/SingleComment.vue'
   import { getUserId } from '../../../api/AuthApi'
 
   const removeCommentMutation = gql`
@@ -23,7 +22,6 @@
   `
 
   export default {
-    components: { CommentComponent },
     props: {
       commentId: {
         type: String,

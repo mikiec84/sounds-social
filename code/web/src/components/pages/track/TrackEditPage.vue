@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading">
-    <layout-component>
+    <layout-with-sidebar>
       <div slot="header">
         <header-component current="sounds"></header-component>
       </div>
@@ -26,20 +26,16 @@
       <div slot="sidebar">
         Awesome sidebar! (add meta info and so on)
       </div>
-    </layout-component>
+    </layout-with-sidebar>
   </div>
 </template>
 <script>
   import { editTrackFormQuery, updateTrackMutation } from '../../../api/TrackApi'
-  import TrackFormBox from '../../pure/track/TrackFormBox.vue'
-  import LayoutComponent from '../../pure/layout/LayoutWithSidebar.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
 
   export default {
     components: {
-      LayoutComponent,
       HeaderComponent,
-      TrackFormBox,
     },
     data () {
       return {

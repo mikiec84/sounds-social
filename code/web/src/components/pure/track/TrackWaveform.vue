@@ -2,6 +2,8 @@
   <div class="mv3" id="waveform" ref="waveformDiv"></div>
 </template>
 <script>
+  import WaveSurfer from 'wavesurfer.js'
+
   let wavesurfer
 
   export default {

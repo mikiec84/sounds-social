@@ -8,6 +8,7 @@ import { sync } from 'vuex-router-sync'
 import { apolloClient } from './api/graphql/client'
 import AuthMixin from './mixins/AuthMixin'
 import { LodashPlugin } from './plugins/LodashPlugin'
+import './register/RegisterPureComponents'
 
 sync(store, router)
 

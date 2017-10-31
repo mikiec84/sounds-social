@@ -35,12 +35,7 @@
   </div>
 </template>
 <script>
-  import ButtonComponent from '../../pure/Button.vue'
-  import TrackWaveform from '../../pure/track/TrackWaveform.vue'
-  import UploadZone from '../Upload/UploadZone.vue'
-
   export default {
-    components: { ButtonComponent, TrackWaveform, UploadZone },
     props: {
       username: {
         type: String,
