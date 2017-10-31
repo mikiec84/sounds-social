@@ -7,6 +7,7 @@ export const authMiddleware = new ApolloLink((operation, forward) => {
     headers: {
       ...headers,
       authorization: localStorage.getItem('Meteor.loginToken') || null,
+      'meteor-login-token': localStorage.getItem('Meteor.loginToken') || null,
     }
   }))
 

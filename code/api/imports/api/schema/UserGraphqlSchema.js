@@ -44,7 +44,6 @@ extend type Mutation {
 collectionSchema.resolvers.Query.currentUser = (root, args, context) => {
   const { userId } = context
 
-  console.log(root, args, context)
   if (!userId) return null
 
   return userCollection.findOne({ _id: userId })

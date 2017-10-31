@@ -21,7 +21,9 @@ createApolloServer({
   pretty: true,
   schema,
 }, {
-  configServer: graphQLServer => graphQLServer.use(cors()),
+  configServer: graphQLServer => {
+    graphQLServer.use(cors())
+  },
 })
 
 // server side rendering
