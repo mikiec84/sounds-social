@@ -24,7 +24,9 @@
       listTrack(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
         _id
         name
-        coverFile
+        coverFile {
+          url
+        }
         description
         createdAt
         fileUrl

@@ -7,8 +7,6 @@ import { renderIntoElementById } from 'meteor/server-render'
 import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 
 import { typeDefs, resolvers } from '../imports/api/schema'
-import '../imports/methods/MeteorMethods'
-import '../imports/data/file/CoverStorage'
 
 initAccounts()
 

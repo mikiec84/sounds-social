@@ -10,7 +10,9 @@ export const detailTrackQuery = gql`
       fileId
       fileUrl
       isRemovable
-      coverFile
+      coverFile {
+        url
+      }
       creator {
         _id
         username

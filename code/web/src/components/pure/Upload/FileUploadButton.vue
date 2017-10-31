@@ -1,11 +1,11 @@
 <template>
   <div class="dib">
     <button-component @click="modalOpen = true"><div v-text="buttonLabel"></div></button-component>
-    <modal v-if="modalOpen" @close="modalOpen = false">
+    <modal-component v-if="modalOpen" @close="modalOpen = false">
       <div class="pa4">
         <upload-zone :label="modalLabel" @upload="$emit('upload', arguments[0])"></upload-zone>
       </div>
-    </modal>
+    </modal-component>
   </div>
 </template>
 <script>

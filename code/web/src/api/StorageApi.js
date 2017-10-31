@@ -11,6 +11,6 @@ const uploadFile = (file) => {
   })
 }
 
-export const addProfileAvatarFile = (file) => uploadFile(file)
-export const addCoverFile = () => {}
-export const addMusicFile = () => {}
+export const addProfileAvatarFile = uploadFile
+export const addCoverFile = uploadFile
+export const addMusicFile = uploadFile

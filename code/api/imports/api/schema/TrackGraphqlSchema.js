@@ -2,7 +2,7 @@ import moment from 'moment'
 import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
-import { getFileUrl } from '../../data/file/CoverStorage'
+import { fileCollection } from '../../data/collection/FileCollection'
 import { getFileUrl as getMusicFileUrl } from '../../data/file/MusicStorage'
 
 const trackGraphqlSchema =  createCollectionSchema({
@@ -46,8 +46,8 @@ const trackGraphqlSchema =  createCollectionSchema({
         resolve: root => Meteor.users.findOne({_id: root.creatorId }),
       },
       coverFile: {
-        type: 'String',
-        resolve: root => getFileUrl(root.coverFileId),
+        type: 'File',
+        resolve: root => fileCollection.findOneById(root.coverFileId),
       },
       isRemovable: {
         type: 'Boolean',
@@ -59,18 +59,22 @@ const trackGraphqlSchema =  createCollectionSchema({
 
 trackGraphqlSchema.typeDefs.push(`
 extend type Mutation {
-  addCoverFileId(trackId: String! fileId: String!): Track
+  addCoverFile(trackId: String! fileData: FileData!): Track
 }
 `)
 
-trackGraphqlSchema.resolvers.Mutation.addCoverFileId = (root, args, context) => {
-  const { trackId, fileId } = args
+trackGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {
+  const { trackId, fileData } = args
   check(trackId, String)
-  check(fileId, String)
+  check(fileData, {
+    _id: String,
+    secret: String,
+    url: String,
+  })
 
   const track = trackCollection.findOne({ _id: trackId, creatorId: context.userId })
 
-  if (track) trackCollection.updateCover(trackId, fileId)
+  if (track) trackCollection.updateCover(trackId, fileData)
 
   return track
 }

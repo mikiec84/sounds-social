@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 import { userCollection } from './UserCollection'
+import { fileCollection } from './FileCollection'
 
 export const trackSchema = new SimpleSchema({
   name: {
@@ -63,7 +64,9 @@ class TrackCollection extends Mongo.Collection
       },
     })
   }
-  updateCover(trackId, coverFileId) {
+  updateCover(trackId, coverFileData) {
+    const coverFileId = fileCollection.insert({ ...coverFileData })
+
     this.update({ _id: trackId }, { $set: { coverFileId } })
   }
 }

@@ -9,7 +9,7 @@
           <track-component
                   :timeAgo="getTrack.createdAt"
                   :label="getTrack.name"
-                  :coverFileUrl="getTrack.coverFile"
+                  :coverFileUrl="$_fp.get('coverFile.url')(getTrack)"
                   :description="getTrack.description"
                   :username="getTrack.creator.username"
                   @open-profile="$router.push('/profile/' + getTrack.creator._id)"
@@ -55,8 +55,8 @@
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
 
   const uploadCoverMutation = gql`
-    mutation UploadCover($trackId: String!, $fileId: String!) {
-      addCoverFileId(trackId: $trackId, fileId: $fileId) {
+    mutation UploadCover($trackId: String!, $fileData: FileData!) {
+      addCoverFile(trackId: $trackId, fileData: $fileData) {
         _id
       }
     }
@@ -111,15 +111,17 @@ mutation RemoveTrack($id: String!) {
       uploadCover (e) {
         const file = e.target.files[0]
 
-        this.$apollo.mutate({
-          mutation: uploadCoverMutation,
-          variables: {
-            fileId: addCoverFile(file)._id,
-            trackId: this.getTrack._id,
-          },
-          fetchPolicy: 'network-only',
-        }).then(track => {
-          window.location.reload()
+        addCoverFile(file).then(({ id: _id, secret, url }) => {
+          this.$apollo.mutate({
+            mutation: uploadCoverMutation,
+            variables: {
+              fileData: { _id, secret, url },
+              trackId: this.getTrack._id,
+            },
+            fetchPolicy: 'network-only',
+          }).then(track => {
+            window.location.reload()
+          })
         })
       },
     },
