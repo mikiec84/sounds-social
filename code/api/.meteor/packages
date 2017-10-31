@@ -30,6 +30,7 @@ arkham:comments-ui
 komentify:comments-graphql
 practicalmeteor:chai
 practicalmeteor:mocha
+dispatch:mocha
 
 cfs:standard-packages
 cfs:filesystem
