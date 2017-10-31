@@ -17,5 +17,5 @@ pipelines:
           - chmod +x meteor_install_script.sh
           - ./meteor_install_script.sh
           - export PATH=$PATH:~/.meteor/
-          - meteor --version
-          - meteor npm run cli
+          - METEOR_ALLOW_SUPERUSER=true meteor --version
+          - METEOR_ALLOW_SUPERUSER=true meteor npm run cli
