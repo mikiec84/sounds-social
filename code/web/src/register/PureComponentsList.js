@@ -3,9 +3,11 @@ import Header from '../components/pure/Header.vue'
 import Input from '../components/pure/Input.vue'
 import Modal from '../components/pure/Modal.vue'
 import SubHeader from '../components/pure/SubHeader.vue'
+import ConfirmModal from '../components/pure/ConfirmModal.vue'
+import ConfirmModalButton from '../components/pure/ConfirmModalButton.vue'
 import SingleComment from '../components/pure/Comment/SingleComment.vue'
-import Layout from '../components/pure/Layout/Layout.vue'
-import LayoutWithSidebar from '../components/pure/Layout/LayoutWithSidebar.vue'
+import Layout from '../components/pure/layout/Layout.vue'
+import LayoutWithSidebar from '../components/pure/layout/LayoutWithSidebar.vue'
 import ProfileImage from '../components/pure/profile/ProfileImage.vue'
 import Track from '../components/pure/track/Track.vue'
 import TrackFormBox from '../components/pure/track/TrackFormBox.vue'
@@ -30,4 +32,6 @@ export const ComponentsList = [
   { id: 'track-waveform', component: TrackWaveform },
   { id: 'file-upload-button', component: FileUploadButton },
   { id: 'upload-zone', component: UploadZone },
+  { id: 'confirm-modal', component: ConfirmModal },
+  { id: 'confirm-modal-button', component: ConfirmModalButton },
 ]

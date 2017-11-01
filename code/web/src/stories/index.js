@@ -1,18 +1,10 @@
-import { storiesOf } from '@storybook/vue'
-import { action } from '@storybook/addon-actions'
-import 'tachyons/css/tachyons.css'
-import '../styles/index.scss'
+import '../app'
 
-import ButtonComponent from '../components/pure/Button.vue'
+import { buttonStories } from './ButtonStory'
+import { confirmModalStories } from './ConfirmModalStory'
+import { confirmModalButtonStories } from './ConfirmModalButtonStory'
 
-storiesOf('Button', module)
-  .add('with text', () => ({
-    components: { ButtonComponent },
-    template: '<button-component @click="action">Hello Button</button-component>',
-    methods: { action: action('clicked') },
-  }))
-  .add('with some emoji', () => ({
-    components: { ButtonComponent },
-    template: '<button-component @click="action">😀 😎 👍 💯</button-component>',
-    methods: { action: action('clicked') },
-  }))
+buttonStories(module)
+confirmModalStories(module)
+confirmModalButtonStories(module)
+

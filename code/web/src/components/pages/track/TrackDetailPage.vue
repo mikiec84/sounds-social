@@ -24,7 +24,18 @@
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
               <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)">Edit sound</button-component>
-              <button-component @click="removeTrack" color="red">Remove sound</button-component>
+              <div class="dib">
+                <confirm-modal-button
+                  modalIcon="trash-o"
+                  buttonColor="red"
+                  @confirm="removeTrack"
+                >
+                  <div slot="button">Remove sound</div>
+                  <div slot="modal">
+                    Do you really want to <span class="b">delete</span> this track?
+                  </div>
+                </confirm-modal-button>
+              </div>
               <file-upload-button
                       buttonLabel="Upload cover"
                       modalLabel="Click here to upload image"
