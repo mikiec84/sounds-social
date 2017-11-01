@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <layout-default>
     <div slot="header">
       <header-component current="upload"></header-component>
     </div>
@@ -8,7 +8,7 @@
 
       <upload-box-component></upload-box-component>
     </div>
-  </layout>
+  </layout-default>
 </template>
 <script>
   import HeaderComponent from '../stateful/StatefulHeader.vue'

@@ -1,20 +1,20 @@
-import Button from '../components/pure/Button.vue'
-import Header from '../components/pure/Header.vue'
-import Input from '../components/pure/Input.vue'
-import Modal from '../components/pure/Modal.vue'
-import SubHeader from '../components/pure/SubHeader.vue'
-import ConfirmModal from '../components/pure/ConfirmModal.vue'
-import ConfirmModalButton from '../components/pure/ConfirmModalButton.vue'
-import SingleComment from '../components/pure/Comment/SingleComment.vue'
-import Layout from '../components/pure/layout/Layout.vue'
-import LayoutWithSidebar from '../components/pure/layout/LayoutWithSidebar.vue'
-import ProfileImage from '../components/pure/profile/ProfileImage.vue'
-import Track from '../components/pure/track/Track.vue'
-import TrackFormBox from '../components/pure/track/TrackFormBox.vue'
-import TrackList from '../components/pure/track/TrackList.vue'
-import TrackWaveform from '../components/pure/track/TrackWaveform.vue'
-import FileUploadButton from '../components/pure/Upload/FileUploadButton.vue'
-import UploadZone from '../components/pure/Upload/UploadZone.vue'
+import Button from '../components/pure/PureButton.vue'
+import Header from '../components/pure/PureHeader.vue'
+import Input from '../components/pure/PureInput.vue'
+import Modal from '../components/pure/PureModal.vue'
+import SubHeader from '../components/pure/PureSubHeader.vue'
+import ConfirmModal from '../components/pure/PureConfirmModal.vue'
+import ConfirmModalButton from '../components/pure/PureConfirmModalButton.vue'
+import SingleComment from '../components/pure/Comment/PureSingleComment.vue'
+import Layout from '../components/pure/layout/PureLayout.vue'
+import LayoutWithSidebar from '../components/pure/layout/PureLayoutWithSidebar.vue'
+import ProfileImage from '../components/pure/profile/PureProfileImage.vue'
+import Track from '../components/pure/track/PureTrack.vue'
+import TrackFormBox from '../components/pure/track/PureTrackFormBox.vue'
+import TrackList from '../components/pure/track/PureTrackList.vue'
+import TrackWaveform from '../components/pure/track/PureTrackWaveform.vue'
+import FileUploadButton from '../components/pure/Upload/PureFileUploadButton.vue'
+import UploadZone from '../components/pure/Upload/PureUploadZone.vue'
 
 export const ComponentsList = [
   { id: 'button-component', component: Button },
@@ -23,7 +23,7 @@ export const ComponentsList = [
   { id: 'modal-component', component: Modal },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },
-  { id: 'layout', component: Layout },
+  { id: 'layout-default', component: Layout },
   { id: 'layout-with-sidebar', component: LayoutWithSidebar },
   { id: 'profile-image', component: ProfileImage },
   { id: 'track-component', component: Track },

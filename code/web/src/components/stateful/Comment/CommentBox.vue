@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="comment in listComments">
+    <div v-for="comment in listComments" :key="comment.id">
       <comment-component
               :commentId="comment.id"
               :userId="comment.user.id"

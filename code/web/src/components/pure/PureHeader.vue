@@ -24,10 +24,7 @@
   </nav>
 </template>
 <script>
-  import InputComponent from './Input.vue'
-
   export default {
-    components: { InputComponent },
     props: {
       activeItemId: {
         type: String,

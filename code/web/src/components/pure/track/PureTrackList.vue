@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(track, index) in tracks" :class="{ 'mt3': index !== 0  }">
+    <div v-for="(track, index) in tracks" :key="track._id" :class="{ 'mt3': index !== 0  }">
       <track-component
               :timeAgo="track.timeAgo"
               :label="track.label"
@@ -14,8 +14,6 @@
   </div>
 </template>
 <script>
-  import TrackComponent from './Track.vue'
-
   export default {
     props: {
       tracks: {
@@ -23,6 +21,5 @@
         required: true,
       },
     },
-    components: { TrackComponent },
   }
 </script>
