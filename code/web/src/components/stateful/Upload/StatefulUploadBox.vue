@@ -56,11 +56,13 @@
       uploadMusicFile (e) {
         const file = e.target.files[0]
 
+        this.hasFile = true
+        this.isUploading = true
+
         addMusicFile(file).then(({ _id, secret, url }) => {
           this.file = { _id, secret, url }
-          console.log(this.file)
           this.fileId = _id
-          this.hasFile = true
+          this.isUploading = false
         })
       },
       saveTrack () {

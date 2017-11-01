@@ -1,7 +1,7 @@
 <template>
   <layout-with-sidebar>
     <div slot="header">
-      <header-component :current="$route.params.id === 'me' ? 'profile' : 'sounds'"></header-component>
+      <header-component :current="isCurrentUser ? 'profile' : 'sounds'"></header-component>
     </div>
     <div slot="main">
       <div v-if="getUser">
@@ -9,7 +9,7 @@
         <track-list-component v-if="profileUserId" :userId="profileUserId"></track-list-component>
       </div>
       <div v-if="!getUser">
-        <div class="i">User not found</div>
+        <div class="i" v-text="$t('User not found')"></div>
       </div>
     </div>
     <div slot="sidebar">
@@ -25,7 +25,7 @@
         </div>
 
         <div v-if="getUser.profile.websiteUrl" class="mt3 pl4">
-          <span class="b">Website: </span>
+          <span class="b"><span v-text="$t('Website')"></span>: </span>
           <div class="mt2">
             <a class="link dark-blue" :href="getUser.profile.websiteUrl" v-text="getUser.profile.websiteUrl"></a>
           </div>
@@ -34,8 +34,8 @@
         <div class="mv4 tc" v-if="!isCurrentUser">
           <button-component @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
             <div>
-              <div v-if="getUser.isFollowedByCurrentUser">Unfollow</div>
-              <div v-if="!getUser.isFollowedByCurrentUser">Follow</div>
+              <div v-if="getUser.isFollowedByCurrentUser" v-text="$t('Unfollow')"></div>
+              <div v-if="!getUser.isFollowedByCurrentUser" v-text="$t('Follow')"></div>
             </div>
           </button-component>
         </div>
@@ -43,7 +43,7 @@
         <div class="mv4 tc" v-if="isCurrentUser">
           <button-component @click="$router.push('/profile/' + getUser._id + '/edit')" v-text="$t('Edit profile')"></button-component>
           <div class="dib dn-l">
-            <button-component @click="authLogOut" color="gray">Logout</button-component>
+            <button-component @click="authLogOut" color="gray" v-text="$t('Logout')"></button-component>
           </div>
         </div>
       </div>

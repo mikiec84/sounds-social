@@ -7,8 +7,8 @@
               @open-profile="$router.push('/profile/' + arguments[0].creatorUserId)"
               :tracks="mapTracks(listTrack)"></track-list>
 
-      <div v-if="!listTrack || !listTrack.length">
-        No tracks found.
+      <div v-if="!listTrack || !listTrack.length" v-text="$t('No sounds found')">
+
       </div>
     </div>
   </div>

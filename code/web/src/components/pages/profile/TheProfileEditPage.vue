@@ -1,25 +1,23 @@
 <template>
   <layout-with-sidebar>
     <div slot="header">
-      <header-component :current="$route.params.id === 'me' ? 'profile' : 'sounds'"></header-component>
+      <header-component :current="isCurrentUser ? 'profile' : 'sounds'"></header-component>
     </div>
     <div slot="main">
       <div v-if="getUser" class="f3 mw7">
-        <h1 class="f-headline mv3">Edit profile: <span v-text="getUser.username"></span></h1>
+        <h1 class="f-headline mv3"><span v-text="$t('Edit profile')"></span>: <span v-text="getUser.username"></span></h1>
 
         <div class="mt4">
           <upload-zone
-                  label="Update profile avatar"
+                  :label="$t('Update profile avatar')"
                   @upload="uploadAvatarFileImage(arguments[0])"></upload-zone>
 
-          <div v-if="hasUploadedFile" class="mt3 i mid-gray">File uploaded!</div>
+          <div v-if="hasUploadedFile" class="mt3 i mid-gray"><span v-text="$t('File uploaded')"></span>!</div>
         </div>
 
         <div class="mt3">
           <label>
-            <div class="mb2">
-              Description
-            </div>
+            <div class="mb2" v-text="$t('Description')"></div>
             <textarea
                     class="w-100"
                     style="height: 180px"
@@ -29,9 +27,7 @@
 
         <div class="mt3">
           <label>
-            <div class="mb2">
-              Website Url
-            </div>
+            <div class="mb2" v-text="$t('Website Url')"></div>
             <input-component
                     @keyup="formData.websiteUrl = arguments[0]"
                     :value="getUser.profile.websiteUrl"></input-component>
@@ -40,9 +36,7 @@
 
         <div class="mt3">
           <label>
-            <div class="mb2">
-              Profile Language
-            </div>
+            <div class="mb2" v-text="$t('Profile Language')"></div>
             <select-component
               :current="getUser.profile.language"
               :options="languageOptions"
@@ -53,7 +47,8 @@
         <div class="mv4">
           <button-component
             @click="updateProfile"
-          >Update profile</button-component>
+            v-text="$t('Update profile')"
+          ></button-component>
         </div>
       </div>
     </div>

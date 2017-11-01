@@ -8,7 +8,7 @@
     </div>
     <div class="dtc v-mid pv3">
       <div class="dib ml3-l ml2">
-        <input-component placeholder="Search"></input-component>
+        <input-component :placeholder="$t('Search')"></input-component>
       </div>
     </div>
     <div class="dtc v-mid tr pa3-l pa1">
@@ -19,7 +19,7 @@
               :class="{ 'white-70 hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"
               v-text="item.label"></router-link>
-      <div class="pointer f6 fw4 hover-white no-underline white-70 dn dib-l ml2 pv2 ph3 ba" @click="$emit('logout')">Logout</div>
+      <div class="pointer f6 fw4 hover-white no-underline white-70 dn dib-l ml2 pv2 ph3 ba" @click="$emit('logout')" v-text="$t('Logout')"></div>
     </div>
   </nav>
 </template>
@@ -42,7 +42,7 @@
           {
             id: 'upload',
             href: '/upload',
-            label: 'Upload',
+            label: this.$t('Upload'),
           },
           {
             id: 'sounds',
@@ -52,7 +52,7 @@
           {
             id: 'profile',
             href: '/profile/me',
-            label: 'Profile',
+            label: this.$t('Profile'),
           },
         ],
       }
