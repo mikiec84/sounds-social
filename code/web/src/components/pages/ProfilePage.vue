@@ -49,11 +49,12 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
-  import { get } from 'lodash/fp'
+  import { getOr } from 'lodash/fp'
 
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
   import { getUserId } from '../../api/AuthApi'
+  import { follow, unfollow } from '../../api/ProfileApi'
 
   const query = gql`
     query ProfilePage($id: String!) {
@@ -71,22 +72,6 @@
       }
     }
   `
-
-  const followMutationDoc = gql`
-  mutation FollowMutation($id: String!) {
-    followUser(toFollowId: $id) {
-      _id
-    }
-  }
-`
-
-  const unfollowMutationDoc = gql`
-  mutation UnfollowMutation($id: String!) {
-    unfollowUser(toUnfollowId: $id) {
-      _id
-    }
-  }
-`
 
   export default {
     components: {
@@ -126,31 +111,15 @@
         return id
       },
       profileAvatarImage () {
-        const avatarFileUrl = get('getUser.profile.avatarFile.url')(this)
-
-        if (avatarFileUrl) return avatarFileUrl
-
-        return 'http://tachyons.io/img/logo.jpg'
+        return getOr('http://tachyons.io/img/logo.jpg')('getUser.profile.avatarFile.url')(this)
       },
     },
     methods: {
       follow (userId) {
-        this.$apollo.mutate({
-          mutation: followMutationDoc,
-          variables: {
-            id: userId,
-          },
-          refetchQueries: ['ProfilePage', 'TrackListQuery'],
-        })
+        follow(userId)
       },
       unfollow (userId) {
-        this.$apollo.mutate({
-          mutation: unfollowMutationDoc,
-          variables: {
-            id: userId,
-          },
-          refetchQueries: ['ProfilePage', 'TrackListQuery'],
-        })
+        unfollow(userId)
       },
     },
   }

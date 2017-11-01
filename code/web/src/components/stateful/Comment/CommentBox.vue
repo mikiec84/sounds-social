@@ -22,14 +22,7 @@
 <script>
   import gql from 'graphql-tag'
   import CommentComponent from './SingleComment.vue'
-
-  const addCommentMutation = gql`
-    mutation AddComment($id: String!, $content: String!) {
-      addComment(referenceId: $id, content: $content) {
-        id
-      }
-    }
-  `
+  import { addComment } from '../../../api/CommentApi'
 
   const listCommentsQuery = gql`
     query ListComments($id: String!) {
@@ -74,14 +67,7 @@
     },
     methods: {
       addComment () {
-        this.$apollo.mutate({
-          mutation: addCommentMutation,
-          variables: {
-            id: this.id,
-            content: this.comment,
-          },
-          refetchQueries: ['ListComments'],
-        }).then(() => {
+        addComment(this.id, this.comment).then(() => {
           this.comment = ''
         })
       },

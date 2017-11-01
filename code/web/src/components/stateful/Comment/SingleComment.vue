@@ -10,16 +10,8 @@
   </div>
 </template>
 <script>
-  import gql from 'graphql-tag'
   import { getUserId } from '../../../api/AuthApi'
-
-  const removeCommentMutation = gql`
-    mutation RemoveComment($id: String!) {
-      removeComment(id: $id) {
-        id
-      }
-    }
-  `
+  import { removeComment } from '../../../api/CommentApi'
 
   export default {
     props: {
@@ -51,13 +43,7 @@
     },
     methods: {
       removeComment () {
-        this.$apollo.mutate({
-          mutation: removeCommentMutation,
-          variables: {
-            id: this.commentId,
-          },
-          refetchQueries: ['ListComments'],
-        })
+        removeComment(this.commentId)
       },
     },
   }

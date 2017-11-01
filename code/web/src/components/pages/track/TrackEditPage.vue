@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-  import { editTrackFormQuery, updateTrackMutation } from '../../../api/TrackApi'
+  import { editTrackFormQuery, updateTrack } from '../../../api/TrackApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
 
   export default {
@@ -56,18 +56,11 @@
     },
     methods: {
       saveTrack () {
-        this.$apollo.mutate({
-          mutation: updateTrackMutation,
-          variables: {
-            id: this.$route.params.id,
-            data: {
-              ...this.$_.pick(this.trackToEdit, ['name', 'description']),
-              ...this.formData,
-              isPublic: true,
-              creatorId: this.trackToEdit.creator._id,
-            }
-          },
-          fetchPolicy: 'network-only',
+        updateTrack(this.$route.params.id, {
+          ...this.$_.pick(this.trackToEdit, ['name', 'description']),
+          ...this.formData,
+          isPublic: true,
+          creatorId: this.trackToEdit.creator._id,
         }).then(() => {
           this.$router.push(`/tracks/${this.$route.params.id}`)
           window.location.reload() // why is the fetch policy ignored?...

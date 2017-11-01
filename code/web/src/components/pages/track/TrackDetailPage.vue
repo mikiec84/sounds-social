@@ -47,20 +47,11 @@
   </div>
 </template>
 <script>
-  import gql from 'graphql-tag'
-
   import { addCoverFile } from '../../../api/StorageApi'
-  import { detailTrackQuery } from '../../../api/TrackApi'
+  import { detailTrackQuery, removeTrack } from '../../../api/TrackApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
-
-  const uploadCoverMutation = gql`
-    mutation UploadCover($trackId: String!, $fileData: FileData!) {
-      addCoverFile(trackId: $trackId, fileData: $fileData) {
-        _id
-      }
-    }
-  `
+  import { uploadCover } from '../../../api/Track/TrackCoverApi'
 
   export default {
     components: {
@@ -88,19 +79,7 @@
     },
     methods: {
       removeTrack () {
-        this.$apollo.mutate({
-          mutation: gql`
-mutation RemoveTrack($id: String!) {
-    deleteTrack(_id: $id) {
-      _id
-    }
-}
-          `,
-          variables: {
-            id: this.getTrack._id,
-          },
-          refetchQueries: ['DetailTrack'],
-        }).then(() => this.$router.push('/profile/me'))
+        removeTrack(this.getTrack._id).then(() => this.$router.push('/profile/me'))
       },
       pauseTrack () {
         this.isPlaying = false
@@ -111,18 +90,11 @@ mutation RemoveTrack($id: String!) {
       uploadCover (e) {
         const file = e.target.files[0]
 
-        addCoverFile(file).then(({ _id, secret, url }) => {
-          this.$apollo.mutate({
-            mutation: uploadCoverMutation,
-            variables: {
-              fileData: { _id, secret, url },
-              trackId: this.getTrack._id,
-            },
-            fetchPolicy: 'network-only',
-          }).then(track => {
+        addCoverFile(file)
+          .then(({ _id, secret, url }) => uploadCover(this.getTrack._id, { _id, secret, url }))
+          .then(() => {
             window.location.reload()
           })
-        })
       },
     },
   }

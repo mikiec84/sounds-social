@@ -52,6 +52,7 @@
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
+  import { updateProfile } from '../../../api/ProfileApi'
 
   const query = gql`
     query ProfilePage($id: String!) {
@@ -63,14 +64,6 @@
           description
           websiteUrl
         }
-      }
-    }
-  `
-
-  const updateProfileMutation = gql`
-    mutation ProfileUpdateMutation($profileData: ProfileData!) {
-      updateUserProfile(profileData: $profileData) {
-        description
       }
     }
   `
@@ -106,15 +99,9 @@
         })
       },
       updateProfile () {
-        this.$apollo.mutate({
-          mutation: updateProfileMutation,
-          variables: {
-            profileData: {
-              ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl']),
-              ...this.formData,
-            },
-          },
-          fetchPolicy: 'network-only',
+        updateProfile({
+          ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl']),
+          ...this.formData,
         }).then(() => {
           this.$router.push(`/profile/${this.$route.params.id}`)
           window.location.reload() // why is the fetch policy ignored?...
