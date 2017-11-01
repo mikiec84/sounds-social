@@ -1,0 +1,7 @@
+@import './break-points.scss';
+
+@media #{$largeBreakpoint} {
+  .custom-layout-sidebar-left-offset-l {
+    margin-left: 730px;
+  }
+}

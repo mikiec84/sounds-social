@@ -7,19 +7,19 @@
       </router-link>
     </div>
     <div class="dtc v-mid pv3">
-      <div class="dib ml3">
+      <div class="dib ml3-l ml2">
         <input-component placeholder="Search"></input-component>
       </div>
     </div>
-    <div class="dtc v-mid tr pa3">
+    <div class="dtc v-mid tr pa3-l pa1">
       <router-link
               v-for="item in menuItems"
               :key="item.id"
-              class="f6 fw4 no-underline dn dib-ns pv2 ph3"
+              class="f6 fw4 no-underline pv2 ph3-l ph2"
               :class="{ 'white-70 hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"
               v-text="item.label"></router-link>
-      <div class="pointer f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba" @click="$emit('logout')">Logout</div>
+      <div class="pointer f6 fw4 hover-white no-underline white-70 dn dib-l ml2 pv2 ph3 ba" @click="$emit('logout')">Logout</div>
     </div>
   </nav>
 </template>

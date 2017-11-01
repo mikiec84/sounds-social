@@ -5,7 +5,7 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <h1 class="f-headline mv3">Sounds</h1>
+        <h1 class="f-headline-m f-headline-l f-subheadline mv3">Sounds</h1>
         <div class="pb3"><sub-header-component current="feed"></sub-header-component></div>
         <track-list-component></track-list-component>
       </div>

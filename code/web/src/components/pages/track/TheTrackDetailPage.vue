@@ -23,8 +23,10 @@
 
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
-              <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)">Edit sound</button-component>
-              <div class="dib">
+              <div class="dib pb2 pb0-l">
+                <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)">Edit sound</button-component>
+              </div>
+              <div class="dib pb2 pb0-l">
                 <confirm-modal-button
                   modalIcon="trash-o"
                   buttonColor="red"

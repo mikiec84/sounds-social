@@ -42,6 +42,9 @@
 
         <div class="mv4 tc" v-if="isCurrentUser">
           <button-component @click="$router.push('/profile/' + getUser._id + '/edit')">Edit profile</button-component>
+          <div class="dib dn-l">
+            <button-component @click="authLogOut" color="gray">Logout</button-component>
+          </div>
         </div>
       </div>
     </div>

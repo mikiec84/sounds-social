@@ -1,13 +1,12 @@
 <template>
-  <header-component :active-item-id="current" @logout="doLogout()"></header-component>
+  <header-component :active-item-id="current" @logout="authLogOut"></header-component>
 </template>
 <script type="text/ecmascript-6">
   export default {
-    props: ['current'],
-    methods: {
-      doLogout () {
-        this.$router.push('/')
-        this.authLogOut().then(() => window.location.reload())
+    props: {
+      current: {
+        type: String,
+        required: true,
       },
     },
   }
