@@ -1,5 +1,4 @@
 import { collectionHasLabelAndValue } from './collectionHasLabelAndValue'
-import { flow, map, has, every } from 'lodash/fp'
 
 test('lib collectionHasLabelAndValue', () => {
   expect(collectionHasLabelAndValue([

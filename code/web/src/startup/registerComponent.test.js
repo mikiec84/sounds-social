@@ -5,7 +5,7 @@ test('registering components helper', () => {
   const component = Vue.extend({
     template: '<button>Hi</div>',
     methods: {
-      thisWorks() {
+      thisWorks () {
         return 'awesome stuff!'
       },
     },

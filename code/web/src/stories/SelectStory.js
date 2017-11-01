@@ -10,7 +10,7 @@ const selectOptions = [
 export const selectStories = moduleArg => storiesOf('Select', moduleArg)
   .add('simple options', () => ({
     template: '<div class="mw5"><select-component :options="options" @change="action"></select-component></div>',
-    data() {
+    data () {
       return {
         options: selectOptions,
       }
@@ -19,7 +19,7 @@ export const selectStories = moduleArg => storiesOf('Select', moduleArg)
   }))
   .add('currently selected', () => ({
     template: '<div class="mw5"><select-component :options="options" :current="current" @change="action"></select-component></div>',
-    data() {
+    data () {
       return {
         options: selectOptions,
         current: 'nic'
@@ -27,4 +27,3 @@ export const selectStories = moduleArg => storiesOf('Select', moduleArg)
     },
     methods: { action: action('changed') },
   }))
-
