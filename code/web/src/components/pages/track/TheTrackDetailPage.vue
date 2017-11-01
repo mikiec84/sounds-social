@@ -24,7 +24,7 @@
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
               <div class="dib pb2 pb0-l">
-                <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)">Edit sound</button-component>
+                <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)" v-text="$t('Edit')"></button-component>
               </div>
               <div class="dib pb2 pb0-l">
                 <confirm-modal-button
@@ -32,25 +32,23 @@
                   buttonColor="red"
                   @confirm="removeTrack"
                 >
-                  <div slot="button">Remove sound</div>
-                  <div slot="modal">
-                    Do you really want to <span class="b">delete</span> this track?
-                  </div>
+                  <div slot="button" v-text="$t('Remove')"></div>
+                  <div slot="modal" v-text="$t('Do you really want to delete this?')"></div>
                 </confirm-modal-button>
               </div>
               <file-upload-button
-                      buttonLabel="Upload cover"
-                      modalLabel="Click here to upload image"
+                      :buttonLabel="$t('Upload cover')"
+                      :modalLabel="$t('Click here to upload image')"
                       @upload="uploadCover(arguments[0])"></file-upload-button>
             </div>
 
-            <h2 class="f3 mb3 mt5">Comments 1</h2>
+            <h2 class="f3 mb3 mt5" v-text="$t('Comments')"></h2>
             <comment-box :id="getTrack._id"></comment-box>
           </div>
         </div>
 
         <div v-if="!getTrack">
-          Track not found!
+          <span v-text="$t('Sound not found')"></span>!
         </div>
       </div>
       <div slot="sidebar">

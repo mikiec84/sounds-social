@@ -12,7 +12,7 @@
             </div>
             <h2 @click="$emit('open-track')" class="lh-copy f3 b dib v-mid black mv2 dim navy " v-text="label"></h2>
           </div>
-          <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> by <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
+          <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
             <track-waveform
                     v-if="!inListView"

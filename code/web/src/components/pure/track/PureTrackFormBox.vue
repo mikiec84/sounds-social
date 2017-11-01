@@ -29,7 +29,7 @@
     </div>
     <div v-if="!hasFile">
       <upload-zone
-              :label="$t('Click to upload sound')"
+              :label="$t('Click here to upload sound')"
               @upload="$emit('uploadFile', arguments[0])"></upload-zone>
     </div>
   </div>
@@ -59,7 +59,9 @@
       },
       buttonLabel: {
         type: String,
-        default: 'Publish',
+        default () {
+          return this.$t('Publish')
+        },
       }
     },
   }

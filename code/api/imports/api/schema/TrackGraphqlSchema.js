@@ -47,7 +47,10 @@ const trackGraphqlSchema =  createCollectionSchema({
       },
       createdAt: {
         type: 'String',
-        resolve: root => moment(root.createdAt).fromNow(),
+        resolve: (root, args, context) => {
+          moment.locale(context.userLanguage)
+          return moment(root.createdAt).fromNow()
+        },
       },
       creator: {
         type: 'User',

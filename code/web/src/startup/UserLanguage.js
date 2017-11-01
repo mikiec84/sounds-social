@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { get } from 'lodash/fp'
 import { apolloClient } from '../api/graphql/client'
 
 const { localStorage } = window
@@ -19,7 +20,11 @@ if (!getLanguage()) {
       }
     `
   }).then(({ data }) => {
-    changeLanguage(data.currentUser.profile.language)
-    window.location.reload()
+    const lang = get('currentUser.profile.language')(data)
+
+    if (lang) {
+      changeLanguage(data.currentUser.profile.language)
+      window.location.reload()
+    }
   })
 }

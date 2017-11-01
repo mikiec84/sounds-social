@@ -4,14 +4,14 @@
       <div>
         <span class="gray" v-text="createdAtAgo"></span>
         <router-link :to="'/profile/' + userId" class="dib link gray f5">
-          by <span v-text="userDisplayName"></span>
+          <span v-text="$t('by')"></span> <span v-text="userDisplayName"></span>
         </router-link>
       </div>
 
       <div class="mt3 f4" v-text="content"></div>
 
       <div v-if="isRemovable" class="mt3">
-        <button-component color="red" @click="$emit('remove')">Remove</button-component>
+        <button-component color="red" @click="$emit('remove')" v-text="$t('Remove')"></button-component>
       </div>
     </div>
   </div>

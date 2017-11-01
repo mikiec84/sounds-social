@@ -14,18 +14,17 @@
       homeSubHeaderItems () {
         return [
           {
-            label: 'Feed',
+            label: this.$t('Feed'),
             route: { name: 'home' },
             active: isActive('feed', this.current),
           },
           {
-            label: 'Discover',
+            label: this.$t('Discover'),
             route: { name: 'discover' },
             active: isActive('discover', this.current),
           },
           {
-            label: 'Competitions',
-            href: '/competitions',
+            label: this.$t('Communities'),
             route: { name: 'discover' },
             active: isActive('competitions', this.current),
           },

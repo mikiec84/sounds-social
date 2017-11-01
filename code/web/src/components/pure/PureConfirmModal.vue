@@ -11,10 +11,10 @@
 
         <div class="pt3">
           <div class="dib mr3">
-            <button-component color="dark-red" @click="$emit('confirm')">Confirm</button-component>
+            <button-component color="dark-red" @click="$emit('confirm')" v-text="$t('Confirm')"></button-component>
           </div>
           <div class="dib">
-            <button-component @click="$emit('abort')">Abort</button-component>
+            <button-component @click="$emit('abort')" v-text="$t('Abort')">Abort</button-component>
           </div>
         </div>
       </div>
