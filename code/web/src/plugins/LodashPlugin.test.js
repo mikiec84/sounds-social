@@ -1,4 +1,4 @@
-import { LodashPlugin } from '../../../src/plugins/LodashPlugin'
+import { LodashPlugin } from './LodashPlugin'
 
 test('lodash plugin can be correctly installed', () => {
   const FakeVue = () => {}

@@ -38,7 +38,6 @@ class ProfileCollection extends Mongo.Collection
       profileData.avatarFileId = fileCollection.insert({ ...avatarFile })
     }
 
-    console.log(existingProfile)
     if (!existingProfile) {
       return this.insert({
         ...omitAvatarFile(profileData),
