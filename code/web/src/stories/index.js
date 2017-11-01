@@ -7,4 +7,3 @@ import { confirmModalButtonStories } from './ConfirmModalButtonStory'
 buttonStories(module)
 confirmModalStories(module)
 confirmModalButtonStories(module)
-
