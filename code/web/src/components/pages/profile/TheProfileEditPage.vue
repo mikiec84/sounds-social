@@ -38,6 +38,18 @@
           </label>
         </div>
 
+        <div class="mt3">
+          <label>
+            <div class="mb2">
+              Profile Language
+            </div>
+            <select-component
+              :current="getUser.profile.language"
+              :options="languageOptions"
+              @change="formData.language = arguments[0].value"></select-component>
+          </label>
+        </div>
+
         <div class="mv4">
           <button-component
             @click="updateProfile"
@@ -53,6 +65,7 @@
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
   import { updateProfile } from '../../../api/ProfileApi'
+  import { changeLanguage } from '../../../startup/UserLanguage'
 
   const query = gql`
     query ProfilePage($id: String!) {
@@ -63,6 +76,7 @@
         profile {
           description
           websiteUrl
+          language
         }
       }
     }
@@ -78,6 +92,10 @@
         userId: '',
         hasUploadedFile: false,
         formData: {},
+        languageOptions: [
+          { label: 'English (Default)', value: 'en' },
+          { label: 'Deutsch', value: 'de' },
+        ],
       }
     },
     apollo: {
@@ -94,16 +112,18 @@
 
         addProfileAvatarFile(file).then(({ _id, secret, url }) => {
           this.formData.avatarFile = { _id, secret, url }
-          console.log(this.formData.avatarFile)
           this.hasUploadedFile = !!_id
         })
       },
       updateProfile () {
-        updateProfile({
-          ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl']),
+        const profileUpdateData = {
+          ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl', 'language']),
           ...this.formData,
-        }).then(() => {
+        }
+
+        updateProfile(profileUpdateData).then(({ data: { updateUserProfile } }) => {
           this.$router.push(`/profile/${this.$route.params.id}`)
+          changeLanguage(updateUserProfile.language)
           window.location.reload() // why is the fetch policy ignored?...
         })
       },

@@ -22,6 +22,7 @@
     "apollo-fetch": "^0.6.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
+    "i18next": "^10.0.7",
     "lodash": "^4.17.4",
     "meteor-apollo-accounts": "^2.0.3",
     "moment": "^2.19.1",
@@ -29,6 +30,7 @@
     "vue": "^2.5.2",
     "vue-apollo": "^2.1.0-rc.8",
     "vue-router": "^3.0.1",
+    "vue-select": "^2.3.0",
     "vuex": "^3.0.0",
     "vuex-router-sync": "^5.0.0",
     "wavesurfer.js": "^2.0.0-beta02"

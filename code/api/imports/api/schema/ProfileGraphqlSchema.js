@@ -7,6 +7,7 @@ input ProfileData {
   websiteUrl: String
   description: String
   avatarFile: FileData
+  language: String
 }
 
 type Profile {
@@ -15,6 +16,7 @@ type Profile {
   websiteUrl: String
   description: String
   avatarFile: File
+  language: String
 }
 
 extend type Mutation {
@@ -29,6 +31,9 @@ export default {
       avatarFile(root) {
         return fileCollection.findOneById(root.avatarFileId)
       },
+      language(root) {
+        return root.language || 'en'
+      },
     },
     Mutation: {
       updateUserProfile(root, args, context) {
@@ -39,6 +44,8 @@ export default {
           'user',
           args.profileData,
         )
+
+        return profileCollection.findOneUserProfile(context.userId)
       },
     },
   },

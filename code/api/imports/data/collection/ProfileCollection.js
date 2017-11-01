@@ -22,6 +22,10 @@ export const profileSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  language: {
+    type: String,
+    optional: true,
+  }
 })
 
 class ProfileCollection extends Mongo.Collection

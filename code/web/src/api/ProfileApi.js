@@ -6,6 +6,7 @@ export const updateProfile = profileData => apolloClient.mutate({
     mutation ProfileUpdateMutation($profileData: ProfileData!) {
       updateUserProfile(profileData: $profileData) {
         description
+        language
       }
     }
   `,

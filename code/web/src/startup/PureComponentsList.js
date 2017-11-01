@@ -1,4 +1,5 @@
 import Button from '../components/pure/PureButton.vue'
+import Select from '../components/pure/PureSelect.vue'
 import Header from '../components/pure/PureHeader.vue'
 import Input from '../components/pure/PureInput.vue'
 import Modal from '../components/pure/PureModal.vue'
@@ -18,6 +19,7 @@ import UploadZone from '../components/pure/Upload/PureUploadZone.vue'
 
 export const ComponentsList = [
   { id: 'button-component', component: Button },
+  { id: 'select-component', component: Select },
   { id: 'header-component', component: Header },
   { id: 'input-component', component: Input },
   { id: 'modal-component', component: Modal },
