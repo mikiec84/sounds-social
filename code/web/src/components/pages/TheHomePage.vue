@@ -34,7 +34,7 @@
 <script>
   import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
-  import FeedComponent from './sounds/FeedPage.vue'
+  import FeedComponent from './sounds/TheFeedPage.vue'
 
   export default {
     components: { FeedComponent },

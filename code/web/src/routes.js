@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import { isAuthenticated } from './api/AuthApi'
-import HomePage from './components/pages/HomePage.vue'
-import DiscoverPage from './components/pages/sounds/DiscoverPage.vue'
-import UploadPage from './components/pages/UploadPage.vue'
-import ProfilePage from './components/pages/ProfilePage.vue'
-import ProfileEditPage from './components/pages/profile/ProfileEditPage.vue'
 
-import TrackDetailPage from './components/pages/track/TrackDetailPage.vue'
-import TrackEditPage from './components/pages/track/TrackEditPage.vue'
+import HomePage from './components/pages/TheHomePage.vue'
+import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
+import UploadPage from './components/pages/TheUploadPage.vue'
+import ProfilePage from './components/pages/TheProfilePage.vue'
+import ProfileEditPage from './components/pages/profile/TheProfileEditPage.vue'
+import TrackDetailPage from './components/pages/track/TheTrackDetailPage.vue'
+import TrackEditPage from './components/pages/track/TheTrackEditPage.vue'
 
 Vue.use(Router)
 
