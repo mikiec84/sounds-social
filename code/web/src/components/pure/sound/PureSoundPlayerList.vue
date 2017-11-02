@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white b--black-20 br bl bb">
+  <div class="bg-white b--black-20 br bl bb overflow-y-auto" style="max-height: 70vh">
     <div v-for="sound in sounds" :key="sound.id" class="pa2">
       <div class="cf">
         <div class="fl w-20">
@@ -7,7 +7,7 @@
                @click="$emit('openSound', sound.id)"
                :style="`width: 50px; height: 50px; background-image: url('${sound.cover}')`"></div>
         </div>
-        <div class="fl w-70" style="margin-top: 8px">
+        <div class="fl w-60" style="margin-top: 8px">
           <div :class="['f5  pointer', { 'b': isCurrentSound(sound) }]"
                @click="$emit('openSound', sound.id)"
                v-text="sound.title"></div>
@@ -15,9 +15,13 @@
             <span class="pointer" v-text="$t('by')"></span> <span class="pointer" v-text="sound.by"></span>
           </div>
         </div>
-        <div class="fl w-10">
-          <div style="margin-top: 16px"
-               class="hover-black gray pointer"
+        <div class="fl w-20" style="padding-top: 16px">
+          <div :class="['dib mr3', { 'pointer gray hover-black': !isCurrentSound(sound), 'light-gray': isCurrentSound(sound)  }]"
+               @click="!isCurrentSound(sound) && $emit('removeSound', sound.id)">
+            <icon-component icon="remove"></icon-component>
+          </div>
+          <div
+               class="dib hover-black gray pointer"
                @click="playOrPauseSound(sound)">
             <icon-component :icon="isCurrentSound(sound) && isPlaying ? 'pause' : 'play'"></icon-component>
           </div>

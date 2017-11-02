@@ -25,6 +25,7 @@ const eventTemplateHandlers = `
 @openSound="actionCall ('openSound', arguments[0])"
 @openProfile="actionCall ('openProfile', arguments[0])"
 @playSound="actionCall ('playSound', arguments[0])"
+@removeSound="actionCall ('removeSound', arguments[0])"
 
 @play="actionCall ('play')"
 @pause="actionCall ('pause')"
@@ -125,6 +126,23 @@ export const soundPlayerStories = moduleArg => {
         actionCall (type, args) { action(type)(args) },
       },
     }))
+    .add('a lot of sounds', () => ({
+      template: `<sound-player :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return {
+          sounds: [
+            ...soundList,
+            ...soundList,
+            ...soundList,
+            ...soundList,
+            ...soundList,
+          ],
+        }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
 
   storiesOf('Stateful Sound Player', moduleArg)
     .add('with state', () => ({
@@ -140,14 +158,14 @@ export const soundPlayerStories = moduleArg => {
       `,
       components: { StatefulSoundPlayer },
       methods: {
-        addTrack() {
+        addTrack () {
           const id = uniqueId()
 
           this.$store.dispatch('addSoundToPlayer', {
             sound: createSound(
               id,
-              sample(['My first song', 'Club Banger', 'Run the trap']),
-              sample(['Franz Weber', 'Hans Peter', 'David Guerilla', 'Dub Break']),
+              `${sample(['My first song', 'Club Banger', 'Run the trap'])} #${id}`,
+              `${sample(['Franz Weber', 'Hans Peter', 'David Guerilla', 'Dub Break'])} #${id}`,
             ),
           })
         },

@@ -1,4 +1,4 @@
-import { find, findKey } from 'lodash/fp'
+import { find, findKey, filter } from 'lodash/fp'
 import { isValidMode } from '../constants/PlayerConstants'
 import { collectionHasPlaylistFields } from '../lib/collectionHasFields'
 
@@ -9,6 +9,8 @@ const changeSoundByKeyIfExists = ({ sounds, dispatch, keyToPlay }) => {
   console.log(keyToPlay, sounds[keyToPlay])
   if (sounds[keyToPlay]) dispatch('changeSoundToPlay', { soundId: sounds[keyToPlay].id })
 }
+
+const filterOutSoundById = soundIdToFilter => filter(sound => sound.id !== soundIdToFilter)
 
 export const soundPlayerModule = {
   state: {
@@ -21,7 +23,7 @@ export const soundPlayerModule = {
 
   actions: {
     addSoundToPlayer: ({ commit, state, dispatch }, { sound }) => {
-      // TODO: wave surfer, load track async?
+      // TODO: wave surfer, load sound async?
       if (collectionHasPlaylistFields([sound]) && sound) {
         const hasSounds = state.sounds.length > 0
         commit('ADD_SOUND_TO_PLAYER_PLAYLIST', [sound])
@@ -35,6 +37,13 @@ export const soundPlayerModule = {
       if (sound) {
         commit('CHANGE_CURRENT_SOUND_ID', soundId)
         dispatch('play')
+      }
+    },
+    removeSound: ({ state, commit }, { soundId }) => {
+      const sound = findSoundById(soundId)(state.sounds)
+
+      if (sound && sound.id !== state.currentId) {
+        commit('REMOVE_SOUND_FROM_PLAYER_PLAYLIST', soundId)
       }
     },
     play: ({ commit }) => {
@@ -79,5 +88,8 @@ export const soundPlayerModule = {
       state.sounds = state.sounds.concat(sounds)
     },
     CHANGE_CURRENT_SOUND_ID (state, soundId) { state.currentId = soundId },
+    REMOVE_SOUND_FROM_PLAYER_PLAYLIST (state, soundId) {
+      state.sounds = filterOutSoundById(soundId)(state.sounds)
+    }
   },
 }

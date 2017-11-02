@@ -1,7 +1,7 @@
 <template>
-  <div :class="['ba b--black-20 pa2', { 'gray': !hasSounds }]">
-    <div class="cf">
-      <div class="fl w-40">
+  <div :class="['ba b--black-20 pv3 ph2 user-select-none', { 'gray': !hasSounds }]">
+    <div class="cf mw8 center">
+      <div class="fl w-40 w-25-l">
         <div v-if="currentSound">
           <div>
             <sound-player-button @click="playingNowVisible = !playingNowVisible" icon="angle-down"></sound-player-button>
@@ -11,7 +11,7 @@
           </div>
 
           <div v-if="playingNowVisible" class="relative">
-            <div class="absolute bg-white b--black-20 br bl bb" style="width: 300px; left: -9px; top: 8px">
+            <div class="absolute bg-white b--black-20 bl" style="width: 300px; left: -10px; top: 16px">
               <sound-player-list
                 :sounds="sounds"
                 :currentSound="currentSound"
@@ -19,6 +19,7 @@
                 @play="$emit('play')"
                 @pause="$emit('pause')"
                 @openSound="$emit('openSound', arguments[0])"
+                @removeSound="$emit('removeSound', arguments[0])"
                 @playSound="$emit('playSound', arguments[0])"
                 @openProfile="$emit('openProfile', arguments[0])"
               ></sound-player-list>
@@ -26,10 +27,10 @@
           </div>
         </div>
         <div v-if="!currentSound">
-          <div class="i" v-text="$t('No sound selected')"></div>
+          <div class="i" v-text="$t('No sound playing')"></div>
         </div>
       </div>
-      <div class="fl w-20 f5">
+      <div class="fl w-50 w-20-l f5">
         <sound-player-button icon="step-backward"
                              @click="$emit('stepBackward')"
                              :disabled="!hasSounds || firstPlaying"></sound-player-button>
@@ -39,8 +40,6 @@
         <sound-player-button icon="step-forward"
                              @click="$emit('stepForward')"
                              :disabled="!hasSounds || lastPlaying"></sound-player-button>
-      </div>
-      <div class="fl w-20">
         <sound-player-button icon="random"
                              @click="$emit('randomize', !inRandomMode)"
                              :disabled="!hasSounds"
@@ -57,12 +56,15 @@
           </div>
         </div>
       </div>
-      <div class="fl w-20">
+      <div class="fl w-10">
         <div :class="[{ 'gray': isMuted }]">
           <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
                                @click="$emit(isMuted ? 'unmute' : 'mute')"
                                :disabled="!hasSounds"></sound-player-button>
         </div>
+      </div>
+      <div class="dn db-l fl w-40">
+        TODO: display more info
       </div>
     </div>
   </div>

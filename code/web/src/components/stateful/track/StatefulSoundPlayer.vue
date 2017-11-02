@@ -9,6 +9,7 @@
     @openSound="openSound(arguments[0])"
     @openProfile="openProfile(arguments[0])"
     @playSound="playSound(arguments[0])"
+    @removeSound="removeSound(arguments[0])"
 
     @play="$store.dispatch('play')"
     @pause="$store.dispatch('pause')"
@@ -30,22 +31,25 @@
 
   export default {
     methods: {
-      openSound(soundId) {
+      openSound (soundId) {
         this.$emit('openSound', soundId)
       },
-      openProfile(profileId) {
+      openProfile (profileId) {
         this.$emit('openProfile', profileId)
       },
-      playSound(soundId) {
+      playSound (soundId) {
         this.$store.dispatch('changeSoundToPlay', { soundId })
       },
-      changeRandomMode(doChange) {
+      removeSound (soundId) {
+        this.$store.dispatch('removeSound', { soundId })
+      },
+      changeRandomMode (doChange) {
         changeModeOrReset(doChange, this.$store, RANDOM_MODE)
       },
-      changeLoopMode(doChange) {
+      changeLoopMode (doChange) {
         changeModeOrReset(doChange, this.$store, LOOP_MODE)
       },
-      changeLoopSingleMode(doChange) {
+      changeLoopSingleMode (doChange) {
         changeModeOrReset(doChange, this.$store, LOOP_SINGLE_MODE)
       },
     },
