@@ -1,1 +1,1 @@
-concurrently "cd code/api && yarn dev" "cd code/web && yarn dev"
+concurrently "cd code/api && npm run dev" "cd code/web && npm run dev"

@@ -1,5 +1,5 @@
 import i18next from 'i18next'
-import { getLanguage } from '../startup/UserLanguage'
+import { getLanguage } from '../startup/StartupUserLanguage'
 import { messages } from '../translations/messages'
 
 i18next.init({

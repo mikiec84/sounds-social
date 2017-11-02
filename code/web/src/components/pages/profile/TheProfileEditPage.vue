@@ -60,7 +60,7 @@
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
   import { updateProfile } from '../../../api/ProfileApi'
-  import { changeLanguage } from '../../../startup/UserLanguage'
+  import { changeLanguage } from '../../../startup/StartupUserLanguage'
 
   const query = gql`
     query ProfilePage($id: String!) {

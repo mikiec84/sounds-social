@@ -17,7 +17,7 @@ export const selectStories = moduleArg => storiesOf('Select', moduleArg)
     },
     methods: { action: action('changed') },
   }))
-  .add('currently selected', () => ({
+  .add('pre-selected', () => ({
     template: '<div class="mw5"><select-component :options="options" :current="current" @change="action"></select-component></div>',
     data () {
       return {
