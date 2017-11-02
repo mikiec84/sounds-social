@@ -17,21 +17,21 @@ const soundList = [
 ]
 
 const eventTemplateHandlers = `
-@openSound="actionCall('openSound', arguments[0])"
-@openProfile="actionCall('openProfile', arguments[0])"
-@playSound="actionCall('playSound', arguments[0])"
+@openSound="actionCall ('openSound', arguments[0])"
+@openProfile="actionCall ('openProfile', arguments[0])"
+@playSound="actionCall ('playSound', arguments[0])"
 
-@play="actionCall('play')"
-@pause="actionCall('pause')"
-@stepForward="actionCall('stepForward')"
-@stepBackward="actionCall('stepBackward')"
+@play="actionCall ('play')"
+@pause="actionCall ('pause')"
+@stepForward="actionCall ('stepForward')"
+@stepBackward="actionCall ('stepBackward')"
 
-@randomize="actionCall('randomize', arguments[0])"
-@loop="actionCall('loop', arguments[0])"
-@loopSingle="actionCall('loopSingle', arguments[0])"
+@randomize="actionCall ('randomize', arguments[0])"
+@loop="actionCall ('loop', arguments[0])"
+@loopSingle="actionCall ('loopSingle', arguments[0])"
 
-@mute="actionCall('mute')"
-@unmute="actionCall('unmute')"
+@mute="actionCall ('mute')"
+@unmute="actionCall ('unmute')"
 `
 
 export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', moduleArg)
@@ -51,7 +51,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('paused second', () => ({
@@ -62,7 +62,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('playing first', () => ({
@@ -71,7 +71,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('playing last', () => ({
@@ -80,7 +80,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('muted playing last', () => ({
@@ -89,7 +89,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('playing in randomized mode', () => ({
@@ -98,7 +98,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('playing in loop mode', () => ({
@@ -107,7 +107,7 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
   .add('playing in loop single mode', () => ({
@@ -116,6 +116,6 @@ export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', mo
       return { tracks: soundList }
     },
     methods: {
-      actionCall(type, args) { action(type)(args) },
+      actionCall (type, args) { action(type)(args) },
     },
   }))
