@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/vue'
 import { action } from '@storybook/addon-actions'
 
-export const confirmModalStories = moduleArg => storiesOf('Confirm Modal', moduleArg)
+export const confirmModalStories = moduleArg => storiesOf('Pure Confirm Modal', moduleArg)
   .add('with text', () => ({
     methods: { confirm: action('confirmed!'), abort: action('aborted!') },
     template: `

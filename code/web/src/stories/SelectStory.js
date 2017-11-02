@@ -7,7 +7,7 @@ const selectOptions = [
   { label: 'Test', value: 'test' },
 ]
 
-export const selectStories = moduleArg => storiesOf('Select', moduleArg)
+export const selectStories = moduleArg => storiesOf('Pure Select', moduleArg)
   .add('simple options', () => ({
     template: '<div class="mw5"><select-component :options="options" @change="action"></select-component></div>',
     data () {

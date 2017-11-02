@@ -1,4 +1,4 @@
-import { registerComponent } from './registerComponent'
-import { ComponentsList } from './PureComponentsList'
+import { registerComponent } from './components/registerComponent'
+import { ComponentsList } from './components/PureComponentsList'
 
 ComponentsList.forEach(({ id, component }) => registerComponent(id, component))

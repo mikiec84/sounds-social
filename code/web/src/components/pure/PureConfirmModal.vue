@@ -3,7 +3,7 @@
     <modal-component @close="$emit('abort')">
       <div class="pa4">
         <div class="tc">
-          <div v-if="icon" class="f2"><i :class="[`fa fa-${icon}`]"></i></div>
+          <div v-if="icon" class="f2"><icon-component :icon="icon"></icon-component></div>
           <div class="mt3">
             <slot></slot>
           </div>

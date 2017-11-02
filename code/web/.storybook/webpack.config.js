@@ -12,6 +12,10 @@ module.exports = (storybookBaseConfig, configType) => {
       loaders: ['style-loader', 'css-loader', 'sass-loader'],
       include: path.resolve(__dirname, '../')
     },
+    {
+      test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+      loader: 'url-loader',
+    },
   ])
 
   return storybookBaseConfig

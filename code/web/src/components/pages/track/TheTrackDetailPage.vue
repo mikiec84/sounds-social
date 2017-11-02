@@ -62,7 +62,7 @@
   import { detailTrackQuery, removeTrack } from '../../../api/TrackApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
-  import { uploadCover } from '../../../api/Track/TrackCoverApi'
+  import { uploadCover } from '../../../api/Sound/SoundCoverApi'
 
   export default {
     components: {

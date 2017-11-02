@@ -1,7 +1,7 @@
 <template>
   <layout-with-sidebar>
     <div slot="header">
-      <header-component :current="isCurrentUser ? 'profile' : 'sounds'"></header-component>
+      <header-component current="profile"></header-component>
     </div>
     <div slot="main">
       <div v-if="getUser" class="f3 mw7">
