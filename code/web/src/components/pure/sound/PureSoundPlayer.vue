@@ -58,9 +58,11 @@
         </div>
       </div>
       <div class="fl w-20">
-        <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
-                             @click="$emit(isMuted ? 'unmute' : 'mute')"
-                             :disabled="!hasSounds"></sound-player-button>
+        <div :class="[{ 'gray': isMuted }]">
+          <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
+                               @click="$emit(isMuted ? 'unmute' : 'mute')"
+                               :disabled="!hasSounds"></sound-player-button>
+        </div>
       </div>
     </div>
   </div>
@@ -68,10 +70,7 @@
 <script>
   import { find, cond, matches } from 'lodash/fp'
   import { collectionHasPlaylistFields } from '../../../lib/collectionHasFields'
-
-  const RANDOM_MODE = 'random'
-  const LOOP_MODE = 'loop'
-  const LOOP_SINGLE_MODE = 'loop-single'
+  import { RANDOM_MODE, LOOP_SINGLE_MODE, LOOP_MODE, isValidMode } from '../../../constants/PlayerConstants'
 
   export default {
     props: {
@@ -97,7 +96,7 @@
       mode: {
         type: String,
         required: false,
-        validator: mode => [RANDOM_MODE, LOOP_MODE, LOOP_SINGLE_MODE].includes(mode),
+        validator: isValidMode,
       }
     },
     data () {

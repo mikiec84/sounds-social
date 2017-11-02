@@ -1,5 +1,10 @@
+import { sample, uniqueId } from 'lodash/fp'
 import { storiesOf } from '@storybook/vue'
 import { action } from '@storybook/addon-actions'
+
+import store from '../store'
+
+import StatefulSoundPlayer from '../components/stateful/track/StatefulSoundPlayer.vue'
 
 const createSound = (id, title, by) => ({
   id,
@@ -34,88 +39,118 @@ const eventTemplateHandlers = `
 @unmute="actionCall ('unmute')"
 `
 
-export const soundPlayerStories = moduleArg => storiesOf('Pure Sound Player', moduleArg)
-  .add('empty soundlist', () => ({
-    template: '<sound-player :sounds="sounds"></sound-player>',
-    data () {
-      return {
-        sounds: [],
-      }
-    },
-  }))
-  .add('playing second', () => ({
-    template: `<sound-player :isPlaying="true" current="XFff2" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return {
-        tracks: soundList,
-      }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('paused second', () => ({
-    template: `<sound-player :isPlaying="false" current="XFff2" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return {
-        tracks: soundList,
-      }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('playing first', () => ({
-    template: `<sound-player :isPlaying="true" current="XFff1" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('playing last', () => ({
-    template: `<sound-player :isPlaying="true" current="XFff33" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('muted playing last', () => ({
-    template: `<sound-player :isPlaying="true" :isMuted="true" current="XFff33" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('playing in randomized mode', () => ({
-    template: `<sound-player :isPlaying="true" mode="random" current="XFff33" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('playing in loop mode', () => ({
-    template: `<sound-player :isPlaying="true" mode="loop" current="XFff33" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
-  .add('playing in loop single mode', () => ({
-    template: `<sound-player :isPlaying="true" mode="loop-single" current="XFff33" :sounds="tracks" ${eventTemplateHandlers}></sound-player>`,
-    data () {
-      return { tracks: soundList }
-    },
-    methods: {
-      actionCall (type, args) { action(type)(args) },
-    },
-  }))
+export const soundPlayerStories = moduleArg => {
+  storiesOf('Pure Sound Player', moduleArg)
+    .add('empty soundlist', () => ({
+      template: '<sound-player :sounds="sounds"></sound-player>',
+      data () {
+        return {
+          sounds: [],
+        }
+      },
+    }))
+    .add('playing second', () => ({
+      template: `<sound-player :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return {
+          sounds: soundList,
+        }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('paused second', () => ({
+      template: `<sound-player :isPlaying="false" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return {
+          sounds: soundList,
+        }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('playing first', () => ({
+      template: `<sound-player :isPlaying="true" current="XFff1" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('playing last', () => ({
+      template: `<sound-player :isPlaying="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('muted playing last', () => ({
+      template: `<sound-player :isPlaying="true" :isMuted="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('playing in randomized mode', () => ({
+      template: `<sound-player :isPlaying="true" mode="random" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('playing in loop mode', () => ({
+      template: `<sound-player :isPlaying="true" mode="loop" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('playing in loop single mode', () => ({
+      template: `<sound-player :isPlaying="true" mode="loop-single" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+
+  storiesOf('Stateful Sound Player', moduleArg)
+    .add('with state', () => ({
+      store,
+      template: `
+<div>
+  <stateful-sound-player></stateful-sound-player>
+  
+  <div class="mt5">
+    <button-component @click="addTrack">Add track to tracklist</button-component>
+  </div>
+</div>
+      `,
+      components: { StatefulSoundPlayer },
+      methods: {
+        addTrack() {
+          const id = uniqueId()
+
+          this.$store.dispatch('addSoundToPlayer', {
+            sound: createSound(
+              id,
+              sample(['My first song', 'Club Banger', 'Run the trap']),
+              sample(['Franz Weber', 'Hans Peter', 'David Guerilla', 'Dub Break']),
+            ),
+          })
+        },
+      },
+    }))
+}
