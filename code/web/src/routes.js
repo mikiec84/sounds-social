@@ -18,11 +18,11 @@ const router = new Router({
   routes: [
     { name: 'home', path: '/', component: HomePage },
     { name: 'discover', path: '/discover', component: DiscoverPage },
-    { path: '/upload', component: UploadPage },
+    { name: 'upload', path: '/upload', component: UploadPage },
     { name: 'profile-detail', path: '/profile/:id', component: ProfilePage },
-    { path: '/profile/:id/edit', component: ProfileEditPage },
+    { name: 'profile-edit', path: '/profile/:id/edit', component: ProfileEditPage },
     { name: 'sound-detail', path: '/tracks/:id', component: TrackDetailPage },
-    { path: '/tracks/:id/edit', component: TrackEditPage },
+    { name: 'sound-edit', path: '/tracks/:id/edit', component: TrackEditPage },
   ],
 })
 
@@ -34,7 +34,7 @@ router.beforeEach(async (to, from, next) => {
   const authenticated = await isAuthenticated()
 
   if (to.path !== '/' && !authenticated) {
-    router.push('/')
+    router.push({ name: 'home' })
   } else {
     next()
   }

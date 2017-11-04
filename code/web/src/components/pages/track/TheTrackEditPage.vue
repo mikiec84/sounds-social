@@ -62,7 +62,10 @@
           isPublic: true,
           creatorId: this.trackToEdit.creator._id,
         }).then(() => {
-          this.$router.push(`/tracks/${this.$route.params.id}`)
+          this.$router.push({
+            name: 'sound-detail',
+            params: { id: this.$route.params.id },
+          })
           window.location.reload() // why is the fetch policy ignored?...
         })
       },

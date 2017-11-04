@@ -41,7 +41,7 @@
         </div>
 
         <div class="mv4 tc" v-if="isCurrentUser">
-          <button-component @click="$router.push('/profile/' + getUser._id + '/edit')" v-text="$t('Edit profile')"></button-component>
+          <button-component @click="$router.push({ name: 'profile-edit', params: { id: getUser._id } })" v-text="$t('Edit profile')"></button-component>
           <div class="dib dn-l">
             <button-component @click="authLogOut" color="gray" v-text="$t('Logout')"></button-component>
           </div>

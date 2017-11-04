@@ -117,7 +117,10 @@
         }
 
         updateProfile(profileUpdateData).then(({ data: { updateUserProfile } }) => {
-          this.$router.push(`/profile/${this.$route.params.id}`)
+          this.$router.push({
+            name: 'profile-detail',
+            params: { id: this.$route.params.id },
+          })
           changeLanguage(updateUserProfile.language)
           window.location.reload() // why is the fetch policy ignored?...
         })

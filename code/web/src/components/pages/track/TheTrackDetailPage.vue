@@ -12,7 +12,7 @@
                   :coverFileUrl="$_fp.get('coverFile.url')(getTrack)"
                   :description="getTrack.description"
                   :username="getTrack.creator.username"
-                  @open-profile="$router.push('/profile/' + getTrack.creator._id)"
+                  @open-profile="$router.push({ name: 'profile-detail', params: { id: getTrack.creator._id } })"
                   @open-track="playTrack"
                   @pauseTrack="pauseTrack"
                   @seekSound="seekSound"
@@ -34,7 +34,7 @@
 
             <div v-if="getTrack.isRemovable" class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
-                <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)" v-text="$t('Edit')"></button-component>
+                <button-component @click="$router.push({ name: 'sound-edit', params: { id: getTrack._id } })" v-text="$t('Edit')"></button-component>
               </div>
               <div class="dib mr2-l pb2 pb0-l">
                 <confirm-modal-button
@@ -107,7 +107,9 @@
     },
     methods: {
       removeTrack () {
-        removeTrack(this.getTrack._id).then(() => this.$router.push('/profile/me'))
+        removeTrack(this.getTrack._id).then(() => {
+          this.$router.push({ name: 'profile-detail', params: { id: 'me' } })
+        })
       },
       pauseTrack () {
         this.$store.dispatch('pause')

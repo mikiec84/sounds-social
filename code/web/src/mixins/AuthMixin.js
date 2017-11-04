@@ -13,7 +13,7 @@ export default {
       return createUser(username, password)
     },
     authLogOut () {
-      this.$router.push('/')
+      this.$router.push({ name: 'home' })
       logOut().then(() => window.location.reload())
     },
   },
