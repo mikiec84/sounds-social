@@ -30,7 +30,7 @@
           <div class="i" v-text="$t('No sound playing')"></div>
         </div>
       </div>
-      <div class="fl w-50 w-20-l f5">
+      <div class="fl w-40 w-20-l f5">
         <sound-player-button icon="step-backward"
                              @click="$emit('stepBackward')"
                              :disabled="!hasSounds || firstPlaying"></sound-player-button>
@@ -56,7 +56,7 @@
           </div>
         </div>
       </div>
-      <div class="fl w-10">
+      <div class="fl w-20 w-10-l">
         <div :class="['dib', { 'gray': isMuted }]">
           <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
                                @click="$emit(isMuted ? 'unmute' : 'mute')"

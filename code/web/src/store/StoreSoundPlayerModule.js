@@ -9,7 +9,7 @@ import {
   unmuteSound,
   seekCurrentSound,
 } from '../lib/SoundPlayer'
-import { isValidMode } from '../constants/PlayerConstants'
+import { LOOP_SINGLE_MODE, LOOP_MODE, RANDOM_MODE, isValidMode } from '../constants/PlayerConstants'
 import { collectionHasPlaylistFields } from '../lib/collectionHasFields'
 
 const findSoundById = soundId => find(sound => sound.id === soundId)
@@ -21,6 +21,8 @@ const changeSoundByKeyIfExists = ({ sounds, dispatch, keyToPlay }) => {
 }
 
 const filterOutSoundById = soundIdToFilter => filter(sound => sound.id !== soundIdToFilter)
+const isOnLastTrack = ({ currentId, sounds }) =>
+  parseInt(findSoundKeyById(currentId)(sounds), 10) === (sounds.length - 1)
 
 const initSoundPosition = {
   seek: 0,
@@ -40,7 +42,11 @@ export const soundPlayerModule = {
   state: clone(initialState),
 
   getters: {
-    soundPlayingTime: state => moment({ seconds: state.soundPosition.seek }).format('HH:mm:ss'),
+    soundPlayingTime: state => moment({
+      seconds: state.soundPosition.seek % 60,
+      minutes: Math.floor(state.soundPosition.seek / 60),
+      hours: Math.floor(state.soundPosition.seek / 60 / 60),
+    }).format('HH:mm:ss'),
     soundTimeLineProgress: state => {
       const { seek, duration } = state.soundPosition
 
@@ -52,7 +58,6 @@ export const soundPlayerModule = {
 
   actions: {
     resetSound: ({ commit }) => {
-      console.log()
       commit('RESET_SOUND')
     },
     addSoundToPlayer: ({ commit, state, dispatch }, { sound }) => {
@@ -73,9 +78,16 @@ export const soundPlayerModule = {
     changeSoundPosition: ({ commit }, { duration, seek }) => {
       commit('CHANGE_SOUND_POSITION', { duration, seek })
     },
-    changeSoundAfterFinished: ({ dispatch }) => {
-      // TODO: based on mode do something different
-      dispatch('playerPlayNext')
+    changeSoundAfterFinished: ({ dispatch, state }) => {
+      if (state.mode === LOOP_SINGLE_MODE) {
+        dispatch('play')
+      } else if (state.mode === LOOP_MODE && isOnLastTrack(state)) {
+        dispatch('changeSoundToPlay', {
+          soundId: state.sounds[0].id,
+        })
+      } else {
+        dispatch('playerPlayNext')
+      }
     },
     removeSound: ({ state, commit }, { soundId }) => {
       const sound = findSoundById(soundId)(state.sounds)
@@ -101,7 +113,6 @@ export const soundPlayerModule = {
     },
     playerSeekRelativeDecimal: ({ commit, state }, amountInRelativeDecimal) => {
       const newSeek = state.soundPosition.duration * amountInRelativeDecimal
-      console.log(state.soundPosition.duration, amountInRelativeDecimal)
       seekCurrentSound(newSeek)
       commit('CHANGE_SEEK', { seek: newSeek })
     },
@@ -129,6 +140,7 @@ export const soundPlayerModule = {
     },
     changePlayerMode: ({ commit }, { mode }) => {
       if (isValidMode(mode)) commit('CHANGE_PLAYER_MODE', mode)
+      if (mode === RANDOM_MODE) commit('RANDOMIZE_PLAYLIST')
     },
   },
 

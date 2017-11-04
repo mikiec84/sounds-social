@@ -68,6 +68,5 @@ export const unmuteSound = () => {
 }
 
 export const seekCurrentSound = seekInSeconds => {
-  console.log('seek', seekInSeconds)
   soundPlayer.seek(seekInSeconds)
 }
