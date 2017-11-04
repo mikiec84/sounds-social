@@ -53,7 +53,7 @@ export const soundPlayerModule = {
       minutes: Math.floor(state.soundPosition.seek / 60),
       hours: Math.floor(state.soundPosition.seek / 60 / 60),
     }).format('HH:mm:ss'),
-    soundTimeLineProgress: state => {
+    seekRelativeDecimal: state => {
       const { seek, duration } = state.soundPosition
 
       if (seek === 0) return 0
@@ -72,7 +72,7 @@ export const soundPlayerModule = {
   actions: {
     playWithReset: ({ dispatch }, { sound }) => {
       dispatch('resetSound')
-      dispatch('addSoundToPlayer', { })
+      dispatch('addSoundToPlayer', { sound })
     },
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
@@ -81,7 +81,11 @@ export const soundPlayerModule = {
       if (collectionHasPlaylistFields([sound]) && sound && !findSoundById(sound.id)(state.sounds)) {
         const hasSounds = state.sounds.length > 0
         commit('ADD_SOUND_TO_PLAYER_PLAYLIST', {
-          positionIndex: parseInt(findSoundKeyById(state.currentId)(getters.soundPlayerSounds), 10) + 1,
+          positionIndex: parseInt(
+            findSoundKeyById(
+              state.currentId)(getters.soundPlayerSounds),
+              10,
+            ) + relativePosition,
           sounds: [sound],
         })
 
@@ -96,6 +100,7 @@ export const soundPlayerModule = {
         dispatch('playNew')
       }
     },
+    // do not call in code, this is used to update the UI
     changeSoundPosition: ({ commit }, { duration, seek }) => {
       commit('CHANGE_SOUND_POSITION', { duration, seek })
     },

@@ -15,11 +15,12 @@
                   @open-profile="$router.push('/profile/' + getTrack.creator._id)"
                   @open-track="playTrack"
                   @pauseTrack="pauseTrack"
+                  @seekSound="seekSound"
                   :noBorder="true"
                   :fileUrl="$_fp.get('file.url')(getTrack)"
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
-                  :waveform-src="getTrack.waveformSrc"></track-component>
+                  :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0"></track-component>
 
           <div class="ph3">
             <div class="mt4">
@@ -122,6 +123,14 @@
       },
       playNext () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound(), relativePosition: 1 })
+      },
+      seekSound (amountInRelativeDecimal) {
+        if (this.isPlaying) {
+          this.$store.dispatch('playerSeekRelativeDecimal', amountInRelativeDecimal)
+        } else {
+          console.log('playing new')
+          this.playTrack()
+        }
       },
       uploadCover (e) {
         const file = e.target.files[0]

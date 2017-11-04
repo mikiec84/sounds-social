@@ -16,8 +16,9 @@
           <div class="mt3 pointer">
             <track-waveform
                     v-if="!inListView"
-                    @seekSound="$emit('open-track', arguments[0])"
+                    @seekSound="$emit('seekSound', arguments[0])"
                     :isPlaying="isPlaying"
+                    :seek="waveformSeek"
                     :fileUrl="fileUrl"></track-waveform>
           </div>
 
@@ -70,6 +71,11 @@
       coverFileUrl: {
         type: String,
         required: false,
+      },
+      waveformSeek: {
+        type: Number,
+        required: false,
+        default: 0,
       },
     },
   }

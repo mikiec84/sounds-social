@@ -6,7 +6,7 @@
     :current="$store.state.soundPlayer.currentId"
     :sounds="$store.getters.soundPlayerSounds"
     :playingTime="$store.getters.soundPlayingTime"
-    :timeLineProgress="$store.getters.soundTimeLineProgress"
+    :timeLineProgress="$store.getters.seekRelativeDecimal"
 
     @openSound="openSound(arguments[0])"
     @openProfile="openProfile(arguments[0])"
