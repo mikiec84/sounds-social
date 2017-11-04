@@ -33,7 +33,7 @@
       <div class="fl w-40 w-20-l f5">
         <sound-player-button icon="step-backward"
                              @click="$emit('stepBackward')"
-                             :disabled="!hasSounds || firstPlaying"></sound-player-button>
+                             :disabled="!hasSounds"></sound-player-button>
         <sound-player-button :icon="isPlaying ? 'pause' : 'play'"
                              @click="$emit(isPlaying ? 'pause' : 'play')"
                              :disabled="!hasSounds"></sound-player-button>

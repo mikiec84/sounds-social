@@ -1,4 +1,4 @@
-import { find, findKey, filter, clone, defaultTo } from 'lodash/fp'
+import { find, findKey, filter, clone, defaultTo, constant } from 'lodash/fp'
 import shuffleSeed from 'shuffle-seed'
 import moment from 'moment'
 
@@ -22,9 +22,12 @@ const changeSoundByKeyIfExists = ({ sounds, dispatch, keyToPlay }) => {
 }
 
 const filterOutSoundById = soundIdToFilter => filter(sound => sound.id !== soundIdToFilter)
-const isLastSound = soundId => sounds => parseInt(
+const isAtNthSound = nthIndex => soundId => sounds => parseInt(
   findSoundKeyById(soundId)(sounds),
-  10) === (sounds.length - 1)
+  10) === nthIndex(sounds)
+
+const isFirstSound = isAtNthSound(constant(0))
+const isLastSound = isAtNthSound(sounds => sounds.length)
 
 const initSoundPosition = {
   seek: 0,
@@ -63,17 +66,21 @@ export const soundPlayerModule = {
       }
 
       return state.sounds
-    }
+    },
   },
 
   actions: {
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
     },
-    addSoundToPlayer: ({ commit, state, dispatch }, { sound }) => {
+    addSoundToPlayer: ({ commit, state, getters, dispatch }, { sound, relativePosition }) => {
       if (collectionHasPlaylistFields([sound]) && sound && !findSoundById(sound.id)(state.sounds)) {
         const hasSounds = state.sounds.length > 0
-        commit('ADD_SOUND_TO_PLAYER_PLAYLIST', [sound])
+        commit('ADD_SOUND_TO_PLAYER_PLAYLIST', {
+          positionIndex: parseInt(findSoundKeyById(state.currentId)(getters.soundPlayerSounds), 10) + 1,
+          sounds: [sound],
+        })
+
         if (!hasSounds) dispatch('playNew')
       }
     },
@@ -134,7 +141,14 @@ export const soundPlayerModule = {
 
       changeSoundByKeyIfExists({ sounds, dispatch, keyToPlay: (key + 1) })
     },
-    playerStepBackward: ({ dispatch }) => dispatch('playerPlayPrevious'),
+    playerStepBackward: ({ dispatch, state, getters }) => {
+      if (state.soundPosition.seek < 5 &&
+        !isFirstSound(state.currentId)(getters.soundPlayerSounds)) {
+        dispatch('playerPlayPrevious')
+      } else {
+        dispatch('playNew')
+      }
+    },
     playerPlayPrevious: ({ state, getters, dispatch }) => {
       const { soundPlayerSounds: sounds } = getters
       const key = parseInt(findSoundKeyById(state.currentId)(sounds), 10)
@@ -164,9 +178,14 @@ export const soundPlayerModule = {
     CHANGE_PLAYER_MODE (state, mode) { state.mode = mode },
     PLAY_PLAYER (state, isPlaying) { state.isPlaying = isPlaying },
     MUTE_PLAYER (state, isMuted) { state.isMuted = isMuted },
-    ADD_SOUND_TO_PLAYER_PLAYLIST (state, sounds) {
+    ADD_SOUND_TO_PLAYER_PLAYLIST (state, { sounds, positionIndex }) {
       if (!state.currentId) state.currentId = sounds[0].id
-      state.sounds = state.sounds.concat(sounds)
+
+      if (positionIndex) {
+        state.sounds.splice(positionIndex, 0, ...sounds)
+      } else {
+        state.sounds = state.sounds.concat(sounds)
+      }
     },
     CHANGE_CURRENT_SOUND_ID (state, soundId) { state.currentId = soundId },
     REMOVE_SOUND_FROM_PLAYER_PLAYLIST (state, soundId) {

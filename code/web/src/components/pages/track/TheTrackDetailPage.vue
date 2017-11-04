@@ -24,6 +24,9 @@
           <div class="ph3">
             <div class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
+                <button-component @click="playNext" v-text="$t('Play next')"></button-component>
+              </div>
+              <div class="dib mr2-l pb2 pb0-l">
                 <button-component @click="addToSoundPlayer" v-text="$t('Add to playing now')"></button-component>
               </div>
             </div>
@@ -125,6 +128,9 @@
       playTrack () {
         this.$store.dispatch('resetSound')
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
+      },
+      playNext () {
+        this.$store.dispatch('addSoundToPlayer', { sound: this.createSound(), relativePosition: 1 })
       },
       uploadCover (e) {
         const file = e.target.files[0]

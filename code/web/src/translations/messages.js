@@ -19,6 +19,7 @@ export const messages = {
       'Comments': 'Kommentare',
       'Discover': 'Entdecken',
       'Feed': 'Feed',
+      'Play next': 'Als Nächstes spielen',
       'Add to playing now': 'Zu jetzt spielen hinzufügen',
       'Communities': 'Communities',
       'Upload cover': 'Cover heraufladen',

@@ -8,6 +8,7 @@ let hasPaused
 let currentSoundData = {}
 
 export const playSound = url => {
+  if (soundPlayer && !currentSoundData.duration) return null
   if (soundPlayer) soundPlayer.unload()
   if (currentHandle) clearInterval(currentHandle)
 
