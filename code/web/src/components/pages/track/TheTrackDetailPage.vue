@@ -128,7 +128,6 @@
         if (this.isPlaying) {
           this.$store.dispatch('playerSeekRelativeDecimal', amountInRelativeDecimal)
         } else {
-          console.log('playing new')
           this.playTrack()
         }
       },
