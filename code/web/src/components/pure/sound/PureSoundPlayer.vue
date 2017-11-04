@@ -11,7 +11,7 @@
           </div>
 
           <div v-if="playingNowVisible" class="relative">
-            <div class="absolute bg-white b--black-20 bl" style="width: 300px; left: -10px; top: 16px">
+            <div class="absolute bg-white b--black-20 bl z-5" style="width: 300px; left: -10px; top: 16px">
               <sound-player-list
                 :sounds="sounds"
                 :currentSound="currentSound"
@@ -57,14 +57,17 @@
         </div>
       </div>
       <div class="fl w-10">
-        <div :class="[{ 'gray': isMuted }]">
+        <div :class="['dib', { 'gray': isMuted }]">
           <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
                                @click="$emit(isMuted ? 'unmute' : 'mute')"
                                :disabled="!hasSounds"></sound-player-button>
         </div>
+        <div v-if="playingTime" v-text="playingTime" class="dib f7"></div>
       </div>
-      <div class="dn db-l fl w-40">
-        TODO: display more info
+      <div class="dn db-l fl w-40" v-if="hasSounds">
+        <div style="margin-top: 5px">
+          <sound-player-timeline :progress="timeLineProgress" @seek="$emit('seek', arguments[0])"></sound-player-timeline>
+        </div>
       </div>
     </div>
   </div>
@@ -99,7 +102,17 @@
         type: String,
         required: false,
         validator: isValidMode,
-      }
+      },
+      playingTime: {
+        type: String,
+        required: false,
+        default: '00:00:00',
+      },
+      timeLineProgress: {
+        type: Number,
+        required: false,
+        default: 0,
+      },
     },
     data () {
       return {

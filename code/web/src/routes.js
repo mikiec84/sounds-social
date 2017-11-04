@@ -19,9 +19,9 @@ const router = new Router({
     { name: 'home', path: '/', component: HomePage },
     { name: 'discover', path: '/discover', component: DiscoverPage },
     { path: '/upload', component: UploadPage },
-    { path: '/profile/:id', component: ProfilePage },
+    { name: 'profile-detail', path: '/profile/:id', component: ProfilePage },
     { path: '/profile/:id/edit', component: ProfileEditPage },
-    { path: '/tracks/:id', component: TrackDetailPage },
+    { name: 'sound-detail', path: '/tracks/:id', component: TrackDetailPage },
     { path: '/tracks/:id/edit', component: TrackEditPage },
   ],
 })

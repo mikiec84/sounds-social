@@ -1,7 +1,4 @@
-import {
-  collectionHasLabelAndValue,
-  collectionHasFields,
-} from './collectionHasFields'
+import { collectionHasLabelAndValue, collectionHasFields } from './collectionHasFields'
 
 test('lib collectionHasLabelAndValue', () => {
   expect(collectionHasLabelAndValue([

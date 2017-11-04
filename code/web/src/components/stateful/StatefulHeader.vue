@@ -3,7 +3,10 @@
     <div class="shadow-1">
     <header-component :active-item-id="current" @logout="authLogOut"></header-component>
     </div>
-      <stateful-sound-player></stateful-sound-player>
+      <stateful-sound-player
+        @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"
+        @openProfile="$router.push({ name: 'profile-detail', params: { id: arguments[0] } })"
+      ></stateful-sound-player>
   </div>
 </template>
 <script>

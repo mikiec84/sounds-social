@@ -20,6 +20,7 @@ import UploadZone from '../../components/pure/Upload/PureUploadZone.vue'
 import SoundPlayer from '../../components/pure/sound/PureSoundPlayer.vue'
 import SoundPlayerButton from '../../components/pure/sound/PureSoundPlayerButton.vue'
 import SoundPlayerList from '../../components/pure/sound/PureSoundPlayerList.vue'
+import SoundPlayerTimeline from '../../components/pure/sound/PureSoundPlayerTimeline.vue'
 
 export const ComponentsList = [
   { id: 'button-component', component: Button },
@@ -44,4 +45,5 @@ export const ComponentsList = [
   { id: 'sound-player', component: SoundPlayer },
   { id: 'sound-player-button', component: SoundPlayerButton },
   { id: 'sound-player-list', component: SoundPlayerList },
+  { id: 'sound-player-timeline', component: SoundPlayerTimeline },
 ]

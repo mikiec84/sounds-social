@@ -5,6 +5,8 @@
     :mode="$store.state.soundPlayer.mode"
     :current="$store.state.soundPlayer.currentId"
     :sounds="$store.state.soundPlayer.sounds"
+    :playingTime="$store.getters.soundPlayingTime"
+    :timeLineProgress="$store.getters.soundTimeLineProgress"
 
     @openSound="openSound(arguments[0])"
     @openProfile="openProfile(arguments[0])"
@@ -13,8 +15,9 @@
 
     @play="$store.dispatch('play')"
     @pause="$store.dispatch('pause')"
-    @stepForward="$store.dispatch('playerStepForward')"
+    @stepForward="stepForward"
     @stepBackward="$store.dispatch('playerStepBackward')"
+    @seek="$store.dispatch('playerSeekRelativeDecimal', arguments[0])"
 
     @randomize="changeRandomMode(arguments[0])"
     @loop="changeLoopMode(arguments[0])"
@@ -26,10 +29,17 @@
 </template>
 <script>
   import { RANDOM_MODE, LOOP_SINGLE_MODE, LOOP_MODE } from '../../../constants/PlayerConstants'
+  import { onPlayerEvent } from '../../../lib/SoundPlayer'
 
   const changeModeOrReset = (doChange, store, mode) => store.dispatch('changePlayerMode', (doChange ? { mode } : ''))
 
   export default {
+    created () {
+      onPlayerEvent((event, data) => {
+        if (event === 'done') this.$store.dispatch('changeSoundAfterFinished')
+        if (event === 'trackPosition') this.$store.dispatch('changeSoundPosition', data)
+      })
+    },
     methods: {
       openSound (soundId) {
         this.$emit('openSound', soundId)
@@ -51,6 +61,9 @@
       },
       changeLoopSingleMode (doChange) {
         changeModeOrReset(doChange, this.$store, LOOP_SINGLE_MODE)
+      },
+      stepForward () {
+        this.$store.dispatch('playerStepForward')
       },
     },
   }

@@ -23,10 +23,14 @@
 
           <div class="ph3">
             <div v-if="getTrack.isRemovable" class="mt4">
-              <div class="dib pb2 pb0-l">
+              <div class="dib mr2-l pb2 pb0-l">
+                <button-component @click="addToSoundPlayer" v-text="$t('Add to playing now')"></button-component>
+              </div>
+
+              <div class="dib mr2-l pb2 pb0-l">
                 <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)" v-text="$t('Edit')"></button-component>
               </div>
-              <div class="dib pb2 pb0-l">
+              <div class="dib mr2-l pb2 pb0-l">
                 <confirm-modal-button
                   modalIcon="trash-o"
                   buttonColor="red"
@@ -58,11 +62,15 @@
   </div>
 </template>
 <script>
+  import { mapState } from 'vuex'
+
+  import { getImage } from '../../../lib/getImage'
   import { addCoverFile } from '../../../api/StorageApi'
   import { detailTrackQuery, removeTrack } from '../../../api/TrackApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
+  import { createSound } from '../../../lib/createSound'
 
   export default {
     components: {
@@ -73,10 +81,12 @@
       return {
         loading: 0,
         playingTrackId: null,
-        isPlaying: false,
         playingPos: 0,
       }
     },
+    computed: mapState({
+      isPlaying: state => state.soundPlayer.isPlaying,
+    }),
     apollo: {
       getTrack: {
         query: detailTrackQuery,
@@ -85,18 +95,32 @@
           return {
             id: this.$route.params.id,
           }
-        }
-      }
+        },
+      },
     },
     methods: {
       removeTrack () {
         removeTrack(this.getTrack._id).then(() => this.$router.push('/profile/me'))
       },
       pauseTrack () {
-        this.isPlaying = false
+        this.$store.dispatch('pause')
+      },
+      createSound () {
+        return createSound(
+          this.getTrack._id,
+          this.getTrack.name,
+          this.getTrack.creator.username,
+          this.getTrack.creator._id,
+          getImage('getTrack.coverFile.url')(this),
+          this.getTrack.file.url,
+        )
+      },
+      addToSoundPlayer () {
+        this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
       },
       playTrack () {
-        this.isPlaying = true
+        this.$store.dispatch('resetSound')
+        this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
       },
       uploadCover (e) {
         const file = e.target.files[0]

@@ -1,24 +1,26 @@
 import { sample, uniqueId } from 'lodash/fp'
 import { storiesOf } from '@storybook/vue'
 import { action } from '@storybook/addon-actions'
+import { createSound } from '../lib/createSound'
 
 import store from '../store'
 
 import StatefulSoundPlayer from '../components/stateful/track/StatefulSoundPlayer.vue'
 
-const createSound = (id, title, by) => ({
+const createTestSound = (id, title, by) => createSound(
   id,
   title,
   by,
-  byId: `${id}AuthorId`,
-  cover: 'https://pre00.deviantart.net/a157/th/pre/i/2016/350/e/5/joji_music__fake_album_cover__by_leavesitw-daru5ty.jpg',
-})
+  `${id}AuthorId`,
+  'https://pre00.deviantart.net/a157/th/pre/i/2016/350/e/5/joji_music__fake_album_cover__by_leavesitw-daru5ty.jpg',
+  'https://www.dropbox.com/s/25xspuhs86x7290/till_the_end_short_snippet.wav?raw=1',
+)
 
 const soundList = [
-  createSound('XFff1', 'My song', 'David Guetta'),
-  createSound('XFff2', 'My second song', 'Babedi Bupedi'),
-  createSound('XFff3', 'Third.5 song', 'Matt Music Maker 2'),
-  createSound('XFff33', 'Third song', 'Matt Music Maker'),
+  createTestSound('XFff1', 'My song', 'David Guetta'),
+  createTestSound('XFff2', 'My second song', 'Babedi Bupedi'),
+  createTestSound('XFff3', 'Third.5 song', 'Matt Music Maker 2'),
+  createTestSound('XFff33', 'Third song', 'Matt Music Maker'),
 ]
 
 const eventTemplateHandlers = `
@@ -126,6 +128,26 @@ export const soundPlayerStories = moduleArg => {
         actionCall (type, args) { action(type)(args) },
       },
     }))
+    .add('2 hours playing with 1/3 progress', () => ({
+      template: `<sound-player :isPlaying="true" mode="loop-single" playingTime="02:00:00" 
+:timeLineProgress="1 / 3"  current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('2 minutes 30 seconds playing with 4/5 progress', () => ({
+      template: `<sound-player :isPlaying="true" mode="loop-single" playingTime="00:02:30" 
+:timeLineProgress="4 / 5"  current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return { sounds: soundList }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
     .add('a lot of sounds', () => ({
       template: `<sound-player :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
@@ -162,7 +184,7 @@ export const soundPlayerStories = moduleArg => {
           const id = uniqueId()
 
           this.$store.dispatch('addSoundToPlayer', {
-            sound: createSound(
+            sound: createTestSound(
               id,
               `${sample(['My first song', 'Club Banger', 'Run the trap'])} #${id}`,
               `${sample(['Franz Weber', 'Hans Peter', 'David Guerilla', 'Dub Break'])} #${id}`,

@@ -1,5 +1,5 @@
 <template>
-  <div class="mv3" id="waveform" ref="waveformDiv"></div>
+  <div class="mv3 dn" id="waveform" ref="waveformDiv"></div>
 </template>
 <script>
   import WaveSurfer from 'wavesurfer.js'
@@ -27,11 +27,12 @@
         progressColor: '#a0b6e2'
       })
 
-      wavesurfer.load(this.fileUrl)
+      /* eslint-disable */
+      /*wavesurfer.load(this.fileUrl)
 
       wavesurfer.on('seek', progress => this.$emit('seekSound', progress))
 
-      wavesurfer.setVolume(1)
+      wavesurfer.setVolume(1)*/
     },
     destroyed () {
       wavesurfer.stop()

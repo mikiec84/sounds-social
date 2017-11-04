@@ -52,8 +52,8 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
-  import { getOr } from 'lodash/fp'
 
+  import { getImage } from '../../lib/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
   import { getUserId } from '../../api/AuthApi'
@@ -114,7 +114,7 @@
         return id
       },
       profileAvatarImage () {
-        return getOr('http://tachyons.io/img/logo.jpg')('getUser.profile.avatarFile.url')(this)
+        return getImage('getUser.profile.avatarFile.url')(this)
       },
     },
     methods: {
