@@ -27,7 +27,7 @@ const isAtNthSound = nthIndex => soundId => sounds => parseInt(
   10) === nthIndex(sounds)
 
 const isFirstSound = isAtNthSound(constant(0))
-const isLastSound = isAtNthSound(sounds => sounds.length)
+const isLastSound = isAtNthSound(sounds => sounds.length - 1)
 
 const initSoundPosition = {
   seek: 0,
@@ -72,7 +72,7 @@ export const soundPlayerModule = {
   actions: {
     playWithReset: ({ dispatch }, { sound }) => {
       dispatch('resetSound')
-      dispatch('addSoundToPlayer', { sound })
+      dispatch('addSoundToPlayer', { })
     },
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
