@@ -10,7 +10,7 @@
     return Math.abs(seek - (wavesurfer.getCurrentTime() / wavesurfer.getDuration()))
   }
 
-  const isSeekDifferenceTooBig = ({ seek }) => getSeekDifference({ seek }) > 0.05
+  const isSeekDifferenceTooBig = ({ seek }) => getSeekDifference({ seek }) > 0.008
 
   export default {
     props: {
