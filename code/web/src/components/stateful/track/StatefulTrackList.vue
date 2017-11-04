@@ -3,6 +3,7 @@
   <div>
     <div v-if="!loading">
       <track-list
+              @play-track="playTrack"
               @open-track="$router.push('/tracks/' + arguments[0]._id)"
               @open-profile="$router.push('/profile/' + arguments[0].creatorUserId)"
               :tracks="mapTracks(listTrack)"></track-list>
@@ -15,6 +16,8 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
+  import { find } from 'lodash/fp'
+  import { mapGraphlDataToSound } from '../../../lib/createSound'
 
   // TODO: pass apollo query as param and create "FeedTrackList.vue" and "ProfileTrackList.vue"
   // TODO: use moment to format createdAt
@@ -72,6 +75,13 @@
       },
     },
     methods: {
+      playTrack (data) {
+        this.$store.dispatch('playWithReset', {
+          sound: mapGraphlDataToSound(
+            find(track => track._id === data._id)(this.listTrack)
+          ),
+        })
+      },
       mapTracks (tracks) {
         return (tracks || []).map(({ name, creator, createdAt, ...data }) => (
           {
@@ -80,6 +90,7 @@
             creatorUserId: creator._id,
             username: creator.username,
             timeAgo: createdAt,
+            creator: creator,
           })
         )
       },

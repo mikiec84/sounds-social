@@ -69,13 +69,12 @@
 <script>
   import { mapState } from 'vuex'
 
-  import { getImage } from '../../../lib/getImage'
   import { addCoverFile } from '../../../api/StorageApi'
   import { detailTrackQuery, removeTrack } from '../../../api/TrackApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
-  import { createSound } from '../../../lib/createSound'
+  import { mapGraphlDataToSound } from '../../../lib/createSound'
 
   export default {
     components: {
@@ -113,21 +112,13 @@
         this.$store.dispatch('pause')
       },
       createSound () {
-        return createSound(
-          this.getTrack._id,
-          this.getTrack.name,
-          this.getTrack.creator.username,
-          this.getTrack.creator._id,
-          getImage('getTrack.coverFile.url')(this),
-          this.getTrack.file.url,
-        )
+        return mapGraphlDataToSound(this.getTrack)
       },
       addToSoundPlayer () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
       },
       playTrack () {
-        this.$store.dispatch('resetSound')
-        this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
+        this.$store.dispatch('playWithReset', { sound: this.createSound() })
       },
       playNext () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound(), relativePosition: 1 })

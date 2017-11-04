@@ -7,6 +7,7 @@
               :username="track.username"
               @open-profile="$emit('open-profile', track)"
               @open-track="$emit('open-track', track)"
+              @play-track="$emit('play-track', track)"
               :inListView="true"
               :coverFileUrl="$_fp.get('coverFile.url')(track)"
               :fileUrl="$_fp.get('file.url')(track)"></track-component>

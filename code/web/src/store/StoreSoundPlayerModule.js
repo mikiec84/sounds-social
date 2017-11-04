@@ -70,6 +70,10 @@ export const soundPlayerModule = {
   },
 
   actions: {
+    playWithReset: ({ dispatch }, { sound }) => {
+      dispatch('resetSound')
+      dispatch('addSoundToPlayer', { sound })
+    },
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
     },
