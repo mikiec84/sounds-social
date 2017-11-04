@@ -1,4 +1,5 @@
 import { find, findKey, filter, clone, defaultTo } from 'lodash/fp'
+import shuffleSeed from 'shuffle-seed'
 import moment from 'moment'
 
 import {
@@ -21,8 +22,9 @@ const changeSoundByKeyIfExists = ({ sounds, dispatch, keyToPlay }) => {
 }
 
 const filterOutSoundById = soundIdToFilter => filter(sound => sound.id !== soundIdToFilter)
-const isOnLastTrack = ({ currentId, sounds }) =>
-  parseInt(findSoundKeyById(currentId)(sounds), 10) === (sounds.length - 1)
+const isLastSound = soundId => sounds => parseInt(
+  findSoundKeyById(soundId)(sounds),
+  10) === (sounds.length - 1)
 
 const initSoundPosition = {
   seek: 0,
@@ -36,6 +38,7 @@ const initialState = {
   isPlaying: false,
   isMuted: false,
   soundPosition: clone(initSoundPosition),
+  randomSeed: 0,
 }
 
 export const soundPlayerModule = {
@@ -54,6 +57,13 @@ export const soundPlayerModule = {
 
       return seek / defaultTo(1)(duration)
     },
+    soundPlayerSounds: state => {
+      if (state.mode === RANDOM_MODE) {
+        return shuffleSeed.shuffle(state.sounds, state.randomSeed)
+      }
+
+      return state.sounds
+    }
   },
 
   actions: {
@@ -61,7 +71,7 @@ export const soundPlayerModule = {
       commit('RESET_SOUND')
     },
     addSoundToPlayer: ({ commit, state, dispatch }, { sound }) => {
-      if (collectionHasPlaylistFields([sound]) && sound) {
+      if (collectionHasPlaylistFields([sound]) && sound && !findSoundById(sound.id)(state.sounds)) {
         const hasSounds = state.sounds.length > 0
         commit('ADD_SOUND_TO_PLAYER_PLAYLIST', [sound])
         if (!hasSounds) dispatch('playNew')
@@ -78,13 +88,14 @@ export const soundPlayerModule = {
     changeSoundPosition: ({ commit }, { duration, seek }) => {
       commit('CHANGE_SOUND_POSITION', { duration, seek })
     },
-    changeSoundAfterFinished: ({ dispatch, state }) => {
-      if (state.mode === LOOP_SINGLE_MODE) {
+    changeSoundAfterFinished: ({ dispatch, getters, state }) => {
+      const { soundPlayerSounds: sounds } = getters
+      const { mode, currentId } = state
+
+      if (mode === LOOP_SINGLE_MODE) {
         dispatch('play')
-      } else if (state.mode === LOOP_MODE && isOnLastTrack(state)) {
-        dispatch('changeSoundToPlay', {
-          soundId: state.sounds[0].id,
-        })
+      } else if ([LOOP_MODE, RANDOM_MODE].includes(mode) && isLastSound(currentId)(sounds)) {
+        dispatch('changeSoundToPlay', { soundId: sounds[0].id })
       } else {
         dispatch('playerPlayNext')
       }
@@ -117,15 +128,15 @@ export const soundPlayerModule = {
       commit('CHANGE_SEEK', { seek: newSeek })
     },
     playerStepForward: ({ dispatch }) => dispatch('playerPlayNext'),
-    playerPlayNext: ({ state, dispatch }) => {
-      const { sounds } = state
+    playerPlayNext: ({ state, getters, dispatch }) => {
+      const { soundPlayerSounds: sounds } = getters
       const key = parseInt(findSoundKeyById(state.currentId)(sounds), 10)
 
       changeSoundByKeyIfExists({ sounds, dispatch, keyToPlay: (key + 1) })
     },
     playerStepBackward: ({ dispatch }) => dispatch('playerPlayPrevious'),
-    playerPlayPrevious: ({ state, dispatch }) => {
-      const { sounds } = state
+    playerPlayPrevious: ({ state, getters, dispatch }) => {
+      const { soundPlayerSounds: sounds } = getters
       const key = parseInt(findSoundKeyById(state.currentId)(sounds), 10)
 
       changeSoundByKeyIfExists({ sounds, dispatch, keyToPlay: (key - 1) })
@@ -168,6 +179,9 @@ export const soundPlayerModule = {
     CHANGE_SOUND_POSITION (state, { duration, seek }) {
       state.soundPosition.seek = seek
       state.soundPosition.duration = duration
+    },
+    RANDOMIZE_PLAYLIST (state) {
+      state.randomSeed = Math.random()
     },
   },
 }

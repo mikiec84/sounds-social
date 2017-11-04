@@ -22,11 +22,13 @@
                   :waveform-src="getTrack.waveformSrc"></track-component>
 
           <div class="ph3">
-            <div v-if="getTrack.isRemovable" class="mt4">
+            <div class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
                 <button-component @click="addToSoundPlayer" v-text="$t('Add to playing now')"></button-component>
               </div>
+            </div>
 
+            <div v-if="getTrack.isRemovable" class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
                 <button-component @click="$router.push(`/tracks/${getTrack._id}/edit`)" v-text="$t('Edit')"></button-component>
               </div>
@@ -85,7 +87,9 @@
       }
     },
     computed: mapState({
-      isPlaying: state => state.soundPlayer.isPlaying,
+      isPlaying (state) {
+        return state.soundPlayer.isPlaying && state.soundPlayer.currentId === this.getTrack._id
+      },
     }),
     apollo: {
       getTrack: {

@@ -19,15 +19,6 @@
                     @seekSound="$emit('open-track', arguments[0])"
                     :isPlaying="isPlaying"
                     :fileUrl="fileUrl"></track-waveform>
-            <div class="mt4">
-              <div v-if="isPlaying">
-                <span class="i" :class="{ 'o-50': playingPos > 0 }">Currently playing 🔉</span>
-                <span class="pointer b" @click="$emit('pauseTrack')">Pause</span>
-              </div>
-              <div v-if="!isPlaying && !inListView">
-                <span class="pointer b" @click="$emit('open-track')">Play Track 🎵</span>
-              </div>
-            </div>
           </div>
 
           <div v-if="description" class="mt4 f5 black-80 lh-copy measure-wide" v-text="description">

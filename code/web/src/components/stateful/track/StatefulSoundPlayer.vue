@@ -4,7 +4,7 @@
     :isMuted="$store.state.soundPlayer.isMuted"
     :mode="$store.state.soundPlayer.mode"
     :current="$store.state.soundPlayer.currentId"
-    :sounds="$store.state.soundPlayer.sounds"
+    :sounds="$store.getters.soundPlayerSounds"
     :playingTime="$store.getters.soundPlayingTime"
     :timeLineProgress="$store.getters.soundTimeLineProgress"
 
