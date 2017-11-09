@@ -1,11 +1,12 @@
 <template>
   <input
-      @keyup="keyupMethod($event)"
-      @keyup.enter="$emit('onEnter', $event.target.value)"
-      :type="type"
-      :value="value"
-      class="input-reset h2 ba b--light-gray ph2 pv3 w-100"
-      :placeholder="placeholder" />
+    @keyup="keyupMethod($event)"
+    @keyup.enter="$emit('onEnter', $event.target.value)"
+    :type="type"
+    :value="value"
+    :name="name"
+    class="input-reset h2 ba b--light-gray ph2 pv3 w-100"
+    :placeholder="placeholder" />
 </template>
 <script>
   export default {
@@ -13,6 +14,10 @@
       type: {
         type: String,
         default: 'text',
+        required: false,
+      },
+      name: {
+        type: String,
         required: false,
       },
       value: {

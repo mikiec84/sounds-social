@@ -4,8 +4,9 @@
       <header-component current="profile"></header-component>
     </div>
     <div slot="main">
-      <div v-if="getUser" class="f3 mw7">
-        <h1 class="f-headline mv3"><span v-text="$t('Edit profile')"></span>: <span v-text="getUser.username"></span></h1>
+      <div v-if="formData && getUser" class="f3 mw7">
+        <h2 class="f1 lh-solid mv0 gray" v-text="`${$t('Edit profile')}:`"></h2>
+        <h1 class="f-headline mv3"><span v-text="getUser.username"></span></h1>
 
         <div class="mt4">
           <upload-zone
@@ -21,7 +22,8 @@
             <textarea
                     class="w-100"
                     style="height: 180px"
-                    @change="formData.description = $event.target.value">{{getUser.profile.description}}</textarea>
+                    name="description"
+                    @change="formData.description = $event.target.value">{{formData.description}}</textarea>
           </label>
         </div>
 
@@ -29,8 +31,15 @@
           <label>
             <div class="mb2" v-text="$t('Website Url')"></div>
             <input-component
-                    @keyup="formData.websiteUrl = arguments[0]"
-                    :value="getUser.profile.websiteUrl"></input-component>
+                    name="websiteUrl"
+                    @keyup="changeFormData('websiteUrl', arguments[0])"
+                    :value="formData.websiteUrl"></input-component>
+
+            <div v-if="$v.formData.websiteUrl.$error" class="mt3">
+              <div v-if="!$v.formData.websiteUrl.url">
+                <error-component><div v-text="$t('Not a valid URL')"></div></error-component>
+              </div>
+            </div>
           </label>
         </div>
 
@@ -38,7 +47,7 @@
           <label>
             <div class="mb2" v-text="$t('Profile Language')"></div>
             <select-component
-              :current="getUser.profile.language"
+              :current="formData.language"
               :options="languageOptions"
               @change="formData.language = arguments[0].value"></select-component>
           </label>
@@ -47,6 +56,7 @@
         <div class="mv4">
           <button-component
             @click="updateProfile"
+            :disabled="$v.$error"
             v-text="$t('Update profile')"
           ></button-component>
         </div>
@@ -56,6 +66,7 @@
 </template>
 <script>
   import gql from 'graphql-tag'
+  import { url } from 'vuelidate/lib/validators'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
@@ -101,6 +112,23 @@
         },
       },
     },
+    validations: {
+      formData: {
+        websiteUrl: {
+          url,
+        },
+      },
+    },
+    mounted () {
+      this.$apollo.query({
+        query,
+        variables: {
+          id: this.$route.params.id,
+        },
+      }).then(({ data }) => {
+        this.formData = this.$_.pick(data.getUser.profile, ['description', 'websiteUrl', 'language'])
+      })
+    },
     methods: {
       uploadAvatarFileImage (e) {
         const file = e.target.files[0]
@@ -110,11 +138,12 @@
           this.hasUploadedFile = !!_id
         })
       },
+      changeFormData (field, value) {
+        this.$v.formData[field].$touch()
+        this.formData[field] = value
+      },
       updateProfile () {
-        const profileUpdateData = {
-          ...this.$_.pick(this.getUser.profile, ['description', 'websiteUrl', 'language']),
-          ...this.formData,
-        }
+        const profileUpdateData = this.formData
 
         updateProfile(profileUpdateData).then(({ data: { updateUserProfile } }) => {
           this.$router.push({

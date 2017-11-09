@@ -1,4 +1,5 @@
 import Button from '../../components/pure/PureButton.vue'
+import Error from '../../components/pure/PureError.vue'
 import Select from '../../components/pure/PureSelect.vue'
 import Header from '../../components/pure/PureHeader.vue'
 import Input from '../../components/pure/PureInput.vue'
@@ -24,6 +25,7 @@ import SoundPlayerTimeline from '../../components/pure/sound/PureSoundPlayerTime
 
 export const ComponentsList = [
   { id: 'button-component', component: Button },
+  { id: 'error-component', component: Error },
   { id: 'select-component', component: Select },
   { id: 'header-component', component: Header },
   { id: 'input-component', component: Input },

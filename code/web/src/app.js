@@ -10,6 +10,7 @@ import './startup/StartupI18N'
 import './startup/StartupVueSelect'
 import './startup/StartupAuthMixin'
 import './startup/StartupLodashPlugin'
+import './startup/StartupFormValidate'
 import { apolloProvider } from './startup/StartupApolloProvider'
 
 sync(store, router)
