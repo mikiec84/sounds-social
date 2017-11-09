@@ -21,15 +21,16 @@ export const playSound = url => {
     src: [url],
     preload: true,
     html5: true,
-    onload: () => {
-      if (!hasPaused) soundPlayer.play()
-
-      currentHandle = setInterval(() => {
-        currentSoundData.duration = soundPlayer.duration()
-        currentSoundData.seek = soundPlayer.seek()
-      }, 50)
-    }
   })
+
+  setTimeout(() => {
+    if (!hasPaused) soundPlayer.play()
+
+    currentHandle = setInterval(() => {
+      currentSoundData.duration = soundPlayer.duration()
+      currentSoundData.seek = soundPlayer.seek()
+    }, 50)
+  }, 1000)
 
   currentSoundData = {}
   hasPaused = false
