@@ -30,6 +30,9 @@ const eventTemplateHandlers = `
 @removeSound="actionCall('removeSound', arguments[0])"
 @moveSound="actionCall('moveSound', arguments)"
 
+@openList="actionCall('openList')"
+@closeList="actionCall('closeList')"
+
 @play="actionCall('play')"
 @pause="actionCall('pause')"
 @stepForward="actionCall('stepForward')"
@@ -53,7 +56,7 @@ export const soundPlayerStories = moduleArg => {
         }
       },
     }))
-    .add('playing second', () => ({
+    .add('closed playing second', () => ({
       template: `<sound-player :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return {
@@ -64,8 +67,8 @@ export const soundPlayerStories = moduleArg => {
         actionCall (type, args) { action(type)(args) },
       },
     }))
-    .add('paused second', () => ({
-      template: `<sound-player :isPlaying="false" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+    .add('open paused second', () => ({
+      template: `<sound-player :listVisible="true" :isPlaying="false" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return {
           sounds: soundList,
@@ -76,7 +79,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('playing first', () => ({
-      template: `<sound-player :isPlaying="true" current="XFff1" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" current="XFff1" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -85,7 +88,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('playing last', () => ({
-      template: `<sound-player :isPlaying="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -94,7 +97,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('muted playing last', () => ({
-      template: `<sound-player :isPlaying="true" :isMuted="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" :isMuted="true" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -103,7 +106,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('playing in randomized mode', () => ({
-      template: `<sound-player :isPlaying="true" mode="random" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" mode="random" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -112,7 +115,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('playing in loop mode', () => ({
-      template: `<sound-player :isPlaying="true" mode="loop" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" mode="loop" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -121,7 +124,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('playing in loop single mode', () => ({
-      template: `<sound-player :isPlaying="true" mode="loop-single" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" mode="loop-single" current="XFff33" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return { sounds: soundList }
       },
@@ -150,7 +153,7 @@ export const soundPlayerStories = moduleArg => {
       },
     }))
     .add('a lot of sounds', () => ({
-      template: `<sound-player :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      template: `<sound-player :listVisible="true" :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return {
           sounds: [

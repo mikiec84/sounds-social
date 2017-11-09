@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import { isAuthenticated } from './api/AuthApi'
+import store from './store'
 
 import HomePage from './components/pages/TheHomePage.vue'
 import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
@@ -12,6 +13,12 @@ import TrackDetailPage from './components/pages/track/TheTrackDetailPage.vue'
 import TrackEditPage from './components/pages/track/TheTrackEditPage.vue'
 
 Vue.use(Router)
+
+const closePlayerListIfVisible = () => {
+  if (store.state.soundPlayer.playerPlayingNowVisible) {
+    store.dispatch('closePlayerPlayingNowList')
+  }
+}
 
 const router = new Router({
   mode: 'history',
@@ -36,6 +43,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.path !== '/' && !authenticated) {
     router.push({ name: 'home' })
   } else {
+    closePlayerListIfVisible()
     next()
   }
 })

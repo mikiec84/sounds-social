@@ -4,13 +4,14 @@
       <div class="fl w-40 w-25-l">
         <div v-if="currentSound">
           <div>
-            <sound-player-button @click="playingNowVisible = !playingNowVisible" icon="angle-down"></sound-player-button>
+            <sound-player-button @click="$emit(listVisible ? 'closeList' : 'openList')"
+                                 :icon="listVisible ? 'angle-up' : 'angle-down'"></sound-player-button>
             <div class="dib pointer" @click="$emit('openSound', currentSound.id)">
               <div class="b" v-text="currentSound.title"></div>
             </div>
           </div>
 
-          <div v-if="playingNowVisible" class="relative">
+          <div v-if="listVisible" class="relative">
             <div class="absolute bg-white b--black-20 bl z-5" style="width: 350px; left: -10px; top: 16px">
               <sound-player-list
                 :sounds="sounds"
@@ -115,11 +116,10 @@
         required: false,
         default: 0,
       },
-    },
-    data () {
-      return {
-        playingNowVisible: false,
-      }
+      listVisible: {
+        type: Boolean,
+        default: false,
+      },
     },
     computed: {
       hasSounds () {

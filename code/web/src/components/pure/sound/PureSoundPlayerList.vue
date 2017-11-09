@@ -16,18 +16,18 @@
           </div>
         </div>
         <div class="fl w-30" style="padding-top: 16px">
-          <div :class="['dib mr2', { 'pointer gray hover-black': canMoveDown(soundIndex), 'light-gray': !canMoveDown(soundIndex)  }]"
+          <div :class="['dib mr1', { 'pointer gray hover-black': canMoveDown(soundIndex), 'light-gray': !canMoveDown(soundIndex)  }]"
                @click="canMoveDown(soundIndex) && $emit('moveSound', sound.id, -1)"
                style="bottom: 1px">
             <icon-component icon="angle-up"></icon-component>
           </div>
 
-          <div :class="['dib mr3', { 'pointer gray hover-black': canMoveUp(soundIndex), 'light-gray': !canMoveUp(soundIndex) }]"
+          <div :class="['dib mr2', { 'pointer gray hover-black': canMoveUp(soundIndex), 'light-gray': !canMoveUp(soundIndex) }]"
                @click="canMoveUp(soundIndex) && $emit('moveSound', sound.id, 1)">
             <icon-component icon="angle-down"></icon-component>
           </div>
 
-          <div :class="['dib mr3', { 'pointer gray hover-black': !isCurrentSound(sound), 'light-gray': isCurrentSound(sound)  }]"
+          <div :class="['dib mr2', { 'pointer gray hover-black': !isCurrentSound(sound), 'light-gray': isCurrentSound(sound)  }]"
                @click="!isCurrentSound(sound) && $emit('removeSound', sound.id)">
             <icon-component icon="remove"></icon-component>
           </div>

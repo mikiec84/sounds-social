@@ -42,6 +42,7 @@ const initialState = {
   isMuted: false,
   soundPosition: clone(initSoundPosition),
   randomSeed: 0,
+  playerPlayingNowVisible: false,
 }
 
 export const soundPlayerModule = {
@@ -90,6 +91,7 @@ export const soundPlayerModule = {
         })
 
         if (!hasSounds) dispatch('playNew')
+        else dispatch('openPlayerPlayingNowList')
       }
     },
     changeSoundToPlay: ({ commit, state, dispatch }, { soundId }) => {
@@ -188,6 +190,8 @@ export const soundPlayerModule = {
       if (isValidMode(mode)) commit('CHANGE_PLAYER_MODE', mode)
       if (mode === RANDOM_MODE) commit('RANDOMIZE_PLAYLIST')
     },
+    openPlayerPlayingNowList: ({ commit }) => commit('OPEN_PLAYER_PLAYING_NOW_LIST'),
+    closePlayerPlayingNowList: ({ commit }) => commit('CLOSE_PLAYER_PLAYING_NOW_LIST'),
   },
 
   mutations: {
@@ -235,6 +239,12 @@ export const soundPlayerModule = {
     },
     RANDOMIZE_PLAYLIST (state) {
       state.randomSeed = Math.random()
+    },
+    OPEN_PLAYER_PLAYING_NOW_LIST (state) {
+      state.playerPlayingNowVisible = true
+    },
+    CLOSE_PLAYER_PLAYING_NOW_LIST (state) {
+      state.playerPlayingNowVisible = false
     },
   },
 }

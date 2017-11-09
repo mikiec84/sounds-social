@@ -7,12 +7,16 @@
     :sounds="$store.getters.soundPlayerSounds"
     :playingTime="$store.getters.soundPlayingTime"
     :timeLineProgress="$store.getters.seekRelativeDecimal"
+    :listVisible="$store.state.soundPlayer.playerPlayingNowVisible"
 
     @openSound="openSound(arguments[0])"
     @openProfile="openProfile(arguments[0])"
     @playSound="playSound(arguments[0])"
     @removeSound="removeSound(arguments[0])"
     @moveSound="moveSound(arguments[0], arguments[1])"
+
+    @openList="openPlayerList"
+    @closeList="closePlayerList"
 
     @play="$store.dispatch('play')"
     @pause="$store.dispatch('pause')"
@@ -56,6 +60,12 @@
       },
       moveSound (soundId, relativePosition) {
         this.$store.dispatch('moveSound', { soundId, relativePosition })
+      },
+      openPlayerList () {
+        this.$store.dispatch('openPlayerPlayingNowList')
+      },
+      closePlayerList () {
+        this.$store.dispatch('closePlayerPlayingNowList')
       },
       changeRandomMode (doChange) {
         changeModeOrReset(doChange, this.$store, RANDOM_MODE)
