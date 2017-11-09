@@ -29,7 +29,7 @@
 </template>
 <script>
   import { RANDOM_MODE, LOOP_SINGLE_MODE, LOOP_MODE } from '../../../constants/PlayerConstants'
-  import { onPlayerEvent } from '../../../lib/SoundPlayer'
+  import { onPlayerEvent } from '../../../func/SoundPlayer'
 
   const changeModeOrReset = (doChange, store, mode) => store.dispatch('changePlayerMode', (doChange ? { mode } : ''))
 

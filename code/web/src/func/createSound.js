@@ -5,7 +5,7 @@ export const mapGraphlDataToSound = graphqlData => createSound(
   graphqlData.name,
   graphqlData.creator.username,
   graphqlData.creator._id,
-  getImage('getTrack.coverFile.url')(this),
+  getImage('coverFile.url')(graphqlData),
   graphqlData.file.url,
 )
 

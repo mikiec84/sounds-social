@@ -2,7 +2,7 @@
   <div>
     <div :class="{ 'ba bw1 b--light-gray br2': !noBorder  }"  class="cf">
       <div class="fl w-25 pa2" v-if="coverFileUrl" >
-        <img :src="coverFileUrl" class="mw-100" />
+        <div class="mw-100 cover bg-center" :style="`max-width: 150px; height: 150px; background: url(${coverFileUrl})`"></div>
       </div>
       <div :class="['fl', { 'w-75': coverFileUrl, 'w-100': !coverFileUrl }]">
         <div class="ph3 mw8">

@@ -20,7 +20,7 @@ export const messages = {
       'Discover': 'Entdecken',
       'Feed': 'Feed',
       'Play next': 'Als Nächstes spielen',
-      'Add to playing now': 'Zu jetzt spielen hinzufügen',
+      'Play later': 'Später spielen',
       'Communities': 'Communities',
       'Upload cover': 'Cover heraufladen',
       'Sound description': 'Sound Beschreibung',

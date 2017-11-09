@@ -1,7 +1,7 @@
 import { sample, uniqueId } from 'lodash/fp'
 import { storiesOf } from '@storybook/vue'
 import { action } from '@storybook/addon-actions'
-import { createSound } from '../lib/createSound'
+import { createSound } from '../func/createSound'
 
 import store from '../store'
 

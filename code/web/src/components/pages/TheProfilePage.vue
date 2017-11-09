@@ -53,7 +53,7 @@
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
 
-  import { getImage } from '../../lib/getImage'
+  import { getImage } from '../../func/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
   import { getUserId } from '../../api/AuthApi'

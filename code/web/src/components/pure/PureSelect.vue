@@ -3,7 +3,7 @@
 </template>
 <script>
   import { find } from 'lodash/fp'
-  import { collectionHasLabelAndValue } from '../../lib/collectionHasFields'
+  import { collectionHasLabelAndValue } from '../../func/collectionHasFields'
 
   export default {
     props: {

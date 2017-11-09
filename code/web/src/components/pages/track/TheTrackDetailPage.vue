@@ -28,7 +28,7 @@
                 <button-component @click="playNext" v-text="$t('Play next')"></button-component>
               </div>
               <div class="dib mr2-l pb2 pb0-l">
-                <button-component @click="addToSoundPlayer" v-text="$t('Add to playing now')"></button-component>
+                <button-component @click="addToSoundPlayer" v-text="$t('Play later')"></button-component>
               </div>
             </div>
 
@@ -75,7 +75,7 @@
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
-  import { mapGraphlDataToSound } from '../../../lib/createSound'
+  import { mapGraphlDataToSound } from '../../../func/createSound'
 
   export default {
     components: {

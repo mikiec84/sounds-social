@@ -74,7 +74,7 @@
 </template>
 <script>
   import { find, cond, matches } from 'lodash/fp'
-  import { collectionHasPlaylistFields } from '../../../lib/collectionHasFields'
+  import { collectionHasPlaylistFields } from '../../../func/collectionHasFields'
   import { RANDOM_MODE, LOOP_SINGLE_MODE, LOOP_MODE, isValidMode } from '../../../constants/PlayerConstants'
 
   export default {

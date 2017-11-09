@@ -17,7 +17,7 @@
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
   import { find } from 'lodash/fp'
-  import { mapGraphlDataToSound } from '../../../lib/createSound'
+  import { mapGraphlDataToSound } from '../../../func/createSound'
 
   // TODO: pass apollo query as param and create "FeedTrackList.vue" and "ProfileTrackList.vue"
   // TODO: use moment to format createdAt

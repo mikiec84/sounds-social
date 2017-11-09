@@ -9,9 +9,9 @@ import {
   muteSound,
   unmuteSound,
   seekCurrentSound,
-} from '../lib/SoundPlayer'
+} from '../func/SoundPlayer'
 import { LOOP_SINGLE_MODE, LOOP_MODE, RANDOM_MODE, isValidMode } from '../constants/PlayerConstants'
-import { collectionHasPlaylistFields } from '../lib/collectionHasFields'
+import { collectionHasPlaylistFields } from '../func/collectionHasFields'
 
 const findSoundById = soundId => find(sound => sound.id === soundId)
 const findSoundKeyById = soundId => findKey(sound => sound.id === soundId)
