@@ -9,17 +9,24 @@
               @open-track="$emit('open-track', track)"
               @play-track="$emit('play-track', track)"
               :inListView="true"
-              :coverFileUrl="$_fp.get('coverFile.url')(track)"
+              :coverFileUrl="getCoverImage(track)"
               :fileUrl="$_fp.get('file.url')(track)"></track-component>
     </div>
   </div>
 </template>
 <script>
+  import { getImage } from '../../../func/getImage'
+
   export default {
     props: {
       tracks: {
         type: Array,
         required: true,
+      },
+    },
+    methods: {
+      getCoverImage (track) {
+        return getImage('coverFile.url')(track)
       },
     },
   }

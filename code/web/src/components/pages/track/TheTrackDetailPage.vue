@@ -14,6 +14,7 @@
                   :username="getTrack.creator.username"
                   @open-profile="$router.push({ name: 'profile-detail', params: { id: getTrack.creator._id } })"
                   @open-track="playTrack"
+                  @play-track="playTrack"
                   @pauseTrack="pauseTrack"
                   @seekSound="seekSound"
                   :noBorder="true"
@@ -85,7 +86,6 @@
     data () {
       return {
         loading: 0,
-        playingTrackId: null,
         playingPos: 0,
       }
     },
@@ -98,6 +98,7 @@
       getTrack: {
         query: detailTrackQuery,
         loadingKey: 'loading',
+        fetchPolicy: 'network-only',
         variables () {
           return {
             id: this.$route.params.id,
