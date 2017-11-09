@@ -107,7 +107,7 @@
       },
     },
     methods: {
-      removeTrack () {
+      removeSound () {
         removeSound(this.getTrack._id).then(() => {
           this.$router.push({ name: 'profile-detail', params: { id: 'me' } })
         })

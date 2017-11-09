@@ -78,7 +78,12 @@
               creatorId: userId,
             },
           })
-          .then((data) => (data.data.createTrack ? this.$router.push(`/tracks/${data.data.createTrack._id}`) : null))
+          .then((data) => (data.data.createTrack ? this.$router.push({
+            name: 'sound-detail',
+            params: {
+              id: data.data.createTrack._id,
+            },
+          }) : null))
       },
     },
   }
