@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="trackUploadBox">
-      <track-form-box
+      <sound-form-box
         :username="username"
         :hasFile="hasFile"
         :isUploading="isUploading"
@@ -9,7 +9,7 @@
         @changeDescription="description = arguments[0]"
         @publish="saveTrack()"
         @uploadFile="uploadMusicFile(arguments[0])"
-      ></track-form-box>
+      ></sound-form-box>
     </div>
     <div class="dn-ns">
       <input type="file" name="data" id="fileUploadInput" />

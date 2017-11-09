@@ -12,10 +12,10 @@ import SingleComment from '../../components/pure/Comment/PureSingleComment.vue'
 import Layout from '../../components/pure/layout/PureLayout.vue'
 import LayoutWithSidebar from '../../components/pure/layout/PureLayoutWithSidebar.vue'
 import ProfileImage from '../../components/pure/profile/PureProfileImage.vue'
-import Track from '../../components/pure/sound/PureTrack.vue'
-import TrackFormBox from '../../components/pure/sound/PureTrackFormBox.vue'
-import TrackList from '../../components/pure/sound/PureTrackList.vue'
-import TrackWaveform from '../../components/pure/sound/PureTrackWaveform.vue'
+import Sound from '../../components/pure/sound/PureSound.vue'
+import SoundFormBox from '../../components/pure/sound/PureSoundFormBox.vue'
+import SoundList from '../../components/pure/sound/PureSoundList.vue'
+import SoundWaveform from '../../components/pure/sound/PureSoundWaveform.vue'
 import FileUploadButton from '../../components/pure/Upload/PureFileUploadButton.vue'
 import UploadZone from '../../components/pure/Upload/PureUploadZone.vue'
 import SoundPlayer from '../../components/pure/sound/PureSoundPlayer.vue'
@@ -36,10 +36,10 @@ export const ComponentsList = [
   { id: 'layout-default', component: Layout },
   { id: 'layout-with-sidebar', component: LayoutWithSidebar },
   { id: 'profile-image', component: ProfileImage },
-  { id: 'track-component', component: Track },
-  { id: 'track-form-box', component: TrackFormBox },
-  { id: 'track-list', component: TrackList },
-  { id: 'track-waveform', component: TrackWaveform },
+  { id: 'sound-component', component: Sound },
+  { id: 'sound-form-box', component: SoundFormBox },
+  { id: 'sound-list', component: SoundList },
+  { id: 'sound-waveform', component: SoundWaveform },
   { id: 'file-upload-button', component: FileUploadButton },
   { id: 'upload-zone', component: UploadZone },
   { id: 'confirm-modal', component: ConfirmModal },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(track, index) in tracks" :key="track._id" :class="{ 'mt3': index !== 0  }">
-      <track-component
+      <sound-component
               :timeAgo="track.timeAgo"
               :label="track.label"
               :username="track.username"
@@ -10,7 +10,7 @@
               @play-track="$emit('play-track', track)"
               :inListView="true"
               :coverFileUrl="getCoverImage(track)"
-              :fileUrl="$_fp.get('file.url')(track)"></track-component>
+              :fileUrl="$_fp.get('file.url')(track)"></sound-component>
     </div>
   </div>
 </template>

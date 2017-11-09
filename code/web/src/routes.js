@@ -9,8 +9,8 @@ import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
 import UploadPage from './components/pages/TheUploadPage.vue'
 import ProfilePage from './components/pages/TheProfilePage.vue'
 import ProfileEditPage from './components/pages/profile/TheProfileEditPage.vue'
-import TrackDetailPage from './components/pages/track/TheTrackDetailPage.vue'
-import TrackEditPage from './components/pages/track/TheTrackEditPage.vue'
+import SoundDetailPage from './components/pages/track/TheSoundDetailPage.vue'
+import SoundEditPage from './components/pages/track/TheSoundEditPage.vue'
 
 Vue.use(Router)
 
@@ -28,8 +28,8 @@ const router = new Router({
     { name: 'upload', path: '/upload', component: UploadPage },
     { name: 'profile-detail', path: '/profile/:id', component: ProfilePage },
     { name: 'profile-edit', path: '/profile/:id/edit', component: ProfileEditPage },
-    { name: 'sound-detail', path: '/tracks/:id', component: TrackDetailPage },
-    { name: 'sound-edit', path: '/tracks/:id/edit', component: TrackEditPage },
+    { name: 'sound-detail', path: '/sounds/:id', component: SoundDetailPage },
+    { name: 'sound-edit', path: '/sounds/:id/edit', component: SoundEditPage },
   ],
 })
 

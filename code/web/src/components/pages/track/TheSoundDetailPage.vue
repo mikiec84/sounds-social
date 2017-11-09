@@ -6,7 +6,7 @@
       </div>
       <div slot="main">
         <div v-if="getTrack">
-          <track-component
+          <sound-component
                   :timeAgo="getTrack.createdAt"
                   :label="getTrack.name"
                   :coverFileUrl="$_fp.get('coverFile.url')(getTrack)"
@@ -21,7 +21,7 @@
                   :fileUrl="$_fp.get('file.url')(getTrack)"
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
-                  :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0"></track-component>
+                  :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0"></sound-component>
 
           <div class="ph3">
             <div class="mt4">
@@ -41,7 +41,7 @@
                 <confirm-modal-button
                   modalIcon="trash-o"
                   buttonColor="red"
-                  @confirm="removeTrack"
+                  @confirm="removeSound"
                 >
                   <div slot="button" v-text="$t('Remove')"></div>
                   <div slot="modal" v-text="$t('Do you really want to delete this?')"></div>
@@ -72,7 +72,7 @@
   import { mapState } from 'vuex'
 
   import { addCoverFile } from '../../../api/StorageApi'
-  import { detailTrackQuery, removeTrack } from '../../../api/TrackApi'
+  import { detailSoundQuery, removeSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/CommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
@@ -96,7 +96,7 @@
     }),
     apollo: {
       getTrack: {
-        query: detailTrackQuery,
+        query: detailSoundQuery,
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
         variables () {
@@ -108,7 +108,7 @@
     },
     methods: {
       removeTrack () {
-        removeTrack(this.getTrack._id).then(() => {
+        removeSound(this.getTrack._id).then(() => {
           this.$router.push({ name: 'profile-detail', params: { id: 'me' } })
         })
       },

@@ -14,12 +14,12 @@
           </div>
           <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
-            <track-waveform
+            <sound-waveform
                     v-if="!inListView"
                     @seekSound="$emit('seekSound', arguments[0])"
                     :isPlaying="isPlaying"
                     :seek="waveformSeek"
-                    :fileUrl="fileUrl"></track-waveform>
+                    :fileUrl="fileUrl"></sound-waveform>
           </div>
 
           <div v-if="description" class="mt4 f5 black-80 lh-copy measure-wide" v-text="description">

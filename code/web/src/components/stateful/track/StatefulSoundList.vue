@@ -2,11 +2,11 @@
   <!-- TODO add loading spinner? -->
   <div>
     <div v-if="!loading">
-      <track-list
+      <sound-list
               @play-track="playTrack"
               @open-track="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
               @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
-              :tracks="mapTracks(listTrack)"></track-list>
+              :tracks="mapTracks(listTrack)"></sound-list>
 
       <div v-if="!listTrack || !listTrack.length" v-text="$t('No sounds found')">
 

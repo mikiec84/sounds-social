@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
-export const detailTrackQuery = gql`
+export const detailSoundQuery = gql`
   query DetailTrack($id: String!) {
     getTrack(_id: $id) {
       _id
@@ -24,7 +24,7 @@ export const detailTrackQuery = gql`
   }
 `
 
-export const editTrackFormQuery = gql`
+export const editSoundFormQuery = gql`
   query EditTrackForm($id: String!) {
     trackToEdit: getTrack(_id: $id) {
       name
@@ -38,7 +38,7 @@ export const editTrackFormQuery = gql`
   }
 `
 
-export const updateTrack = (id, data) => apolloClient.mutate({
+export const updateSound = (id, data) => apolloClient.mutate({
   mutation: gql`
     mutation EditTrack($id: String! $data: TrackInput!) {
       updateTrack(_id: $id data: $data) {
@@ -53,7 +53,7 @@ export const updateTrack = (id, data) => apolloClient.mutate({
   fetchPolicy: 'network-only',
 })
 
-export const removeTrack = id => apolloClient.mutate({
+export const removeSound = id => apolloClient.mutate({
   mutation: gql`
     mutation RemoveTrack($id: String!) {
       deleteTrack(_id: $id) {

@@ -6,7 +6,7 @@
       </div>
       <div slot="main">
         <div v-if="trackToEdit">
-          <track-form-box
+          <sound-form-box
                   :username="trackToEdit.creator.username"
                   :hasFile="true"
                   :isUploading="false"
@@ -16,7 +16,7 @@
                   @changeTitle="formData.name = arguments[0]"
                   @changeDescription="formData.description = arguments[0]"
                   @publish="saveTrack()"
-          ></track-form-box>
+          ></sound-form-box>
         </div>
 
         <div v-if="!trackToEdit">
@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-  import { editTrackFormQuery, updateTrack } from '../../../api/TrackApi'
+  import { editSoundFormQuery, updateSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
 
   export default {
@@ -45,7 +45,7 @@
     },
     apollo: {
       trackToEdit: {
-        query: editTrackFormQuery,
+        query: editSoundFormQuery,
         loadingKey: 'loading',
         variables () {
           return {
@@ -56,7 +56,7 @@
     },
     methods: {
       saveTrack () {
-        updateTrack(this.$route.params.id, {
+        updateSound(this.$route.params.id, {
           ...this.$_.pick(this.trackToEdit, ['name', 'description']),
           ...this.formData,
           isPublic: true,
@@ -66,7 +66,6 @@
             name: 'sound-detail',
             params: { id: this.$route.params.id },
           })
-          window.location.reload() // why is the fetch policy ignored?...
         })
       },
     },

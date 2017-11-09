@@ -11,7 +11,7 @@
         <div class="pv3">
           <div class="lh-copy f5">Discover all tracks on Sounds Social!</div>
         </div>
-        <track-list-component :isDiscover="true"></track-list-component>
+        <sound-list-component :isDiscover="true"></sound-list-component>
       </div>
       <div slot="sidebar">
         Hi Matteo!
@@ -23,8 +23,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import TrackListComponent from '../../stateful/track/StatefulTrackList.vue'
-
+  import SoundListComponent from '../../stateful/track/StatefulSoundList.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
 
@@ -32,7 +31,7 @@
     components: {
       HeaderComponent,
       SubHeaderComponent,
-      TrackListComponent,
+      SoundListComponent,
     },
   }
 </script>

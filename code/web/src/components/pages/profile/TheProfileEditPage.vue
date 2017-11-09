@@ -151,7 +151,6 @@
             params: { id: this.$route.params.id },
           })
           changeLanguage(updateUserProfile.language)
-          window.location.reload() // why is the fetch policy ignored?...
         })
       },
     },

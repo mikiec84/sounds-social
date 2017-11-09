@@ -7,7 +7,7 @@
       <div slot="main">
         <h1 class="f-headline-m f-headline-l f-subheadline mv3">Sounds</h1>
         <div class="pb3"><sub-header-component current="feed"></sub-header-component></div>
-        <track-list-component></track-list-component>
+        <sound-list-component></sound-list-component>
       </div>
       <div slot="sidebar">
         Hi Matteo!
@@ -19,8 +19,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import TrackListComponent from '../../stateful/track/StatefulTrackList.vue'
-
+  import SoundListComponent from '../../stateful/track/StatefulSoundList.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
 
@@ -28,7 +27,7 @@
     components: {
       HeaderComponent,
       SubHeaderComponent,
-      TrackListComponent,
+      SoundListComponent,
     },
   }
 </script>

@@ -6,7 +6,7 @@
     <div slot="main">
       <div v-if="getUser">
         <h1 class="f-headline mv3" v-text="getUser.username"></h1>
-        <track-list-component v-if="profileUserId" :userId="profileUserId"></track-list-component>
+        <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
       </div>
       <div v-if="!getUser">
         <div class="i" v-text="$t('User not found')"></div>
@@ -55,7 +55,7 @@
 
   import { getImage } from '../../func/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
-  import TrackListComponent from '../stateful/track/StatefulTrackList.vue'
+  import SoundListComponent from '../stateful/track/StatefulSoundList.vue'
   import { getUserId } from '../../api/AuthApi'
   import { follow, unfollow } from '../../api/ProfileApi'
 
@@ -79,7 +79,7 @@
   export default {
     components: {
       HeaderComponent,
-      TrackListComponent,
+      SoundListComponent,
     },
     data () {
       return {
@@ -95,6 +95,7 @@
     apollo: {
       getUser: {
         query,
+        fetchPolicy: 'network-only',
         variables () {
           return { id: this.profileUserId }
         },
