@@ -12,6 +12,7 @@
     @openProfile="openProfile(arguments[0])"
     @playSound="playSound(arguments[0])"
     @removeSound="removeSound(arguments[0])"
+    @moveSound="moveSound(arguments[0], arguments[1])"
 
     @play="$store.dispatch('play')"
     @pause="$store.dispatch('pause')"
@@ -52,6 +53,9 @@
       },
       removeSound (soundId) {
         this.$store.dispatch('removeSound', { soundId })
+      },
+      moveSound (soundId, relativePosition) {
+        this.$store.dispatch('moveSound', { soundId, relativePosition })
       },
       changeRandomMode (doChange) {
         changeModeOrReset(doChange, this.$store, RANDOM_MODE)

@@ -11,15 +11,17 @@
           </div>
 
           <div v-if="playingNowVisible" class="relative">
-            <div class="absolute bg-white b--black-20 bl z-5" style="width: 300px; left: -10px; top: 16px">
+            <div class="absolute bg-white b--black-20 bl z-5" style="width: 350px; left: -10px; top: 16px">
               <sound-player-list
                 :sounds="sounds"
                 :currentSound="currentSound"
                 :isPlaying="isPlaying"
+                :inRandomMode="inRandomMode"
                 @play="$emit('play')"
                 @pause="$emit('pause')"
                 @openSound="$emit('openSound', arguments[0])"
                 @removeSound="$emit('removeSound', arguments[0])"
+                @moveSound="$emit('moveSound', arguments[0], arguments[1])"
                 @playSound="$emit('playSound', arguments[0])"
                 @openProfile="$emit('openProfile', arguments[0])"
               ></sound-player-list>

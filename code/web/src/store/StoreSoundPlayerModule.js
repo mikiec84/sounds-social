@@ -80,12 +80,12 @@ export const soundPlayerModule = {
     addSoundToPlayer: ({ commit, state, getters, dispatch }, { sound, relativePosition }) => {
       if (collectionHasPlaylistFields([sound]) && sound && !findSoundById(sound.id)(state.sounds)) {
         const hasSounds = state.sounds.length > 0
+
         commit('ADD_SOUND_TO_PLAYER_PLAYLIST', {
           positionIndex: parseInt(
-            findSoundKeyById(
-              state.currentId)(getters.soundPlayerSounds),
-              10,
-            ) + relativePosition,
+            findSoundKeyById(state.currentId)(getters.soundPlayerSounds),
+            10,
+          ) + relativePosition,
           sounds: [sound],
         })
 
@@ -121,6 +121,18 @@ export const soundPlayerModule = {
 
       if (sound && sound.id !== state.currentId) {
         commit('REMOVE_SOUND_FROM_PLAYER_PLAYLIST', soundId)
+      }
+    },
+    moveSound: ({ commit, state }, { soundId, relativePosition }) => {
+      const currentPositionIndex = parseInt(findSoundKeyById(soundId)(state.sounds), 10)
+      const newPositionIndex = currentPositionIndex + relativePosition
+
+      if (state.mode === RANDOM_MODE) {
+        throw new Error('Cannot move sounds in random mode')
+      }
+
+      if (!isNaN(currentPositionIndex) && state.sounds[newPositionIndex]) {
+        commit('MOVE_SOUND_PLAYER_POSITION', { newPositionIndex, currentPositionIndex })
       }
     },
     playNew: ({ commit, state }) => {
@@ -195,6 +207,19 @@ export const soundPlayerModule = {
       } else {
         state.sounds = state.sounds.concat(sounds)
       }
+    },
+    MOVE_SOUND_PLAYER_POSITION (state, { newPositionIndex, currentPositionIndex }) {
+      const soundToMove = state.sounds[currentPositionIndex]
+      const soundToBeMoved = state.sounds[newPositionIndex]
+
+      const movedSoundIds = [soundToMove, soundToBeMoved].map(sound => sound.id)
+
+      state.sounds = state.sounds.filter(
+        sound => !movedSoundIds.includes(sound.id),
+      )
+
+      state.sounds.splice(newPositionIndex, 0, soundToMove)
+      state.sounds.splice(currentPositionIndex, 0, soundToBeMoved)
     },
     CHANGE_CURRENT_SOUND_ID (state, soundId) { state.currentId = soundId },
     REMOVE_SOUND_FROM_PLAYER_PLAYLIST (state, soundId) {

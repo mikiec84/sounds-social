@@ -8,41 +8,45 @@ let hasPaused
 let currentSoundData = {}
 
 export const playSound = url => {
-  if (soundPlayer && !currentSoundData.duration) return null
-  if (soundPlayer) soundPlayer.unload()
+  if (soundPlayer && !currentSoundData.duration) {
+    return null
+  }
+  if (soundPlayer) {
+    soundPlayer.stop()
+    soundPlayer.unload()
+  }
   if (currentHandle) clearInterval(currentHandle)
 
   soundPlayer = new Howl({
     src: [url],
     preload: true,
     html5: true,
+    onload: () => {
+      if (!hasPaused) soundPlayer.play()
+
+      currentHandle = setInterval(() => {
+        currentSoundData.duration = soundPlayer.duration()
+        currentSoundData.seek = soundPlayer.seek()
+      }, 50)
+    }
   })
 
   currentSoundData = {}
   hasPaused = false
 
   if (isMuted) muteSound()
-
-  setTimeout(() => {
-    if (!hasPaused) soundPlayer.play()
-
-    currentHandle = setInterval(() => {
-      currentSoundData.duration = soundPlayer.duration()
-      currentSoundData.seek = soundPlayer.seek()
-    }, 50)
-  }, 500)
 }
 
 export const onPlayerEvent = (emit) => {
   setInterval(() => {
     const { seek, duration } = currentSoundData
 
+    if (hasPaused) return null
+
     if (seek === 0) {
       emit('done')
       currentSoundData.seek = null
-    }
-
-    if (isNumber(seek)) {
+    } else if (isNumber(seek)) {
       emit('trackPosition', { duration, seek })
     }
   }, 50)
