@@ -6,6 +6,9 @@
     <div slot="main">
       <div v-if="getUser">
         <h1 class="f-headline mv3" v-text="getUser.username"></h1>
+        <div v-if="isCurrentUser">
+          <h2 class="f2 mv3 gray" v-text="`(${$t('this is you')})`"></h2>
+        </div>
         <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
       </div>
       <div v-if="!getUser">
@@ -31,7 +34,7 @@
           </div>
         </div>
 
-        <div class="mv4 tc" v-if="!isCurrentUser">
+        <div class="mv4 tc" v-if="!isCurrentUser && userIsAuthenticated">
           <button-component @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
             <div>
               <div v-if="getUser.isFollowedByCurrentUser" v-text="$t('Unfollow')"></div>

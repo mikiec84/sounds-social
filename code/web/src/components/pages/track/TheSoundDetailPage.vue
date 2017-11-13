@@ -63,7 +63,7 @@
         </div>
       </div>
       <div slot="sidebar">
-        Awesome sidebar! (add meta info and so on)
+
       </div>
     </layout-with-sidebar>
   </div>
@@ -74,7 +74,7 @@
   import { addCoverFile } from '../../../api/StorageApi'
   import { detailSoundQuery, removeSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import CommentBox from '../../stateful/Comment/CommentBox.vue'
+  import CommentBox from '../../stateful/Comment/StatefulCommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
   import { mapGraphlDataToSound } from '../../../func/createSound'
 

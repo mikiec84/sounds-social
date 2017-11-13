@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { constant } from 'lodash'
 
 import { isAuthenticated } from './api/AuthApi'
 import store from './store'
@@ -11,6 +12,7 @@ import ProfilePage from './components/pages/TheProfilePage.vue'
 import ProfileEditPage from './components/pages/profile/TheProfileEditPage.vue'
 import SoundDetailPage from './components/pages/track/TheSoundDetailPage.vue'
 import SoundEditPage from './components/pages/track/TheSoundEditPage.vue'
+import SoundsPage from './components/pages/sounds/TheSoundsPage'
 
 Vue.use(Router)
 
@@ -23,13 +25,54 @@ const closePlayerListIfVisible = () => {
 const router = new Router({
   mode: 'history',
   routes: [
-    { name: 'home', path: '/', component: HomePage },
-    { name: 'discover', path: '/discover', component: DiscoverPage },
-    { name: 'upload', path: '/upload', component: UploadPage },
-    { name: 'profile-detail', path: '/profile/:id', component: ProfilePage },
-    { name: 'profile-edit', path: '/profile/:id/edit', component: ProfileEditPage },
-    { name: 'sound-detail', path: '/sounds/:id', component: SoundDetailPage },
-    { name: 'sound-edit', path: '/sounds/:id/edit', component: SoundEditPage },
+    {
+      name: 'home',
+      path: '/',
+      component: HomePage,
+      meta: { needsAuth: constant(false) },
+    },
+    {
+      name: 'discover',
+      path: '/discover',
+      component: DiscoverPage,
+      meta: { needsAuth: constant(false) },
+    },
+    {
+      name: 'sounds',
+      path: '/sounds',
+      component: SoundsPage,
+      meta: { needsAuth: constant(false) },
+    },
+    {
+      name: 'upload',
+      path: '/upload',
+      component: UploadPage,
+      meta: { needsAuth: constant(true) },
+    },
+    {
+      name: 'profile-detail',
+      path: '/profile/:id',
+      component: ProfilePage,
+      meta: { needsAuth: ({ params }) => params.id === 'me' },
+    },
+    {
+      name: 'profile-edit',
+      path: '/profile/:id/edit',
+      component: ProfileEditPage,
+      meta: { needsAuth: constant(true) },
+    },
+    {
+      name: 'sound-detail',
+      path: '/sounds/:id',
+      component: SoundDetailPage,
+      meta: { needsAuth: constant(false) },
+    },
+    {
+      name: 'sound-edit',
+      path: '/sounds/:id/edit',
+      component: SoundEditPage,
+      meta: { needsAuth: constant(false) },
+    },
   ],
 })
 
@@ -39,8 +82,9 @@ router.beforeEach(async (to, from, next) => {
   }
 
   const authenticated = await isAuthenticated()
+  Vue.prototype.userIsAuthenticated = authenticated
 
-  if (to.path !== '/' && !authenticated) {
+  if (!authenticated && to.meta.needsAuth(to)) {
     router.push({ name: 'home' })
   } else {
     closePlayerListIfVisible()

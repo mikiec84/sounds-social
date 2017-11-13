@@ -38,6 +38,7 @@ export const messages = {
       'Add comment': 'Kommentar hinzufügen',
       'Click here to upload sound': 'Hier klicken um Sound heraufzuladen',
       'Click here to upload image': 'Hier klicken um Bild heraufzuladen',
+      'this is you': 'das bist du',
     },
   }
 }

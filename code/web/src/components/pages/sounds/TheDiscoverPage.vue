@@ -14,10 +14,6 @@
         <sound-list-component :isDiscover="true"></sound-list-component>
       </div>
       <div slot="sidebar">
-        Hi Matteo!
-
-        <p>Add List Filters (no repost)</p>
-        <p>Other Infos</p>
       </div>
     </layout-with-sidebar>
   </div>

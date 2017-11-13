@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="shadow-1">
-    <header-component :active-item-id="current" @logout="authLogOut"></header-component>
+    <header-component
+      :active-item-id="current"
+      :is-logged-in="userIsAuthenticated"
+      @logout="authLogOut"></header-component>
     </div>
       <stateful-sound-player
         @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"

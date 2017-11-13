@@ -9,7 +9,7 @@
               :content="comment.content"></comment-component>
     </div>
 
-    <div class="mt4">
+    <div class="mt4" v-if="userIsAuthenticated">
       <form @submit.prevent="addComment">
         <textarea class="w-50" style="height: 50px" v-model="comment"></textarea>
         <div class="mt3">
@@ -21,7 +21,7 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import CommentComponent from './SingleComment.vue'
+  import CommentComponent from './StatefulSingleComment.vue'
   import { addComment } from '../../../api/CommentApi'
 
   const listCommentsQuery = gql`
