@@ -28,6 +28,7 @@
     "lodash": "^4.17.4",
     "meteor-apollo-accounts": "^2.0.3",
     "moment": "^2.19.1",
+    "mousetrap": "^1.6.1",
     "shuffle-seed": "^1.1.6",
     "tachyons": "^4.9.0",
     "vue": "^2.5.2",

@@ -21,6 +21,8 @@ const changeSoundByKeyIfExists = ({ sounds, dispatch, keyToPlay }) => {
   else dispatch('pause')
 }
 
+const hasSounds = state => state.sounds.length > 0
+
 const filterOutSoundById = soundIdToFilter => filter(sound => sound.id !== soundIdToFilter)
 const isAtNthSound = nthIndex => soundId => sounds => parseInt(
   findSoundKeyById(soundId)(sounds),
@@ -80,7 +82,7 @@ export const soundPlayerModule = {
     },
     addSoundToPlayer: ({ commit, state, getters, dispatch }, { sound, relativePosition }) => {
       if (collectionHasPlaylistFields([sound]) && sound && !findSoundById(sound.id)(state.sounds)) {
-        const hasSounds = state.sounds.length > 0
+        const hasSoundsInState = hasSounds(state)
 
         commit('ADD_SOUND_TO_PLAYER_PLAYLIST', {
           positionIndex: parseInt(
@@ -90,7 +92,7 @@ export const soundPlayerModule = {
           sounds: [sound],
         })
 
-        if (!hasSounds) dispatch('playNew')
+        if (!hasSoundsInState) dispatch('playNew')
         else dispatch('openPlayerPlayingNowList')
       }
     },
@@ -144,11 +146,15 @@ export const soundPlayerModule = {
       commit('PLAY_PLAYER', true)
       commit('RESET_SOUND_POSITION', true)
     },
-    play: ({ commit }) => {
+    play: ({ commit, state }) => {
+      if (!hasSounds(state)) return null
+
       continueCurrentSound()
       commit('PLAY_PLAYER', true)
     },
-    pause: ({ commit }) => {
+    pause: ({ commit, state }) => {
+      if (!hasSounds(state)) return null
+
       pauseCurrentSound()
       commit('PLAY_PLAYER', false)
     },

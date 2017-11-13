@@ -18,21 +18,22 @@
     @openList="openPlayerList"
     @closeList="closePlayerList"
 
-    @play="$store.dispatch('play')"
-    @pause="$store.dispatch('pause')"
+    @play="playCurrent"
+    @pause="pauseCurrent"
     @stepForward="stepForward"
-    @stepBackward="$store.dispatch('playerStepBackward')"
+    @stepBackward="stepBackward"
     @seek="$store.dispatch('playerSeekRelativeDecimal', arguments[0])"
 
     @randomize="changeRandomMode(arguments[0])"
     @loop="changeLoopMode(arguments[0])"
     @loopSingle="changeLoopSingleMode(arguments[0])"
 
-    @mute="$store.dispatch('mutePlayer')"
-    @unmute="$store.dispatch('unmutePlayer')"
+    @mute="mutePlayer"
+    @unmute="unmutePlayer"
   ></sound-player>
 </template>
 <script>
+  import Mousetrap from 'mousetrap'
   import { RANDOM_MODE, LOOP_SINGLE_MODE, LOOP_MODE } from '../../../constants/PlayerConstants'
   import { onPlayerEvent } from '../../../func/SoundPlayer'
 
@@ -44,8 +45,31 @@
         if (event === 'done') this.$store.dispatch('changeSoundAfterFinished')
         if (event === 'trackPosition') this.$store.dispatch('changeSoundPosition', data)
       })
+
+      const { state } = this.$store
+
+      Mousetrap.bind('space', () => this[state.soundPlayer.isPlaying ? 'pauseCurrent' : 'playCurrent']())
+      Mousetrap.bind('m', () => this[state.soundPlayer.isMuted ? 'unmutePlayer' : 'mutePlayer']())
+      Mousetrap.bind('shift+right', this.stepForward)
+      Mousetrap.bind('shift+left', this.stepBackward)
+      Mousetrap.bind('shift+r', () => this.changeRandomMode(true))
+      Mousetrap.bind('shift+l', () => this.changeLoopMode(true))
+      Mousetrap.bind('shift+s', () => this.changeLoopSingleMode(true))
+      Mousetrap.bind('shift+n', this.resetMode)
     },
     methods: {
+      playCurrent () {
+        this.$store.dispatch('play')
+      },
+      pauseCurrent () {
+        this.$store.dispatch('pause')
+      },
+      mutePlayer () {
+        this.$store.dispatch('mutePlayer')
+      },
+      unmutePlayer () {
+        this.$store.dispatch('unmutePlayer')
+      },
       openSound (soundId) {
         this.$emit('openSound', soundId)
       },
@@ -76,8 +100,14 @@
       changeLoopSingleMode (doChange) {
         changeModeOrReset(doChange, this.$store, LOOP_SINGLE_MODE)
       },
+      resetMode () {
+        this.$store.dispatch('changePlayerMode', { mode: '' })
+      },
       stepForward () {
         this.$store.dispatch('playerStepForward')
+      },
+      stepBackward () {
+        this.$store.dispatch('playerStepBackward')
       },
     },
   }
