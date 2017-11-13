@@ -48,8 +48,20 @@
 
       const { state } = this.$store
 
-      Mousetrap.bind('space', () => this[state.soundPlayer.isPlaying ? 'pauseCurrent' : 'playCurrent']())
-      Mousetrap.bind('m', () => this[state.soundPlayer.isMuted ? 'unmutePlayer' : 'mutePlayer']())
+      Mousetrap.bind('space', e => {
+        e.preventDefault()
+
+        if (state.soundPlayer.isPlaying) this.pauseCurrent()
+        else this.playCurrent()
+      })
+      Mousetrap.bind('m', () => {
+        if (state.soundPlayer.isMuted) this.unmutePlayer()
+        else this.mutePlayer()
+      })
+      Mousetrap.bind('shift+w', () => {
+        if (state.soundPlayer.playerPlayingNowVisible) this.closePlayerList()
+        else this.openPlayerList()
+      })
       Mousetrap.bind('shift+right', this.stepForward)
       Mousetrap.bind('shift+left', this.stepBackward)
       Mousetrap.bind('shift+r', () => this.changeRandomMode(true))
