@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
   import FeedComponent from './sounds/TheFeedPage.vue'
@@ -56,6 +57,7 @@
           .then(() => {
             getUserId().then(id => {
               if (id) this.isAuthenticated = true
+              Vue.prototype.userIsAuthenticated = true
             })
           })
           .catch(err => {

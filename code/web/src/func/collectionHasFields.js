@@ -11,5 +11,5 @@ export const collectionHasPlaylistFields = collectionHasFields(
 )
 
 export const collectionHasNotificationFields = collectionHasFields(
-  ['id', 'content', 'imageUrl'],
+  ['id', 'content', 'imageUrl', 'authorId', 'authorName'],
 )

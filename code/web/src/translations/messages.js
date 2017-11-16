@@ -33,12 +33,15 @@ export const messages = {
       'Edit profile': 'Profil editieren',
       'User not found': 'User nicht gefunden',
       'No sounds found': 'Keine Sounds gefunden',
+      'No sound playing': 'Kein Sound am Spielen',
       'File uploaded': 'File heraufgeladen',
       'Update profile avatar': 'Profil Avatar ändern',
       'Add comment': 'Kommentar hinzufügen',
       'Click here to upload sound': 'Hier klicken um Sound heraufzuladen',
       'Click here to upload image': 'Hier klicken um Bild heraufzuladen',
       'this is you': 'das bist du',
+      'New comment on your {{type}} "{{title}}"': 'Neuer Kommentar auf deinem {{type}} "{{title}}"',
+      'Open notification center': 'Notification Center öffnen',
     },
   }
 }

@@ -74,6 +74,9 @@ class TrackCollection extends Mongo.Collection
 
     this.update({ _id: trackId }, { $set: { coverFileId } })
   }
+  findOneById(_id) {
+    return this.findOne({ _id })
+  }
 }
 
 export const trackCollection = new TrackCollection('tracks')

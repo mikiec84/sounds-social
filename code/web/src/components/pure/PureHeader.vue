@@ -16,7 +16,7 @@
               v-for="item in menuItems"
               :key="item.id"
               class="f6 fw4 no-underline pv2 ph3-l ph2"
-              :class="{ 'hover-white': !isActive(item), 'white-40': isActive(item) }"
+              :class="{ 'color-inherit hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"
               v-text="item.label"></router-link>
       <div v-if="isLoggedIn" class="dib ml1 mr3">
@@ -28,15 +28,17 @@
             <div class="tc pv2" v-if="$_.isEmpty(notifications)" v-text="$t('No notifications')"></div>
             <div v-if="!$_.isEmpty(notifications)">
               <div v-for="item in notifications" :key="item.id">
-                <div class="pointer db cf mv2 pv2" @click="$emit('openNotification', item)">
+                <div class="pointer db cf mv2 pv2 dim" @click="$emit('openNotification', item)">
                   <div class="fl w-20">
-                    <div class="contain bg-center w-100" :style="`height: 40px; background-image: url(${item.imageUrl})`"></div>
+                    <div class="contain bg-center w-100" :style="`height: 50px; background-image: url(${item.imageUrl})`"></div>
                   </div>
                   <div class="fl w-80 pl2">
+                    <div class="gray pb1 f7" v-text="item.authorName" @click="openAuthor(item, $event)"></div>
                     <div class="f6 lh-title black-80" v-text="item.content"></div>
                   </div>
                 </div>
               </div>
+              <div class="pointer black tc pv2 dim f7 b" @click="$emit('openNotificationPage')" v-text="$t('Open notification center')"></div>
             </div>
           </div>
         </pure-menu-dropdown>
@@ -70,6 +72,10 @@
     methods: {
       isActive (item) {
         return this.activeItemId === item.id
+      },
+      openAuthor (item, e) {
+        e.stopPropagation()
+        this.$emit('openAuthor', item)
       },
     },
     data () {

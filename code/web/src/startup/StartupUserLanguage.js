@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import moment from 'moment'
 import { get } from 'lodash/fp'
 import { apolloClient } from '../api/graphql/client'
 
@@ -27,4 +28,6 @@ if (!getLanguage()) {
       window.location.reload()
     }
   })
+} else {
+  moment.locale(getLanguage())
 }
