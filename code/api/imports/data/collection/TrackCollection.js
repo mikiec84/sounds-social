@@ -27,6 +27,17 @@ export const trackSchema = new SimpleSchema({
   isPublic: {
     type: Boolean,
   },
+  playsCount: {
+    type: Number,
+    optional: true,
+    autoValue () {
+      if (this.isInsert) {
+        return 0
+      } else if (this.isUpsert) {
+        return { $setOnInsert: 0 }
+      }
+    }
+  },
 })
 
 class TrackCollection extends Mongo.Collection
@@ -73,6 +84,9 @@ class TrackCollection extends Mongo.Collection
     const coverFileId = fileCollection.insert({ ...coverFileData })
 
     this.update({ _id: trackId }, { $set: { coverFileId } })
+  }
+  countPlay(_id) {
+    this.update({ _id }, { $inc: { playsCount: 1 } })
   }
   findOneById(_id) {
     return this.findOne({ _id })

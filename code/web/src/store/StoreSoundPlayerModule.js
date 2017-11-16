@@ -10,6 +10,7 @@ import {
   unmuteSound,
   seekCurrentSound,
 } from '../func/SoundPlayer'
+import { startPlayingSound, countPlayingSound } from '../api/SoundApi'
 import { LOOP_SINGLE_MODE, LOOP_MODE, RANDOM_MODE, isValidMode } from '../constants/PlayerConstants'
 import { collectionHasPlaylistFields } from '../func/collectionHasFields'
 
@@ -145,6 +146,12 @@ export const soundPlayerModule = {
       playSound(sound.soundUrl)
       commit('PLAY_PLAYER', true)
       commit('RESET_SOUND_POSITION', true)
+
+      startPlayingSound(sound.id).then(({ data: { startPlayingSound: { soundPlayingId } } }) => {
+        setTimeout(() => {
+          if (state.isPlaying) countPlayingSound(sound.id, soundPlayingId)
+        }, 1000 * 6)
+      })
     },
     play: ({ commit, state }) => {
       if (!hasSounds(state)) return null

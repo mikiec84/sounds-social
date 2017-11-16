@@ -20,6 +20,7 @@ export const detailSoundQuery = gql`
         _id
         username
       }
+      playsCount
     }
   }
 `
@@ -62,5 +63,28 @@ export const removeSound = id => apolloClient.mutate({
     }
   `,
   variables: { id },
+  refetchQueries: ['DetailTrack'],
+})
+
+export const startPlayingSound = id => apolloClient.mutate({
+  mutation: gql`
+    mutation StartPlayingSound($id: String!) {
+      startPlayingSound(soundId: $id) {
+        soundPlayingId
+      }
+    }
+  `,
+  variables: { id },
+})
+
+export const countPlayingSound = (id, soundPlayingId) => apolloClient.mutate({
+  mutation: gql`
+    mutation StartPlayingSound($id: String! $soundPlayingId: String!) {
+      countPlayingSound(soundPlayingId: $soundPlayingId soundId: $id) {
+        soundPlayingId
+      }
+    }
+  `,
+  variables: { id, soundPlayingId },
   refetchQueries: ['DetailTrack'],
 })

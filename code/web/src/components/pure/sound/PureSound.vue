@@ -21,6 +21,7 @@
                     :seek="waveformSeek"
                     :fileUrl="fileUrl"></sound-waveform>
           </div>
+          <slot name="metadata"></slot>
 
           <div v-if="description" class="mt4 f5 black-80 lh-copy measure-wide" v-text="description">
           </div>

@@ -1,8 +1,11 @@
 import moment from 'moment'
 import { check } from 'meteor/check'
+import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
+
+let tracksBeingPlayed = []
 
 const trackGraphqlSchema =  createCollectionSchema({
   type: 'Track',
@@ -45,6 +48,10 @@ const trackGraphqlSchema =  createCollectionSchema({
         type: 'File',
         resolve: root => fileCollection.findOneById(root.fileId),
       },
+      playsCount: {
+        type: 'Int',
+        resolve: root => root.playsCount || 0,
+      },
       createdAt: {
         type: 'String',
         resolve: (root, args, context) => {
@@ -69,9 +76,18 @@ const trackGraphqlSchema =  createCollectionSchema({
 })
 
 trackGraphqlSchema.typeDefs.push(`
+# Represents a sound being played
+type SoundPlay {
+  # Random id when sound is started playing
+  soundPlayingId: String
+  soundId: String
+}
+
 extend type Mutation {
   createTrack(data: TrackInput!): Track
   addCoverFile(trackId: String! fileData: FileData!): Track
+  startPlayingSound(soundId: String!): SoundPlay
+  countPlayingSound(soundPlayingId: String! soundId: String!): SoundPlay
 }
 `)
 
@@ -80,6 +96,50 @@ trackGraphqlSchema.resolvers.Mutation.createTrack = (root, args, context) => {
   check(userId, String)
 
   return trackCollection.addTrack(args.data, userId)
+}
+
+trackGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) => {
+  const { userId } = context
+  const { soundId } = args
+
+  check(userId, String)
+  check(soundId, String)
+
+  const soundPlayingId = Random.id()
+
+  tracksBeingPlayed.push({
+    soundPlayingId,
+    soundId,
+    userId,
+    startedAt: new Date(),
+  })
+
+  return { soundPlayingId, soundId }
+}
+
+trackGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) => {
+  const { userId } = context
+  check(userId, String)
+
+  const { soundPlayingId, soundId } = args
+  check(soundPlayingId, String)
+  check(soundId, String)
+
+  const shouldCountPlay = tracksBeingPlayed
+    .filter(play => play.userId === userId)
+    .every(play => {
+      const sameIds = play.soundPlayingId === soundPlayingId && play.soundId === soundId
+      const startedFiveSecondsAgo = moment
+        .duration(moment(new Date()).diff(play.startedAt)).seconds() > 5
+
+      return sameIds && startedFiveSecondsAgo
+    })
+
+  if (shouldCountPlay) trackCollection.countPlay(soundId)
+
+  tracksBeingPlayed = tracksBeingPlayed.filter(play => play.userId !== userId)
+
+  return { soundPlayingId, soundId }
 }
 
 trackGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {

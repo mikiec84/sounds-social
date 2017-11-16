@@ -12,7 +12,11 @@ export const soundStories = moduleArg => storiesOf('Pure Sound', moduleArg)
   description="Et excepturi magni fugiat temporibus. Placeat nostrum inventore temporibus atque nesciunt nihil qui quasi. "
   :noBorder="true"
   fileUrl="https://www.dropbox.com/s/25xspuhs86x7290/till_the_end_short_snippet.wav?raw=1"
-></sound-component>`,
+>
+<div slot="metadata">
+  <div class="gray">10 ❤️</div>
+</div>
+</sound-component>`,
   })).add('list view', () => ({
     methods: { close: action('close!') },
     template: `

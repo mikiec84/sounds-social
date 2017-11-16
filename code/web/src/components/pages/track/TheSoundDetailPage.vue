@@ -21,7 +21,11 @@
                   :fileUrl="$_fp.get('file.url')(getTrack)"
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
-                  :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0"></sound-component>
+                  :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0">
+            <div slot="metadata">
+              <div class="gray f6"><span v-text="getTrack.playsCount"></span> <icon-component icon="play-circle"></icon-component></div>
+            </div>
+          </sound-component>
 
           <div class="ph3">
             <div class="mt4">
