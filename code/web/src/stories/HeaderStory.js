@@ -24,7 +24,7 @@ export const headerStories = moduleArg => storiesOf('Pure Header', moduleArg)
 @openNotification="openNotification" 
 @openAuthor="openAuthor" 
 activeItemId="sounds"></header-component>`,
-    data() {
+    data () {
       return {
         notifications: [
           { id: 1, link: '#', content: 'Sound has successfully uploaded', authorId, authorName, imageUrl },
