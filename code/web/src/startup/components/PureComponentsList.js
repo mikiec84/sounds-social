@@ -2,6 +2,7 @@ import Button from '../../components/pure/PureButton.vue'
 import Error from '../../components/pure/PureError.vue'
 import Select from '../../components/pure/PureSelect.vue'
 import Header from '../../components/pure/PureHeader.vue'
+import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
 import Input from '../../components/pure/PureInput.vue'
 import Modal from '../../components/pure/PureModal.vue'
 import Icon from '../../components/pure/PureIcon.vue'
@@ -31,6 +32,7 @@ export const ComponentsList = [
   { id: 'input-component', component: Input },
   { id: 'modal-component', component: Modal },
   { id: 'icon-component', component: Icon },
+  { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },
   { id: 'layout-default', component: Layout },

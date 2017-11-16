@@ -33,6 +33,7 @@
     "tachyons": "^4.9.0",
     "vue": "^2.5.2",
     "vue-apollo": "^2.1.0-rc.8",
+    "vue-js-popover": "^1.1.6",
     "vue-router": "^3.0.1",
     "vue-select": "^2.3.0",
     "vuelidate": "^0.6.1",

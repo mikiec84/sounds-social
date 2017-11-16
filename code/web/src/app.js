@@ -11,6 +11,7 @@ import './startup/StartupVueSelect'
 import './startup/StartupAuthMixin'
 import './startup/StartupLodashPlugin'
 import './startup/StartupFormValidate'
+import './startup/StartupPopover'
 import { apolloProvider } from './startup/StartupApolloProvider'
 
 sync(store, router)
