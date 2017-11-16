@@ -44,6 +44,8 @@ const eventTemplateHandlers = `
 
 @mute="actionCall('mute')"
 @unmute="actionCall('unmute')"
+
+@loadMoreSounds="actionCall('loadMoreSounds')"
 `
 
 export const soundPlayerStories = moduleArg => {
@@ -152,8 +154,25 @@ export const soundPlayerStories = moduleArg => {
         actionCall (type, args) { action(type)(args) },
       },
     }))
-    .add('a lot of sounds', () => ({
-      template: `<sound-player :listVisible="true" :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+    .add('a lot of sounds with more to load', () => ({
+      template: `<sound-player :listVisible="true" :hasMoreSounds="true" :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
+      data () {
+        return {
+          sounds: [
+            ...soundList,
+            ...soundList,
+            ...soundList,
+            ...soundList,
+            ...soundList,
+          ],
+        }
+      },
+      methods: {
+        actionCall (type, args) { action(type)(args) },
+      },
+    }))
+    .add('a lot of sounds without more to load', () => ({
+      template: `<sound-player :listVisible="true" :hasMoreSounds="false" :isPlaying="true" current="XFff2" :sounds="sounds" ${eventTemplateHandlers}></sound-player>`,
       data () {
         return {
           sounds: [

@@ -1,5 +1,5 @@
 <template>
-  <!-- TODO add loading spinner? -->
+  <!-- TODO add loading spinner -->
   <div>
     <div v-if="!loading">
       <sound-list
@@ -16,11 +16,8 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
-  import { find } from 'lodash/fp'
   import { mapGraphlDataToSound } from '../../../func/createSound'
-
-  // TODO: pass apollo query as param and create "FeedTrackList.vue" and "ProfileTrackList.vue"
-  // TODO: use moment to format createdAt
+  import { keepAfter } from '../../../func/filter/keepAfter'
 
   const tracksQuery = gql`
     query TrackListQuery($userId: String!, $loggedInFeed: String!) {
@@ -76,10 +73,10 @@
     },
     methods: {
       playTrack (data) {
-        this.$store.dispatch('playWithReset', {
-          sound: mapGraphlDataToSound(
-            find(track => track._id === data._id)(this.listTrack)
-          ),
+        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listTrack)
+
+        this.$store.dispatch('playFeedWithReset', {
+          sounds: soundsToPlay.map(s => mapGraphlDataToSound(s)),
         })
       },
       mapTracks (tracks) {

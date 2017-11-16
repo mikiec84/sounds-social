@@ -78,6 +78,10 @@ export const soundPlayerModule = {
       dispatch('resetSound')
       dispatch('addSoundToPlayer', { sound })
     },
+    playFeedWithReset: ({ dispatch }, { sounds }) => {
+      dispatch('resetSound')
+      sounds.forEach(sound => dispatch('addSoundToPlayer', { sound }))
+    },
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
     },

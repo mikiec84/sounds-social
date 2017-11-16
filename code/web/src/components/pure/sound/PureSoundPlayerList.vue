@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white b--black-20 br bl bb overflow-y-auto" style="max-height: 70vh">
+  <div ref="soundList" class="bg-white b--black-20 br bl bb overflow-y-auto" style="max-height: 70vh">
     <div v-for="(sound, soundIndex) in sounds" :key="sound.id" class="pa2">
       <div class="cf">
         <div class="fl w-20">
@@ -42,6 +42,8 @@
   </div>
 </template>
 <script>
+  let hasEmittedLoadingMoreSounds = false
+
   export default {
     props: {
       sounds: {
@@ -53,9 +55,31 @@
       isPlaying: {
         type: Boolean,
       },
+      hasMoreSounds: {
+        type: Boolean,
+      },
       inRandomMode: {
         type: Boolean,
       },
+    },
+    mounted () {
+      const scrollBreakpoint = 700
+      const { soundList } = this.$refs
+
+      soundList.addEventListener('scroll', (e) => {
+        if (!this.hasMoreSounds) return null
+
+        const difference = e.target.scrollHeight - e.target.scrollTop
+
+        if (difference < scrollBreakpoint && !hasEmittedLoadingMoreSounds) {
+          this.$emit('loadMoreSounds')
+          hasEmittedLoadingMoreSounds = true
+        }
+
+        if (difference > scrollBreakpoint && hasEmittedLoadingMoreSounds) {
+          hasEmittedLoadingMoreSounds = false
+        }
+      })
     },
     methods: {
       isCurrentSound (sound) {

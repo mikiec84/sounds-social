@@ -1,5 +1,5 @@
 <template>
-  <div :class="['ba b--black-20 pv3 ph2 user-select-none', { 'gray': !hasSounds }]">
+  <div ref="soundPlayer" :class="['ba b--black-20 pv3 ph2 user-select-none', { 'gray': !hasSounds }]">
     <div class="cf mw8 center">
       <div class="fl w-40 w-25-l">
         <div v-if="currentSound">
@@ -18,6 +18,8 @@
                 :currentSound="currentSound"
                 :isPlaying="isPlaying"
                 :inRandomMode="inRandomMode"
+                :hasMoreSounds="hasMoreSounds"
+                @loadMoreSounds="$emit('loadMoreSounds')"
                 @play="$emit('play')"
                 @pause="$emit('pause')"
                 @openSound="$emit('openSound', arguments[0])"
@@ -97,6 +99,11 @@
         required: false,
         default: false,
       },
+      hasMoreSounds: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
       current: {
         type: String,
         required: false,
@@ -120,6 +127,15 @@
         type: Boolean,
         default: false,
       },
+    },
+    mounted () {
+      document.addEventListener('click', () => {
+        if (this.listVisible) this.$emit('closeList')
+      })
+
+      this.$refs.soundPlayer.addEventListener('click', (e) => {
+        e.stopPropagation()
+      })
     },
     computed: {
       hasSounds () {
