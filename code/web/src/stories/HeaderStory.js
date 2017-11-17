@@ -14,6 +14,12 @@ export const headerStories = moduleArg => storiesOf('Pure Header', moduleArg)
   .add('sounds active', () => ({
     template: '<header-component activeItemId="sounds"></header-component>',
   }))
+  .add('search term, search active', () => ({
+    template: '<header-component searchQuery="house music" @search="search" activeItemId="sounds"></header-component>',
+    methods: {
+      search: action('search'),
+    },
+  }))
   .add('sounds active, logged in', () => ({
     template: '<header-component :isLoggedIn="true" activeItemId="sounds"></header-component>',
   }))

@@ -7,8 +7,8 @@
       </router-link>
     </div>
     <div class="dtc v-mid pv3">
-      <div class="dib ml3-l ml2">
-        <input-component :placeholder="$t('Search')"></input-component>
+      <div class="dib ml3-l ml2 gray">
+        <input-component :value="searchQuery" @onEnter="$emit('search', arguments[0])" :placeholder="$t('Search')"></input-component>
       </div>
     </div>
     <div class="dtc v-mid tr pa3-l pa1 white-70">
@@ -62,6 +62,11 @@
       isLoggedIn: {
         type: Boolean,
         default: false,
+      },
+      searchQuery: {
+        type: String,
+        required: false,
+        default: '',
       },
       notifications: {
         type: Array,

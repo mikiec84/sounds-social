@@ -88,3 +88,24 @@ export const countPlayingSound = (id, soundPlayingId) => apolloClient.mutate({
   variables: { id, soundPlayingId },
   refetchQueries: ['DetailTrack'],
 })
+
+export const searchSoundQuery = gql`
+  query SearchSoundsQuery($query: String!) {
+    listTrack: searchSound(query: $query) {
+      _id
+      name
+      coverFile {
+        url
+      }
+      description
+      createdAt
+      file {
+        url
+      }
+      creator {
+        _id
+        username
+      }
+    }
+  }
+`

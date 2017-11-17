@@ -5,6 +5,8 @@
       :active-item-id="current"
       :is-logged-in="userIsAuthenticated"
       :notifications="notificationList"
+      :search-query="searchQuery"
+      @search="doSearch"
       @openNotification="openNotification"
       @openAuthor="$router.push({ name: 'profile-detail', params: { id: arguments[0].authorId } })"
       @openNotificationPage="openNotificationPage"
@@ -47,6 +49,9 @@
       notificationList () {
         return this.listNotifications.map(mapNotification)
       },
+      searchQuery () {
+        if (this.$route.name === 'search') return this.$route.query.q
+      },
     },
     methods: {
       openNotification ({ originalNotification: { referenceType, referenceId } }) {
@@ -56,6 +61,9 @@
       },
       openNotificationPage () {
         window.alert('To be implemented')
+      },
+      doSearch (q) {
+        this.$router.push({ name: 'search', query: { q } })
       },
     },
   }

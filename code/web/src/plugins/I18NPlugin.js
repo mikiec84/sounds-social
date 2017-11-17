@@ -9,6 +9,6 @@ i18next.init({
 
 export const I18NPlugin = {
   install (Vue) {
-    Vue.prototype.$t = msg => i18next.t(msg)
+    Vue.prototype.$t = (...args) => i18next.t(...args)
   },
 }

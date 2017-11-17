@@ -40,6 +40,7 @@
     }
   `
 
+  // TODO: remove both userId and isDiscover params
   export default {
     props: {
       userId: {
@@ -50,6 +51,25 @@
         type: Boolean,
         required: false,
       },
+      query: {
+        type: Object,
+        required: false,
+        default () {
+          return tracksQuery
+        },
+      },
+      defineQueryVariables: {
+        type: Function,
+        required: false,
+        default: (scope) => {
+          const { isDiscover, userId } = scope
+
+          return {
+            userId: (userId || ''),
+            loggedInFeed: !!userId || isDiscover ? '' : 'true',
+          }
+        },
+      },
     },
     data: () => ({
       tracks: [],
@@ -58,16 +78,14 @@
     }),
     apollo: {
       listTrack: {
-        query: tracksQuery,
+        query () {
+          return this.query
+        },
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
         variables () {
-          const { isDiscover, userId } = this
-
-          return {
-            userId: (userId || ''),
-            loggedInFeed: !!userId || isDiscover ? '' : 'true',
-          }
+          console.log(this.defineQueryVariables(this))
+          return this.defineQueryVariables(this)
         }
       },
     },

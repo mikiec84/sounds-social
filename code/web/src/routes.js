@@ -13,6 +13,7 @@ import ProfileEditPage from './components/pages/profile/TheProfileEditPage.vue'
 import SoundDetailPage from './components/pages/track/TheSoundDetailPage.vue'
 import SoundEditPage from './components/pages/track/TheSoundEditPage.vue'
 import SoundsPage from './components/pages/sounds/TheSoundsPage'
+import SearchPage from './components/pages/TheSearchPage.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,12 @@ const router = new Router({
       path: '/upload',
       component: UploadPage,
       meta: { needsAuth: constant(true) },
+    },
+    {
+      name: 'search',
+      path: '/search',
+      component: SearchPage,
+      meta: { needsAuth: constant(false) },
     },
     {
       name: 'profile-detail',

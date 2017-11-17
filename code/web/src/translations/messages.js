@@ -43,6 +43,7 @@ export const messages = {
       'this is you': 'das bist du',
       'New comment on your {{type}} "{{title}}"': 'Neuer Kommentar auf deinem {{type}} "{{title}}"',
       'Open notification center': 'Notification Center öffnen',
+      'Results for "{{query}}"': 'Resultate für "{{query}}"',
     },
   }
 }
