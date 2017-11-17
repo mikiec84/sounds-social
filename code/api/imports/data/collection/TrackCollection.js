@@ -67,6 +67,7 @@ class TrackCollection extends Mongo.Collection
       if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
         const { userId } = this.graphqlContext
 
+        selector.isPublic = true
         selector.creatorId = { $in: [
           ...userCollection.findFollowerIdsForUser(userId),
           userId,

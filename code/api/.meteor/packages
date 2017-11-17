@@ -32,6 +32,7 @@ komentify:comments-graphql
 practicalmeteor:chai
 practicalmeteor:mocha
 dispatch:mocha
+easysearch:core
 
 cfs:standard-packages
 cfs:filesystem

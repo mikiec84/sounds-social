@@ -4,6 +4,7 @@ import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
+import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
 let tracksBeingPlayed = []
 
@@ -89,6 +90,10 @@ extend type Mutation {
   startPlayingSound(soundId: String!): SoundPlay
   countPlayingSound(soundPlayingId: String! soundId: String!): SoundPlay
 }
+
+extend type Query {
+  searchSound(query: String!): [Track]
+}
 `)
 
 trackGraphqlSchema.resolvers.Mutation.createTrack = (root, args, context) => {
@@ -156,6 +161,16 @@ trackGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {
   if (track) trackCollection.updateCover(trackId, fileData)
 
   return track
+}
+
+trackGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
+  const { query } = args
+  check(query, String)
+
+  const { userId } = context
+  check(userId, String)
+
+  return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
 }
 
 export default trackGraphqlSchema
