@@ -14,4 +14,5 @@ test('keepAfter', () => {
   expect(itemsAfter[0].id).toBe(4)
   expect(itemsAfter[1].id).toBe(2)
   expect(itemsAfter[1].label).toBe('test 0')
+  expect(keepAfter(item => false)(items)).toEqual([])
 })

@@ -1,4 +1,4 @@
-import { getImage } from './getImage'
+import { getImage } from '../getImage'
 
 export const mapGraphlDataToSound = graphqlData => createSound(
   graphqlData._id,

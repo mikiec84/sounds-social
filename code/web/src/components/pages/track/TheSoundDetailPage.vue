@@ -80,7 +80,7 @@
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/StatefulCommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
-  import { mapGraphlDataToSound } from '../../../func/createSound'
+  import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
 
   export default {
     components: {

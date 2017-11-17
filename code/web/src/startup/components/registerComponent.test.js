@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { registerComponent } from './registerComponent'
 
+Vue.config.productionTip = false
+
 test('registering components helper', () => {
   const component = Vue.extend({
     template: '<button>Hi</div>',

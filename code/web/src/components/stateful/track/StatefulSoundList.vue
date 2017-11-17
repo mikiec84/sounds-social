@@ -16,7 +16,7 @@
 </template>
 <script type="text/ecmascript-6">
   import gql from 'graphql-tag'
-  import { mapGraphlDataToSound } from '../../../func/createSound'
+  import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
 
   const tracksQuery = gql`
