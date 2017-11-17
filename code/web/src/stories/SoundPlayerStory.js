@@ -197,7 +197,7 @@ export const soundPlayerStories = moduleArg => {
   <stateful-sound-player></stateful-sound-player>
   
   <div class="mt5">
-    <button-component @click="addTrack">Add track to tracklist</button-component>
+    <pure-button @click="addTrack">Add track to tracklist</pure-button>
   </div>
 </div>
       `,

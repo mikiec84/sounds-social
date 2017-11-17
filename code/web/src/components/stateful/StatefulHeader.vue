@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="shadow-1">
-    <header-component
+    <pure-header
       :active-item-id="current"
       :is-logged-in="userIsAuthenticated"
       :notifications="notificationList"
@@ -10,7 +10,7 @@
       @openNotification="openNotification"
       @openAuthor="$router.push({ name: 'profile-detail', params: { id: arguments[0].authorId } })"
       @openNotificationPage="openNotificationPage"
-      @logout="authLogOut"></header-component>
+      @logout="authLogOut"></pure-header>
     </div>
       <stateful-sound-player
         @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"

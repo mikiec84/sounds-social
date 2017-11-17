@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button-component @click="modalOpen = true" :color="buttonColor"><slot name="button"></slot></button-component>
+    <pure-button @click="modalOpen = true" :color="buttonColor"><slot name="button"></slot></pure-button>
     <confirm-modal v-if="modalOpen"
                    @confirm="confirm"
                    @abort="modalOpen = false"

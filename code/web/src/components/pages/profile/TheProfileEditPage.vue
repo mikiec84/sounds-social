@@ -30,14 +30,14 @@
         <div class="mt3">
           <label>
             <div class="mb2" v-text="$t('Website Url')"></div>
-            <input-component
+            <pure-input
                     name="websiteUrl"
                     @keyup="changeFormData('websiteUrl', arguments[0])"
-                    :value="formData.websiteUrl"></input-component>
+                    :value="formData.websiteUrl"></pure-input>
 
             <div v-if="$v.formData.websiteUrl.$error" class="mt3">
               <div v-if="!$v.formData.websiteUrl.url">
-                <error-component><div v-text="$t('Not a valid URL')"></div></error-component>
+                <pure-error><div v-text="$t('Not a valid URL')"></div></pure-error>
               </div>
             </div>
           </label>
@@ -46,19 +46,19 @@
         <div class="mt3">
           <label>
             <div class="mb2" v-text="$t('Profile Language')"></div>
-            <select-component
+            <pure-select
               :current="formData.language"
               :options="languageOptions"
-              @change="formData.language = arguments[0].value"></select-component>
+              @change="formData.language = arguments[0].value"></pure-select>
           </label>
         </div>
 
         <div class="mv4">
-          <button-component
+          <pure-button
             @click="updateProfile"
             :disabled="$v.$error"
             v-text="$t('Update profile')"
-          ></button-component>
+          ></pure-button>
         </div>
       </div>
     </div>

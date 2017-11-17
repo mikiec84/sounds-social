@@ -4,8 +4,8 @@
       <div class="fl w-40 w-25-l">
         <div v-if="currentSound">
           <div>
-            <sound-player-button @click="$emit(listVisible ? 'closeList' : 'openList')"
-                                 :icon="listVisible ? 'angle-up' : 'angle-down'"></sound-player-button>
+            <pure-sound-player-button @click="$emit(listVisible ? 'closeList' : 'openList')"
+                                 :icon="listVisible ? 'angle-up' : 'angle-down'"></pure-sound-player-button>
             <div class="dib pointer" @click="$emit('openSound', currentSound.id)">
               <div class="b" v-text="currentSound.title"></div>
             </div>
@@ -13,7 +13,7 @@
 
           <div v-if="listVisible" class="relative">
             <div class="absolute bg-white b--black-20 bl z-5" style="width: 350px; left: -10px; top: 16px">
-              <sound-player-list
+              <pure-sound-player-list
                 :sounds="sounds"
                 :currentSound="currentSound"
                 :isPlaying="isPlaying"
@@ -27,7 +27,7 @@
                 @moveSound="$emit('moveSound', arguments[0], arguments[1])"
                 @playSound="$emit('playSound', arguments[0])"
                 @openProfile="$emit('openProfile', arguments[0])"
-              ></sound-player-list>
+              ></pure-sound-player-list>
             </div>
           </div>
         </div>
@@ -36,24 +36,24 @@
         </div>
       </div>
       <div class="fl w-40 w-20-l f5">
-        <sound-player-button icon="step-backward"
+        <pure-sound-player-button icon="step-backward"
                              @click="$emit('stepBackward')"
-                             :disabled="!hasSounds"></sound-player-button>
-        <sound-player-button :icon="isPlaying ? 'pause' : 'play'"
+                             :disabled="!hasSounds"></pure-sound-player-button>
+        <pure-sound-player-button :icon="isPlaying ? 'pause' : 'play'"
                              @click="$emit(isPlaying ? 'pause' : 'play')"
-                             :disabled="!hasSounds"></sound-player-button>
-        <sound-player-button icon="step-forward"
+                             :disabled="!hasSounds"></pure-sound-player-button>
+        <pure-sound-player-button icon="step-forward"
                              @click="$emit('stepForward')"
-                             :disabled="!hasSounds || lastPlaying"></sound-player-button>
-        <sound-player-button icon="random"
+                             :disabled="!hasSounds || lastPlaying"></pure-sound-player-button>
+        <pure-sound-player-button icon="random"
                              @click="$emit('randomize', !inRandomMode)"
                              :disabled="!hasSounds"
-                             :inactive="!inRandomMode"></sound-player-button>
+                             :inactive="!inRandomMode"></pure-sound-player-button>
         <div class="dib">
-          <sound-player-button icon="repeat"
+          <pure-sound-player-button icon="repeat"
                                @click="changeLoopMode"
                                :disabled="!hasSounds"
-                               :inactive="!inLoopMode && !inLoopSingleMode"></sound-player-button>
+                               :inactive="!inLoopMode && !inLoopSingleMode"></pure-sound-player-button>
           <div class="relative" v-if="inLoopSingleMode">
             <div class="absolute f7 b pointer" @click="changeLoopMode" style="bottom: 10px;left: 14px">
               1
@@ -63,15 +63,15 @@
       </div>
       <div class="fl w-20 w-10-l">
         <div :class="['dib', { 'gray': isMuted }]">
-          <sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
+          <pure-sound-player-button :icon="isMuted ? 'volume-off' : 'volume-up'"
                                @click="$emit(isMuted ? 'unmute' : 'mute')"
-                               :disabled="!hasSounds"></sound-player-button>
+                               :disabled="!hasSounds"></pure-sound-player-button>
         </div>
         <div v-if="playingTime" v-text="playingTime" class="dib f7"></div>
       </div>
       <div class="dn db-l fl w-40" v-if="hasSounds">
         <div style="margin-top: 5px">
-          <sound-player-timeline :progress="timeLineProgress" @seek="$emit('seek', arguments[0])"></sound-player-timeline>
+          <pure-sound-player-timeline :progress="timeLineProgress" @seek="$emit('seek', arguments[0])"></pure-sound-player-timeline>
         </div>
       </div>
     </div>

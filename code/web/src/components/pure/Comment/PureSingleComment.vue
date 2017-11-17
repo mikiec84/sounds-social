@@ -11,7 +11,7 @@
       <div class="mt3 f4" v-text="content"></div>
 
       <div v-if="isRemovable" class="mt3">
-        <button-component color="red" @click="$emit('remove')" v-text="$t('Remove')"></button-component>
+        <pure-button color="red" @click="$emit('remove')" v-text="$t('Remove')"></pure-button>
       </div>
     </div>
   </div>

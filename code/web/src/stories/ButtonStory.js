@@ -3,10 +3,10 @@ import { action } from '@storybook/addon-actions'
 
 export const buttonStories = moduleArg => storiesOf('Pure Button', moduleArg)
   .add('with text', () => ({
-    template: '<button-component @click="action">Hello Button</button-component>',
+    template: '<pure-button @click="action">Hello Button</pure-button>',
     methods: { action: action('clicked') },
   }))
   .add('with some emoji', () => ({
-    template: '<button-component @click="action">😀 😎 👍 💯</button-component>',
+    template: '<pure-button @click="action">😀 😎 👍 💯</pure-button>',
     methods: { action: action('clicked') },
   }))

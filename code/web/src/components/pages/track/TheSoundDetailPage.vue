@@ -23,33 +23,33 @@
                   :isPlaying="isPlaying"
                   :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0">
             <div slot="metadata">
-              <div class="gray f6"><span v-text="getTrack.playsCount"></span> <icon-component icon="play-circle"></icon-component></div>
+              <div class="gray f6"><span v-text="getTrack.playsCount"></span> <pure-icon icon="play-circle"></pure-icon></div>
             </div>
           </sound-component>
 
           <div class="ph3">
             <div class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
-                <button-component @click="playNext" v-text="$t('Play next')"></button-component>
+                <pure-button @click="playNext" v-text="$t('Play next')"></pure-button>
               </div>
               <div class="dib mr2-l pb2 pb0-l">
-                <button-component @click="addToSoundPlayer" v-text="$t('Play later')"></button-component>
+                <pure-button @click="addToSoundPlayer" v-text="$t('Play later')"></pure-button>
               </div>
             </div>
 
             <div v-if="getTrack.isRemovable" class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
-                <button-component @click="$router.push({ name: 'sound-edit', params: { id: getTrack._id } })" v-text="$t('Edit')"></button-component>
+                <pure-button @click="$router.push({ name: 'sound-edit', params: { id: getTrack._id } })" v-text="$t('Edit')"></pure-button>
               </div>
               <div class="dib mr2-l pb2 pb0-l">
-                <confirm-modal-button
+                <pure-confirm-modal-button
                   modalIcon="trash-o"
                   buttonColor="red"
                   @confirm="removeSound"
                 >
                   <div slot="button" v-text="$t('Remove')"></div>
                   <div slot="modal" v-text="$t('Do you really want to delete this?')"></div>
-                </confirm-modal-button>
+                </pure-confirm-modal-button>
               </div>
               <file-upload-button
                       :buttonLabel="$t('Upload cover')"

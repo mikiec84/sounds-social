@@ -24,7 +24,7 @@
               :placeholder="`${$t('Sound description')}...`">{{description}}</textarea>
 
       <div class="pv3">
-        <button-component :disabled="isUploading" @click="$emit('publish')">{{buttonLabel}}</button-component>
+        <pure-button :disabled="isUploading" @click="$emit('publish')">{{buttonLabel}}</pure-button>
       </div>
     </div>
     <div v-if="!hasFile">

@@ -9,7 +9,7 @@ const selectOptions = [
 
 export const selectStories = moduleArg => storiesOf('Pure Select', moduleArg)
   .add('simple options', () => ({
-    template: '<div class="mw5"><select-component :options="options" @change="action"></select-component></div>',
+    template: '<div class="mw5"><pure-select :options="options" @change="action"></pure-select></div>',
     data () {
       return {
         options: selectOptions,
@@ -18,7 +18,7 @@ export const selectStories = moduleArg => storiesOf('Pure Select', moduleArg)
     methods: { action: action('changed') },
   }))
   .add('pre-selected', () => ({
-    template: '<div class="mw5"><select-component :options="options" :current="current" @change="action"></select-component></div>',
+    template: '<div class="mw5"><pure-select :options="options" :current="current" @change="action"></pure-select></div>',
     data () {
       return {
         options: selectOptions,

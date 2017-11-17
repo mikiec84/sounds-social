@@ -8,7 +8,7 @@
     </div>
     <div class="dtc v-mid pv3">
       <div class="dib ml3-l ml2 gray">
-        <input-component :value="searchQuery" @onEnter="$emit('search', arguments[0])" :placeholder="$t('Search')"></input-component>
+        <pure-input :value="searchQuery" @onEnter="$emit('search', arguments[0])" :placeholder="$t('Search')"></pure-input>
       </div>
     </div>
     <div class="dtc v-mid tr pa3-l pa1 white-70">

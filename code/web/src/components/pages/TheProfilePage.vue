@@ -35,18 +35,18 @@
         </div>
 
         <div class="mv4 tc" v-if="!isCurrentUser && userIsAuthenticated">
-          <button-component @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
+          <pure-button @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
             <div>
               <div v-if="getUser.isFollowedByCurrentUser" v-text="$t('Unfollow')"></div>
               <div v-if="!getUser.isFollowedByCurrentUser" v-text="$t('Follow')"></div>
             </div>
-          </button-component>
+          </pure-button>
         </div>
 
         <div class="mv4 tc" v-if="isCurrentUser">
-          <button-component @click="$router.push({ name: 'profile-edit', params: { id: getUser._id } })" v-text="$t('Edit profile')"></button-component>
+          <pure-button @click="$router.push({ name: 'profile-edit', params: { id: getUser._id } })" v-text="$t('Edit profile')"></pure-button>
           <div class="dib dn-l">
-            <button-component @click="authLogOut" color="gray" v-text="$t('Logout')"></button-component>
+            <pure-button @click="authLogOut" color="gray" v-text="$t('Logout')"></pure-button>
           </div>
         </div>
       </div>

@@ -84,7 +84,6 @@
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
         variables () {
-          console.log(this.defineQueryVariables(this))
           return this.defineQueryVariables(this)
         }
       },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pointer" v-popover="{ name: dropdownKey }">
-      <icon-component :icon="icon"></icon-component>
+      <pure-icon :icon="icon"></pure-icon>
     </div>
 
     <popover :name="dropdownKey" :width="220">

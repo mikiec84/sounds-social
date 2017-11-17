@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "meteor run",
     "prod": "meteor run --production",
-    "test": "meteor test --once --driver-package=dispatch:mocha",
+    "test": "meteor test --once --port=4333 --driver-package=dispatch:mocha",
     "cli": "meteor npm run test"
   },
   "dependencies": {

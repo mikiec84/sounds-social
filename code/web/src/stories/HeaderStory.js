@@ -9,27 +9,27 @@ const authorId2 = 2
 
 export const headerStories = moduleArg => storiesOf('Pure Header', moduleArg)
   .add('profile active', () => ({
-    template: '<header-component activeItemId="profile"></header-component>',
+    template: '<pure-header activeItemId="profile"></pure-header>',
   }))
   .add('sounds active', () => ({
-    template: '<header-component activeItemId="sounds"></header-component>',
+    template: '<pure-header activeItemId="sounds"></pure-header>',
   }))
   .add('search term, search active', () => ({
-    template: '<header-component searchQuery="house music" @search="search" activeItemId="sounds"></header-component>',
+    template: '<pure-header searchQuery="house music" @search="search" activeItemId="sounds"></pure-header>',
     methods: {
       search: action('search'),
     },
   }))
   .add('sounds active, logged in', () => ({
-    template: '<header-component :isLoggedIn="true" activeItemId="sounds"></header-component>',
+    template: '<pure-header :isLoggedIn="true" activeItemId="sounds"></pure-header>',
   }))
   .add('with notifications', () => ({
-    template: `<header-component 
+    template: `<pure-header 
 :notifications="notifications" 
 :isLoggedIn="true"
 @openNotification="openNotification" 
 @openAuthor="openAuthor" 
-activeItemId="sounds"></header-component>`,
+activeItemId="sounds"></pure-header>`,
     data () {
       return {
         notifications: [

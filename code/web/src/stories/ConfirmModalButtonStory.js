@@ -5,8 +5,8 @@ export const confirmModalButtonStories = moduleArg => storiesOf('Pure Confirm Mo
   .add('with text', () => ({
     methods: { confirm: action('confirmed!'), abort: action('aborted!') },
     template: `
-<confirm-modal-button @confirm="confirm" @abort="abort" modalIcon="rocket" buttonColor="purple">
+<pure-confirm-modal-button @confirm="confirm" @abort="abort" modalIcon="rocket" buttonColor="purple">
   <div slot="button">Remove</div>
   <div slot="modal">Do you really want to delete this?</div>
-</confirm-modal-button>`,
+</pure-confirm-modal-button>`,
   }))

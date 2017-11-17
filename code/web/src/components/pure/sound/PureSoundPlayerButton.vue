@@ -3,7 +3,7 @@
       'pointer': !disabled,
       'gray': disabled || inactive,
     }]" @click="!disabled && $emit('click')">
-    <icon-component :icon="icon"></icon-component>
+    <pure-icon :icon="icon"></pure-icon>
   </div>
 </template>
 <script>

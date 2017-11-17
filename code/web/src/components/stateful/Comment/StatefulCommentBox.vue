@@ -13,7 +13,7 @@
       <form @submit.prevent="addComment">
         <textarea class="w-50" style="height: 50px" v-model="comment"></textarea>
         <div class="mt3">
-          <button-component @click="addComment" v-text="$t('Add comment')"></button-component>
+          <pure-button @click="addComment" v-text="$t('Add comment')"></pure-button>
         </div>
       </form>
     </div>

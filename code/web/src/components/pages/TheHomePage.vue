@@ -13,19 +13,19 @@
       </div>
 
       <div class="mt2 center mw5">
-        <input-component @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></input-component>
+        <pure-input @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></pure-input>
         <div class="mt2">
-          <input-component @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></input-component>
+          <pure-input @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></pure-input>
         </div>
       </div>
 
       <div class="mw8 center tc">
         <div class="pv4 dib">
-          <button-component @click="doLogin">Login</button-component>
+          <pure-button @click="doLogin">Login</pure-button>
         </div>
 
         <div class="pv4 dib">
-          <button-component @click="doRegister">Register</button-component>
+          <pure-button @click="doRegister">Register</pure-button>
         </div>
       </div>
     </div>
