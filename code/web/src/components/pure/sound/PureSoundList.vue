@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div v-for="(track, index) in tracks" :key="track._id" :class="{ 'mt3': index !== 0  }">
+    <div v-for="(sound, index) in sounds" :key="sound._id" :class="{ 'mt3': index !== 0  }">
       <sound-component
-              :timeAgo="track.timeAgo"
-              :label="track.label"
-              :username="track.username"
-              @open-profile="$emit('open-profile', track)"
-              @open-track="$emit('open-track', track)"
-              @play-track="$emit('play-track', track)"
+              :timeAgo="sound.timeAgo"
+              :label="sound.label"
+              :username="sound.username"
+              @open-profile="$emit('open-profile', sound)"
+              @open-sound="$emit('open-sound', sound)"
+              @play-sound="$emit('play-sound', sound)"
               :inListView="true"
-              :coverFileUrl="getCoverImage(track)"
-              :fileUrl="$_fp.get('file.url')(track)"></sound-component>
+              :coverFileUrl="getCoverImage(sound)"
+              :fileUrl="$_fp.get('file.url')(sound)"></sound-component>
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@
 
   export default {
     props: {
-      tracks: {
+      sounds: {
         type: Array,
         required: true,
       },
     },
     methods: {
-      getCoverImage (track) {
-        return getImage('coverFile.url')(track)
+      getCoverImage (sound) {
+        return getImage('coverFile.url')(sound)
       },
     },
   }

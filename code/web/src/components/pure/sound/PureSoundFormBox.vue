@@ -21,6 +21,7 @@
               class="mt4 f5 black-80 lh-copy measure-wide bn w-50"
               type="text"
               @change="$emit('changeDescription', $event.target.value)"
+              style="min-height: 150px"
               :placeholder="`${$t('Sound description')}...`">{{description}}</textarea>
 
       <div class="pv3">

@@ -9,7 +9,7 @@
         <div class="pb3"><sub-header-component current="discover"></sub-header-component></div>
 
         <div class="pv3">
-          <div class="lh-copy f5">Discover all tracks on Sounds Social!</div>
+          <div class="lh-copy f5">Discover all sounds on Sounds Social!</div>
         </div>
         <sound-list-component :isDiscover="true"></sound-list-component>
       </div>
@@ -19,7 +19,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import SoundListComponent from '../../stateful/track/StatefulSoundList.vue'
+  import SoundListComponent from '../../stateful/sound/StatefulSoundList.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
 

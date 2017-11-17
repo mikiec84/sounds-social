@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-  import StatefulSoundPlayer from './track/StatefulSoundPlayer.vue'
+  import StatefulSoundPlayer from './sound/StatefulSoundPlayer.vue'
   import { listRecentNotificationsQuery as query } from '../../api/NotificationApi'
   import { mapNotification } from '../../func/mappers/mapNotification'
 

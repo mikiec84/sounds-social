@@ -72,6 +72,7 @@
   import { addProfileAvatarFile } from '../../../api/StorageApi'
   import { updateProfile } from '../../../api/ProfileApi'
   import { changeLanguage } from '../../../startup/StartupUserLanguage'
+  import { initI18N } from '../../../plugins/I18NPlugin'
 
   const query = gql`
     query ProfilePage($id: String!) {
@@ -151,6 +152,7 @@
             params: { id: this.$route.params.id },
           })
           changeLanguage(updateUserProfile.language)
+          initI18N()
         })
       },
     },

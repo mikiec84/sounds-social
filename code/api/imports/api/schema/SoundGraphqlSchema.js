@@ -2,20 +2,20 @@ import moment from 'moment'
 import { check } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
-import { trackSchema, trackCollection } from '../../data/collection/TrackCollection'
+import { soundSchema, soundCollection } from '../../data/collection/SoundCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
-let tracksBeingPlayed = []
+let soundsBeingPlayed = []
 
-const trackGraphqlSchema =  createCollectionSchema({
-  type: 'Track',
-  collection: trackCollection,
+const soundGraphqlSchema =  createCollectionSchema({
+  type: 'Sound',
+  collection: soundCollection,
   crud: {
     insert: false,
   },
   schema: {
-    type: trackSchema,
+    type: soundSchema,
     input: new SimpleSchema({
       name: {
         type: String,
@@ -76,7 +76,7 @@ const trackGraphqlSchema =  createCollectionSchema({
   },
 })
 
-trackGraphqlSchema.typeDefs.push(`
+soundGraphqlSchema.typeDefs.push(`
 # Represents a sound being played
 type SoundPlay {
   # Random id when sound is started playing
@@ -85,25 +85,25 @@ type SoundPlay {
 }
 
 extend type Mutation {
-  createTrack(data: TrackInput!): Track
-  addCoverFile(trackId: String! fileData: FileData!): Track
+  createSound(data: SoundInput!): Sound
+  addCoverFile(soundId: String! fileData: FileData!): Sound
   startPlayingSound(soundId: String!): SoundPlay
   countPlayingSound(soundPlayingId: String! soundId: String!): SoundPlay
 }
 
 extend type Query {
-  searchSound(query: String!): [Track]
+  searchSound(query: String!): [Sound]
 }
 `)
 
-trackGraphqlSchema.resolvers.Mutation.createTrack = (root, args, context) => {
+soundGraphqlSchema.resolvers.Mutation.createSound = (root, args, context) => {
   const { userId } = context
   check(userId, String)
 
-  return trackCollection.addTrack(args.data, userId)
+  return soundCollection.addSound(args.data, userId)
 }
 
-trackGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) => {
+soundGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) => {
   const { userId } = context
   const { soundId } = args
 
@@ -112,7 +112,7 @@ trackGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) 
 
   const soundPlayingId = Random.id()
 
-  tracksBeingPlayed.push({
+  soundsBeingPlayed.push({
     soundPlayingId,
     soundId,
     userId,
@@ -122,7 +122,7 @@ trackGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) 
   return { soundPlayingId, soundId }
 }
 
-trackGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) => {
+soundGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) => {
   const { userId } = context
   check(userId, String)
 
@@ -130,7 +130,7 @@ trackGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) 
   check(soundPlayingId, String)
   check(soundId, String)
 
-  const shouldCountPlay = tracksBeingPlayed
+  const shouldCountPlay = soundsBeingPlayed
     .filter(play => play.userId === userId)
     .every(play => {
       const sameIds = play.soundPlayingId === soundPlayingId && play.soundId === soundId
@@ -140,30 +140,30 @@ trackGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) 
       return sameIds && startedFiveSecondsAgo
     })
 
-  if (shouldCountPlay) trackCollection.countPlay(soundId)
+  if (shouldCountPlay) soundCollection.countPlay(soundId)
 
-  tracksBeingPlayed = tracksBeingPlayed.filter(play => play.userId !== userId)
+  soundsBeingPlayed = soundsBeingPlayed.filter(play => play.userId !== userId)
 
   return { soundPlayingId, soundId }
 }
 
-trackGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {
-  const { trackId, fileData } = args
-  check(trackId, String)
+soundGraphqlSchema.resolvers.Mutation.addCoverFile = (root, args, context) => {
+  const { soundId, fileData } = args
+  check(soundId, String)
   check(fileData, {
     _id: String,
     secret: String,
     url: String,
   })
 
-  const track = trackCollection.findOne({ _id: trackId, creatorId: context.userId })
+  const sound = soundCollection.findOne({ _id: soundId, creatorId: context.userId })
 
-  if (track) trackCollection.updateCover(trackId, fileData)
+  if (sound) soundCollection.updateCover(soundId, fileData)
 
-  return track
+  return sound
 }
 
-trackGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
+soundGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
   const { query } = args
   check(query, String)
 
@@ -173,4 +173,4 @@ trackGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
   return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
 }
 
-export default trackGraphqlSchema
+export default soundGraphqlSchema

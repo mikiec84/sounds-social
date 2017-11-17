@@ -23,7 +23,7 @@ export const follow = id => apolloClient.mutate({
     }
   `,
   variables: { id },
-  refetchQueries: ['ProfilePage', 'TrackListQuery'],
+  refetchQueries: ['ProfilePage', 'SoundListQuery'],
 })
 
 export const unfollow = id => apolloClient.mutate({
@@ -35,5 +35,5 @@ export const unfollow = id => apolloClient.mutate({
     }
   `,
   variables: { id },
-  refetchQueries: ['ProfilePage', 'TrackListQuery'],
+  refetchQueries: ['ProfilePage', 'SoundListQuery'],
 })

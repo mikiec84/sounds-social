@@ -48,7 +48,7 @@ export const onPlayerEvent = (emit) => {
       emit('done')
       currentSoundData.seek = null
     } else if (isNumber(seek)) {
-      emit('trackPosition', { duration, seek })
+      emit('soundPosition', { duration, seek })
     }
   }, 50)
 }

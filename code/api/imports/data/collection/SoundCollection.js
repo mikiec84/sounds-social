@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 
-export const trackSchema = new SimpleSchema({
+export const soundSchema = new SimpleSchema({
   name: {
     type: String,
   },
@@ -40,11 +40,11 @@ export const trackSchema = new SimpleSchema({
   },
 })
 
-class TrackCollection extends Mongo.Collection
+class SoundCollection extends Mongo.Collection
 {
-  addTrack(doc, userId) {
+  addSound(doc, userId) {
     doc.creatorId = userId
-    if (!doc.file) throw new Error('Need file to add track')
+    if (!doc.file) throw new Error('Need file to add sound')
     doc.fileId = fileCollection.insert({ ...doc.file })
 
     doc.createdAt = new Date()
@@ -81,10 +81,10 @@ class TrackCollection extends Mongo.Collection
       },
     })
   }
-  updateCover(trackId, coverFileData) {
+  updateCover(soundId, coverFileData) {
     const coverFileId = fileCollection.insert({ ...coverFileData })
 
-    this.update({ _id: trackId }, { $set: { coverFileId } })
+    this.update({ _id: soundId }, { $set: { coverFileId } })
   }
   countPlay(_id) {
     this.update({ _id }, { $inc: { playsCount: 1 } })
@@ -94,6 +94,6 @@ class TrackCollection extends Mongo.Collection
   }
 }
 
-export const trackCollection = new TrackCollection('tracks')
+export const soundCollection = new SoundCollection('sounds')
 
-trackCollection.attachSchema(trackSchema)
+soundCollection.attachSchema(soundSchema)

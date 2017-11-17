@@ -3,12 +3,12 @@
   <div>
     <div v-if="!loading">
       <sound-list
-              @play-track="playTrack"
-              @open-track="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
+              @play-sound="playSound"
+              @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
               @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
-              :tracks="mapTracks(listTrack)"></sound-list>
+              :sounds="mapSounds(listSound)"></sound-list>
 
-      <div v-if="!listTrack || !listTrack.length" v-text="$t('No sounds found')">
+      <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')">
 
       </div>
     </div>
@@ -19,9 +19,9 @@
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
 
-  const tracksQuery = gql`
-    query TrackListQuery($userId: String!, $loggedInFeed: String!) {
-      listTrack(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
+  const soundsQuery = gql`
+    query SoundListQuery($userId: String!, $loggedInFeed: String!) {
+      listSound(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
         _id
         name
         coverFile {
@@ -55,7 +55,7 @@
         type: Object,
         required: false,
         default () {
-          return tracksQuery
+          return soundsQuery
         },
       },
       defineQueryVariables: {
@@ -72,12 +72,12 @@
       },
     },
     data: () => ({
-      tracks: [],
-      listTrack: [],
+      sounds: [],
+      listSound: [],
       loading: 0,
     }),
     apollo: {
-      listTrack: {
+      listSound: {
         query () {
           return this.query
         },
@@ -89,15 +89,15 @@
       },
     },
     methods: {
-      playTrack (data) {
-        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listTrack)
+      playSound (data) {
+        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listSound)
 
         this.$store.dispatch('playFeedWithReset', {
           sounds: soundsToPlay.map(s => mapGraphlDataToSound(s)),
         })
       },
-      mapTracks (tracks) {
-        return (tracks || []).map(({ name, creator, createdAt, ...data }) => (
+      mapSounds (sounds) {
+        return (sounds || []).map(({ name, creator, createdAt, ...data }) => (
           {
             ...data,
             label: name,

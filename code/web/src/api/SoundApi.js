@@ -2,8 +2,8 @@ import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
 export const detailSoundQuery = gql`
-  query DetailTrack($id: String!) {
-    getTrack(_id: $id) {
+  query DetailSound($id: String!) {
+    getSound(_id: $id) {
       _id
       name
       description
@@ -26,8 +26,8 @@ export const detailSoundQuery = gql`
 `
 
 export const editSoundFormQuery = gql`
-  query EditTrackForm($id: String!) {
-    trackToEdit: getTrack(_id: $id) {
+  query EditSoundForm($id: String!) {
+    soundToEdit: getSound(_id: $id) {
       name
       description
       fileId
@@ -41,8 +41,8 @@ export const editSoundFormQuery = gql`
 
 export const updateSound = (id, data) => apolloClient.mutate({
   mutation: gql`
-    mutation EditTrack($id: String! $data: TrackInput!) {
-      updateTrack(_id: $id data: $data) {
+    mutation EditSound($id: String! $data: SoundInput!) {
+      updateSound(_id: $id data: $data) {
         _id
       }
     }
@@ -56,14 +56,14 @@ export const updateSound = (id, data) => apolloClient.mutate({
 
 export const removeSound = id => apolloClient.mutate({
   mutation: gql`
-    mutation RemoveTrack($id: String!) {
-      deleteTrack(_id: $id) {
+    mutation RemoveSound($id: String!) {
+      deleteSound(_id: $id) {
         _id
       }
     }
   `,
   variables: { id },
-  refetchQueries: ['DetailTrack'],
+  refetchQueries: ['DetailSound'],
 })
 
 export const startPlayingSound = id => apolloClient.mutate({
@@ -86,12 +86,12 @@ export const countPlayingSound = (id, soundPlayingId) => apolloClient.mutate({
     }
   `,
   variables: { id, soundPlayingId },
-  refetchQueries: ['DetailTrack'],
+  refetchQueries: ['DetailSound'],
 })
 
 export const searchSoundQuery = gql`
   query SearchSoundsQuery($query: String!) {
-    listTrack: searchSound(query: $query) {
+    listSound: searchSound(query: $query) {
       _id
       name
       coverFile {

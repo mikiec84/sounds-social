@@ -5,22 +5,22 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <div v-if="trackToEdit">
+        <div v-if="soundToEdit">
           <sound-form-box
-                  :username="trackToEdit.creator.username"
+                  :username="soundToEdit.creator.username"
                   :hasFile="true"
                   :isUploading="false"
-                  :name="formData.name || trackToEdit.name"
-                  :description="formData.description || trackToEdit.description"
+                  :name="formData.name || soundToEdit.name"
+                  :description="formData.description || soundToEdit.description"
                   buttonLabel="Save"
                   @changeTitle="formData.name = arguments[0]"
                   @changeDescription="formData.description = arguments[0]"
-                  @publish="saveTrack()"
+                  @publish="saveSound()"
           ></sound-form-box>
         </div>
 
-        <div v-if="!trackToEdit">
-          Track not found!
+        <div v-if="!soundToEdit">
+          Sound not found!
         </div>
       </div>
       <div slot="sidebar">
@@ -44,7 +44,7 @@
       }
     },
     apollo: {
-      trackToEdit: {
+      soundToEdit: {
         query: editSoundFormQuery,
         loadingKey: 'loading',
         variables () {
@@ -55,12 +55,12 @@
       },
     },
     methods: {
-      saveTrack () {
+      saveSound () {
         updateSound(this.$route.params.id, {
-          ...this.$_.pick(this.trackToEdit, ['name', 'description']),
+          ...this.$_.pick(this.soundToEdit, ['name', 'description']),
           ...this.formData,
           isPublic: true,
-          creatorId: this.trackToEdit.creator._id,
+          creatorId: this.soundToEdit.creator._id,
         }).then(() => {
           this.$router.push({
             name: 'sound-detail',

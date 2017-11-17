@@ -5,7 +5,7 @@ import { createSound } from '../func/mappers/mapSound'
 
 import store from '../store'
 
-import StatefulSoundPlayer from '../components/stateful/track/StatefulSoundPlayer.vue'
+import StatefulSoundPlayer from '../components/stateful/sound/StatefulSoundPlayer.vue'
 
 const createTestSound = (id, title, by) => createSound(
   id,
@@ -197,13 +197,13 @@ export const soundPlayerStories = moduleArg => {
   <stateful-sound-player></stateful-sound-player>
   
   <div class="mt5">
-    <pure-button @click="addTrack">Add track to tracklist</pure-button>
+    <pure-button @click="addSound">Add sound to soundlist</pure-button>
   </div>
 </div>
       `,
       components: { StatefulSoundPlayer },
       methods: {
-        addTrack () {
+        addSound () {
           const id = uniqueId()
 
           this.$store.dispatch('addSoundToPlayer', {

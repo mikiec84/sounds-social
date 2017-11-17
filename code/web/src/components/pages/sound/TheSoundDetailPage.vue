@@ -5,25 +5,25 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <div v-if="getTrack">
+        <div v-if="getSound">
           <sound-component
-                  :timeAgo="getTrack.createdAt"
-                  :label="getTrack.name"
-                  :coverFileUrl="$_fp.get('coverFile.url')(getTrack)"
-                  :description="getTrack.description"
-                  :username="getTrack.creator.username"
-                  @open-profile="$router.push({ name: 'profile-detail', params: { id: getTrack.creator._id } })"
-                  @open-track="playTrack"
-                  @play-track="playTrack"
-                  @pauseTrack="pauseTrack"
+                  :timeAgo="getSound.createdAt"
+                  :label="getSound.name"
+                  :coverFileUrl="$_fp.get('coverFile.url')(getSound)"
+                  :description="getSound.description"
+                  :username="getSound.creator.username"
+                  @open-profile="$router.push({ name: 'profile-detail', params: { id: getSound.creator._id } })"
+                  @open-sound="playSound"
+                  @play-sound="playSound"
+                  @pauseSound="pauseSound"
                   @seekSound="seekSound"
                   :noBorder="true"
-                  :fileUrl="$_fp.get('file.url')(getTrack)"
+                  :fileUrl="$_fp.get('file.url')(getSound)"
                   :playingPos="playingPos"
                   :isPlaying="isPlaying"
                   :waveformSeek="isPlaying ? $store.getters.seekRelativeDecimal : 0">
             <div slot="metadata">
-              <div class="gray f6"><span v-text="getTrack.playsCount"></span> <pure-icon icon="play-circle"></pure-icon></div>
+              <div class="gray f6"><span v-text="getSound.playsCount"></span> <pure-icon icon="play-circle"></pure-icon></div>
             </div>
           </sound-component>
 
@@ -37,9 +37,9 @@
               </div>
             </div>
 
-            <div v-if="getTrack.isRemovable" class="mt4">
+            <div v-if="getSound.isRemovable" class="mt4">
               <div class="dib mr2-l pb2 pb0-l">
-                <pure-button @click="$router.push({ name: 'sound-edit', params: { id: getTrack._id } })" v-text="$t('Edit')"></pure-button>
+                <pure-button @click="$router.push({ name: 'sound-edit', params: { id: getSound._id } })" v-text="$t('Edit')"></pure-button>
               </div>
               <div class="dib mr2-l pb2 pb0-l">
                 <pure-confirm-modal-button
@@ -58,11 +58,11 @@
             </div>
 
             <h2 class="f3 mb3 mt5" v-text="$t('Comments')"></h2>
-            <comment-box :id="getTrack._id"></comment-box>
+            <comment-box :id="getSound._id"></comment-box>
           </div>
         </div>
 
-        <div v-if="!getTrack">
+        <div v-if="!getSound">
           <span v-text="$t('Sound not found')"></span>!
         </div>
       </div>
@@ -95,11 +95,11 @@
     },
     computed: mapState({
       isPlaying (state) {
-        return state.soundPlayer.isPlaying && state.soundPlayer.currentId === this.getTrack._id
+        return state.soundPlayer.isPlaying && state.soundPlayer.currentId === this.getSound._id
       },
     }),
     apollo: {
-      getTrack: {
+      getSound: {
         query: detailSoundQuery,
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
@@ -112,20 +112,20 @@
     },
     methods: {
       removeSound () {
-        removeSound(this.getTrack._id).then(() => {
+        removeSound(this.getSound._id).then(() => {
           this.$router.push({ name: 'profile-detail', params: { id: 'me' } })
         })
       },
-      pauseTrack () {
+      pauseSound () {
         this.$store.dispatch('pause')
       },
       createSound () {
-        return mapGraphlDataToSound(this.getTrack)
+        return mapGraphlDataToSound(this.getSound)
       },
       addToSoundPlayer () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
       },
-      playTrack () {
+      playSound () {
         this.$store.dispatch('playWithReset', { sound: this.createSound() })
       },
       playNext () {
@@ -135,14 +135,14 @@
         if (this.isPlaying) {
           this.$store.dispatch('playerSeekRelativeDecimal', amountInRelativeDecimal)
         } else {
-          this.playTrack()
+          this.playSound()
         }
       },
       uploadCover (e) {
         const file = e.target.files[0]
 
         addCoverFile(file)
-          .then(({ _id, secret, url }) => uploadCover(this.getTrack._id, { _id, secret, url }))
+          .then(({ _id, secret, url }) => uploadCover(this.getSound._id, { _id, secret, url }))
           .then(() => {
             window.location.reload()
           })

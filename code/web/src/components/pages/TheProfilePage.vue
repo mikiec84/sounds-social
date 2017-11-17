@@ -58,7 +58,7 @@
 
   import { getImage } from '../../func/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
-  import SoundListComponent from '../stateful/track/StatefulSoundList.vue'
+  import SoundListComponent from '../stateful/sound/StatefulSoundList.vue'
   import { getUserId } from '../../api/AuthApi'
   import { follow, unfollow } from '../../api/ProfileApi'
 

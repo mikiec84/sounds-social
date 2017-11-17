@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div id="trackUploadBox">
+    <div id="soundUploadBox">
       <sound-form-box
         :username="username"
         :hasFile="hasFile"
         :isUploading="isUploading"
+        :name="name"
         @changeTitle="name = arguments[0]"
         @changeDescription="description = arguments[0]"
-        @publish="saveTrack()"
+        @publish="saveSound()"
         @uploadFile="uploadMusicFile(arguments[0])"
       ></sound-form-box>
     </div>
@@ -21,9 +22,9 @@
   import { getUsername, getUserId } from '../../../api/AuthApi'
   import { addMusicFile } from '../../../api/StorageApi'
 
-  const createTrackMutation = gql`
+  const createSoundMutation = gql`
     mutation ($name: String! $description: String $file: FileData! $creatorId: String!) {
-      createTrack(data: {
+      createSound(data: {
         name: $name,
         creatorId: $creatorId,
         file: $file,
@@ -65,12 +66,12 @@
           this.isUploading = false
         })
       },
-      saveTrack () {
+      saveSound () {
         const { name, userId, description, file } = this
 
         this.$apollo
           .mutate({
-            mutation: createTrackMutation,
+            mutation: createSoundMutation,
             variables: {
               name,
               description,
@@ -78,10 +79,10 @@
               creatorId: userId,
             },
           })
-          .then((data) => (data.data.createTrack ? this.$router.push({
+          .then((data) => (data.data.createSound ? this.$router.push({
             name: 'sound-detail',
             params: {
-              id: data.data.createTrack._id,
+              id: data.data.createSound._id,
             },
           }) : null))
       },

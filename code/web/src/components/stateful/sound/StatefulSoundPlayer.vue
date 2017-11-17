@@ -43,7 +43,7 @@
     created () {
       onPlayerEvent((event, data) => {
         if (event === 'done') this.$store.dispatch('changeSoundAfterFinished')
-        if (event === 'trackPosition') this.$store.dispatch('changeSoundPosition', data)
+        if (event === 'soundPosition') this.$store.dispatch('changeSoundPosition', data)
       })
 
       const { state } = this.$store

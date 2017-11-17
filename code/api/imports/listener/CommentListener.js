@@ -1,19 +1,19 @@
 import { Comments } from 'meteor/arkham:comments-ui'
 import { notificationCollection } from '../data/collection/NotificationCollection'
-import { trackCollection } from '../data/collection/TrackCollection'
+import { soundCollection } from '../data/collection/SoundCollection'
 import { COMMENT_ADDED } from '../data/Type/NotificationTypes'
 import { SOUND } from '../data/Type/NotificationReferenceTypes'
-import { USEtesttestR } from '../data/Type/UserReferenceTypes'
+import { USER } from '../data/Type/UserReferenceTypes'
 
 Comments.config({
   onEvent: (name, action, payload) => {
     if (name === 'comment' && action === 'add') {
       const { referenceId, userId } = payload
-      const track = trackCollection.findOneById(referenceId)
+      const sound = soundCollection.findOneById(referenceId)
 
-      if (!track) throw new Error('Track not found')
+      if (!sound) throw new Error('Sound not found')
 
-      if (track.creatorId === userId) return null
+      if (sound.creatorId === userId) return null
 
       notificationCollection.addNotification(
         COMMENT_ADDED,
@@ -21,7 +21,7 @@ Comments.config({
         referenceId,
         USER,
         userId,
-        track.creatorId,
+        sound.creatorId,
       )
     }
   }

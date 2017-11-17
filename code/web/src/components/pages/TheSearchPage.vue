@@ -21,7 +21,7 @@
 <script>
   import { searchSoundQuery } from '../../api/SoundApi'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
-  import SoundList from '../stateful/track/StatefulSoundList.vue'
+  import SoundList from '../stateful/sound/StatefulSoundList.vue'
 
   export default {
     components: {

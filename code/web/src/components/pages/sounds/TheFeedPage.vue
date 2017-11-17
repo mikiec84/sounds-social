@@ -15,7 +15,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import SoundListComponent from '../../stateful/track/StatefulSoundList.vue'
+  import SoundListComponent from '../../stateful/sound/StatefulSoundList.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
 

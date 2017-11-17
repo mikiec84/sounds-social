@@ -1,16 +1,16 @@
 import gql from 'graphql-tag'
 import { apolloClient } from '../graphql/client'
 
-export const uploadCover = (trackId, fileData) => apolloClient.mutate({
+export const uploadCover = (soundId, fileData) => apolloClient.mutate({
   mutation: gql`
-    mutation UploadCover($trackId: String!, $fileData: FileData!) {
-      addCoverFile(trackId: $trackId, fileData: $fileData) {
+    mutation UploadCover($soundId: String!, $fileData: FileData!) {
+      addCoverFile(soundId: $soundId, fileData: $fileData) {
         _id
       }
     }
   `,
   variables: {
-    trackId,
+    soundId,
     fileData,
   },
   fetchPolicy: 'network-only',

@@ -3,7 +3,7 @@ import {
 } from 'meteor/easy:graphqlizer'
 
 import fileSchema from './FileGraphqlSchema'
-import trackSchema from './TrackGraphqlSchema'
+import soundSchema from './SoundGraphqlSchema'
 import userSchema from './UserGraphqlSchema'
 import profileSchema from './ProfileGraphqlSchema'
 import notificationSchema from './NotificationSchema'
@@ -11,7 +11,7 @@ import notificationSchema from './NotificationSchema'
 const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
   schemas: [
     fileSchema,
-    trackSchema,
+    soundSchema,
     userSchema,
     profileSchema,
     notificationSchema,
