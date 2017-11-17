@@ -1,30 +1,41 @@
 <template>
   <div>
     <div class="shadow-1">
-    <pure-header
-      :active-item-id="current"
-      :is-logged-in="userIsAuthenticated"
-      :notifications="notificationList"
-      :search-query="searchQuery"
-      @search="doSearch"
-      @openNotification="openNotification"
-      @openAuthor="$router.push({ name: 'profile-detail', params: { id: arguments[0].authorId } })"
-      @openNotificationPage="openNotificationPage"
-      @logout="authLogOut"></pure-header>
+      <pure-header
+        ref="pureHeader"
+        :active-item-id="current"
+        :is-logged-in="userIsAuthenticated"
+        :notifications="notificationList"
+        :search-query="searchQuery"
+        @search="doSearch"
+        @openNotification="openNotification"
+        @openAuthor="openAuthor"
+        @openNotificationPage="openNotificationPage"
+        @logout="authLogOut"></pure-header>
     </div>
-      <stateful-sound-player
-        @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"
-        @openProfile="$router.push({ name: 'profile-detail', params: { id: arguments[0] } })"
-      ></stateful-sound-player>
+
+    <stateful-sound-player
+      @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"
+      @openProfile="$router.push({ name: 'profile-detail', params: { id: arguments[0] } })"
+    ></stateful-sound-player>
+
+    <div v-if="notificationCenterOpen">
+      <stateful-notification-center-modal @close="notificationCenterOpen = false"></stateful-notification-center-modal>
+    </div>
   </div>
 </template>
 <script>
   import StatefulSoundPlayer from './sound/StatefulSoundPlayer.vue'
+  import StatefulNotificationCenterModal from './notification/StatefulNotificationCenterModal.vue'
   import { listRecentNotificationsQuery as query } from '../../api/NotificationApi'
   import { mapNotification } from '../../func/mappers/mapNotification'
+  import { notificationMethods } from '../methods/NotificationMethods'
 
   export default {
-    components: { StatefulSoundPlayer },
+    components: {
+      StatefulSoundPlayer,
+      StatefulNotificationCenterModal,
+    },
     props: {
       current: {
         type: String,
@@ -34,6 +45,7 @@
     data () {
       return {
         listNotifications: [],
+        notificationCenterOpen: false,
       }
     },
     apollo: {
@@ -41,7 +53,7 @@
         query,
         fetchPolicy: 'network-only',
         variables () {
-          return { id: this.profileUserId }
+          return { limit: 3 }
         },
       },
     },
@@ -54,13 +66,15 @@
       },
     },
     methods: {
-      openNotification ({ originalNotification: { referenceType, referenceId } }) {
-        if (referenceType === 'sound') {
-          this.$router.push({ name: 'sound-detail', params: { id: referenceId } })
-        }
+      openAuthor (item) {
+        notificationMethods.openAuthor(this.$router, item)
+      },
+      openNotification (item) {
+        notificationMethods.openNotification(this.$router, item)
       },
       openNotificationPage () {
-        window.alert('To be implemented')
+        this.$refs.pureHeader.closeNotificationDropdown()
+        this.notificationCenterOpen = true
       },
       doSearch (q) {
         this.$router.push({ name: 'search', query: { q } })

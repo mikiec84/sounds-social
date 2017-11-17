@@ -23,21 +23,15 @@
         <pure-menu-dropdown
           icon="bell"
           dropdownKey="notifications"
+          ref="notificationMenuDropdownEl"
         >
           <div class="tl pa2">
             <div class="tc pv2" v-if="$_.isEmpty(notifications)" v-text="$t('No notifications')"></div>
             <div v-if="!$_.isEmpty(notifications)">
-              <div v-for="item in notifications" :key="item.id">
-                <div class="pointer db cf mv2 pv2 dim" @click="$emit('openNotification', item)">
-                  <div class="fl w-20">
-                    <div class="contain bg-center w-100" :style="`height: 50px; background-image: url(${item.imageUrl})`"></div>
-                  </div>
-                  <div class="fl w-80 pl2">
-                    <div class="gray pb1 f7" v-text="item.authorName" @click="openAuthor(item, $event)"></div>
-                    <div class="f6 lh-title black-80" v-text="item.content"></div>
-                  </div>
-                </div>
-              </div>
+              <pure-notification-list
+                @openAuthor="$emit('openAuthor', arguments[0])"
+                @openNotification="$emit('openNotification', arguments[0])"
+                :notifications="notifications"></pure-notification-list>
               <div class="pointer black tc pv2 dim f7 b" @click="$emit('openNotificationPage')" v-text="$t('Open notification center')"></div>
             </div>
           </div>
@@ -78,9 +72,8 @@
       isActive (item) {
         return this.activeItemId === item.id
       },
-      openAuthor (item, e) {
-        e.stopPropagation()
-        this.$emit('openAuthor', item)
+      closeNotificationDropdown () {
+        this.$refs.notificationMenuDropdownEl.closePopover()
       },
     },
     data () {

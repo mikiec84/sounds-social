@@ -4,7 +4,7 @@
       <pure-icon :icon="icon"></pure-icon>
     </div>
 
-    <popover :name="dropdownKey" :width="220">
+    <popover ref="popoverEl" :name="dropdownKey" :width="220">
       <div class="black">
         <slot></slot>
       </div>
@@ -23,5 +23,10 @@
         required: true,
       },
     },
+    methods: {
+      closePopover () {
+        this.$refs.popoverEl.visible = false
+      }
+    }
   }
 </script>
