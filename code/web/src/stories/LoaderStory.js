@@ -15,6 +15,9 @@ export const loaderStories = moduleArg => storiesOf('Pure Loader', moduleArg)
   .add('sound loader', () => ({
     template: `<pure-loader-sound></pure-loader-sound>`,
   }))
+  .add('sound loader, in detail view', () => ({
+    template: `<pure-loader-sound :isDetail="true"></pure-loader-sound>`,
+  }))
   .add('sound loader list', () => ({
     template: `<pure-loader-sound-list></pure-loader-sound-list>`,
   }))
