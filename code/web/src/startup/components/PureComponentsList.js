@@ -23,7 +23,12 @@ import SoundPlayer from '../../components/pure/sound/PureSoundPlayer.vue'
 import SoundPlayerButton from '../../components/pure/sound/PureSoundPlayerButton.vue'
 import SoundPlayerList from '../../components/pure/sound/PureSoundPlayerList.vue'
 import SoundPlayerTimeline from '../../components/pure/sound/PureSoundPlayerTimeline.vue'
-import NotificationList from '../../components/pure/notification/PureNotificationList.vue'
+import NotificationList from '../../components/pure/Notification/PureNotificationList.vue'
+import LoaderBlock from '../../components/pure/Loader/PureLoaderBlock.vue'
+import LoaderText from '../../components/pure/Loader/PureLoaderText.vue'
+import LoaderSound from '../../components/pure/Loader/PureLoaderSound.vue'
+import LoaderSoundList from '../../components/pure/Loader/PureLoaderSoundList.vue'
+import LoaderTransition from '../../components/pure/Loader/PureLoaderTransition.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -52,4 +57,9 @@ export const ComponentsList = [
   { id: 'pure-sound-player-list', component: SoundPlayerList },
   { id: 'pure-sound-player-timeline', component: SoundPlayerTimeline },
   { id: 'pure-notification-list', component: NotificationList },
+  { id: 'pure-loader-block', component: LoaderBlock },
+  { id: 'pure-loader-text', component: LoaderText },
+  { id: 'pure-loader-sound', component: LoaderSound },
+  { id: 'pure-loader-sound-list', component: LoaderSoundList },
+  { id: 'pure-loader-transition', component: LoaderTransition },
 ]

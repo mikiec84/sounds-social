@@ -1,17 +1,21 @@
 <template>
-  <!-- TODO add loading spinner -->
   <div>
-    <div v-if="!loading">
-      <sound-list
-              @play-sound="playSound"
-              @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
-              @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
-              :sounds="mapSounds(listSound)"></sound-list>
-
-      <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')">
-
+    <pure-loader-transition :is-loading="loading">
+      <div slot="loader">
+        <pure-loader-sound-list></pure-loader-sound-list>
       </div>
-    </div>
+      <div slot="content">
+        <sound-list
+          @play-sound="playSound"
+          @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
+          @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
+          :sounds="mapSounds(listSound)"></sound-list>
+
+        <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')">
+
+        </div>
+      </div>
+    </pure-loader-transition>
   </div>
 </template>
 <script type="text/ecmascript-6">

@@ -17,6 +17,7 @@ import { selectStories } from './SelectStory'
 import { soundPlayerStories } from './SoundPlayerStory'
 import { soundStories } from './SoundStory'
 import { iconStories } from './IconStory'
+import { loaderStories } from './LoaderStory'
 
 buttonStories(module)
 errorStories(module)
@@ -28,3 +29,4 @@ confirmModalStories(module)
 confirmModalButtonStories(module)
 soundStories(module)
 soundPlayerStories(module)
+loaderStories(module)
