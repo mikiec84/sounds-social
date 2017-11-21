@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-  const minLoadingTimeMs = 1000
+  const minLoadingTimeMs = 500
 
   export default {
     props: {
