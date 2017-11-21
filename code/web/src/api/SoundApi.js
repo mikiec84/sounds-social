@@ -7,7 +7,9 @@ export const detailSoundQuery = gql`
       _id
       name
       description
-      createdAt
+      createdAt {
+        fromNow
+      }
       fileId
       isPublic
       file {
@@ -111,7 +113,9 @@ export const searchSoundQuery = gql`
         url
       }
       description
-      createdAt
+      createdAt {
+        fromNow
+      }
       file {
         url
       }

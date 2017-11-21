@@ -32,7 +32,9 @@
           url
         }
         description
-        createdAt
+        createdAt {
+          fromNow
+        }
         isPublic
         file {
           url
@@ -108,7 +110,7 @@
             label: name,
             creatorUserId: creator._id,
             username: creator.username,
-            timeAgo: createdAt,
+            timeAgo: createdAt.fromNow,
             creator: creator,
             isPrivate: !isPublic,
           })

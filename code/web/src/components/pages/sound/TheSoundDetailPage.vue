@@ -9,7 +9,7 @@
         <div slot="content">
           <div v-if="getSound">
             <sound-component
-              :timeAgo="getSound.createdAt"
+              :timeAgo="getSound.createdAt.fromNow"
               :label="getSound.name"
               :coverFileUrl="$_fp.get('coverFile.url')(getSound)"
               :description="getSound.description"

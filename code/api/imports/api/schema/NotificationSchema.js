@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { get, flow } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { notificationCollection } from '../../data/collection/NotificationCollection'
@@ -20,7 +19,7 @@ type Notification {
   imageUrl: String
   # User that is the cause of the notification
   author: User
-  createdAtFormatted: String
+  createdAt: Date
 }
 
 extend type Query {
@@ -35,11 +34,6 @@ export default {
       author: flow(get('authorId'), id => userCollection.findOneById(id)),
       imageUrl: root => getNotificationImageUrl(root),
       referenceTitle: root => getNotificationReferenceTitle(root),
-      createdAtFormatted: (root, args, context) => {
-        check(context.userLanguage, String)
-        moment.locale(context.userLanguage)
-        return moment(root.createdAt).fromNow()
-      },
     },
     Query: {
       listNotifications(root, args, context) {

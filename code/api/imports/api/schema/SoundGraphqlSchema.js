@@ -1,14 +1,14 @@
 import moment from 'moment'
-import {check} from 'meteor/check'
-import {Random} from 'meteor/random'
-import {createCollectionSchema} from 'meteor/easy:graphqlizer'
-import {soundCollection, soundSchema} from '../../data/collection/SoundCollection'
-import {fileCollection} from '../../data/collection/FileCollection'
-import {soundSearchIndex} from '../../data/search/SoundSearchIndex'
+import { check } from 'meteor/check'
+import { Random } from 'meteor/random'
+import { createCollectionSchema } from 'meteor/easy:graphqlizer'
+import { soundCollection, soundSchema } from '../../data/collection/SoundCollection'
+import { fileCollection } from '../../data/collection/FileCollection'
+import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
 let soundsBeingPlayed = []
 
-const soundGraphqlSchema =  createCollectionSchema({
+const soundGraphqlSchema = createCollectionSchema({
   type: 'Sound',
   collection: soundCollection,
   crud: {
@@ -54,15 +54,11 @@ const soundGraphqlSchema =  createCollectionSchema({
         resolve: root => root.playsCount || 0,
       },
       createdAt: {
-        type: 'String',
-        resolve: (root, args, context) => {
-          moment.locale(context.userLanguage)
-          return moment(root.createdAt).fromNow()
-        },
+        type: 'Date',
       },
       creator: {
         type: 'User',
-        resolve: root => Meteor.users.findOne({_id: root.creatorId }),
+        resolve: root => Meteor.users.findOne({ _id: root.creatorId }),
       },
       coverFile: {
         type: 'File',

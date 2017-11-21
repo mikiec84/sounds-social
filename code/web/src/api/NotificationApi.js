@@ -8,7 +8,10 @@ export const listRecentNotificationsQuery = gql`
       referenceId
       referenceTitle
       imageUrl
-      createdAtFormatted
+      createdAt {
+        fromNow
+        formatted(format: "DD.MM.YYYY hh:mm:ss")
+      }
       author {
         _id
         username

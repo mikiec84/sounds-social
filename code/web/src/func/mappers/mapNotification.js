@@ -8,7 +8,8 @@ const messageMap = {
 export const mapNotification = notification => ({
   id: notification.referenceId,
   imageUrl: notification.imageUrl || DEFAULT_IMAGE_URL,
-  createdAtFormatted: notification.createdAtFormatted,
+  createdAtFromNow: notification.createdAt.fromNow,
+  createdAtFull: notification.createdAt.formatted,
   authorId: notification.author._id,
   authorName: notification.author.username,
   content: i18next.t(

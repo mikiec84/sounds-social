@@ -27,6 +27,9 @@ const closePlayerListIfVisible = () => {
 
 const router = new Router({
   mode: 'history',
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  },
   routes: [
     {
       name: 'home',
