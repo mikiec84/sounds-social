@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder  }" style="max-width: 700px"  class="cf">
+    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder }" style="max-width: 700px"  class="cf">
       <div class="fl w-50 w-30-m w-25-l pa2" v-if="coverFileUrl" >
         <div class="mw-100 cover bg-center" :style="`max-width: 150px; height: 150px; background: url(${coverFileUrl})`"></div>
       </div>
@@ -11,6 +11,7 @@
               <pure-icon icon="play"></pure-icon>
             </div>
             <h2 @click="$emit('open-sound')" class="lh-copy f3-l f4 b dib v-mid black mv2 dim navy " v-text="label"></h2>
+            <div v-if="isPrivate" class="lh-copy dib v-mid b ml3 f4 light-red" v-text="$t('Not published')"></div>
           </div>
           <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
@@ -60,6 +61,11 @@
       isPlaying: {
         type: Boolean,
         required: false,
+      },
+      isPrivate: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
       description: {
         type: String,
