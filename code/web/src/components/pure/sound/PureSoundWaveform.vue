@@ -10,7 +10,7 @@
     return Math.abs(seek - (wavesurfer.getCurrentTime() / wavesurfer.getDuration()))
   }
 
-  const isSeekDifferenceTooBig = ({ seek }) => getSeekDifference({ seek }) > 0.008
+  const isSeekDifferenceTooBig = ({ seek }) => getSeekDifference({ seek }) > 0.02
 
   export default {
     props: {
@@ -32,11 +32,13 @@
       }
     },
     mounted () {
+      const context = new AudioContext()
+
       wavesurfer = WaveSurfer.create({
         container: '#waveform',
-        waveColor: '#00449e',
+        waveColor: '#1857a9',
         progressColor: '#a0b6e2',
-        audioContext: null,
+        audioContext: context,
       })
 
       wavesurfer.setMute(true)
