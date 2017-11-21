@@ -9,6 +9,7 @@ export const detailSoundQuery = gql`
       description
       createdAt
       fileId
+      isPublic
       file {
         url
       }
@@ -58,6 +59,18 @@ export const removeSound = id => apolloClient.mutate({
   mutation: gql`
     mutation RemoveSound($id: String!) {
       deleteSound(_id: $id) {
+        _id
+      }
+    }
+  `,
+  variables: { id },
+  refetchQueries: ['DetailSound'],
+})
+
+export const publishSound = id => apolloClient.mutate({
+  mutation: gql`
+    mutation PublishSound($id: String!) {
+      publishSound(soundId: $id) {
         _id
       }
     }

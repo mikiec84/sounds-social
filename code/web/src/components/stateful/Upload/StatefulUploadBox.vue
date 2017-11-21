@@ -8,9 +8,13 @@
         :name="name"
         @changeTitle="name = arguments[0]"
         @changeDescription="description = arguments[0]"
-        @publish="saveSound()"
+        @publish="saveSound(true)"
         @uploadFile="uploadMusicFile(arguments[0])"
-      ></sound-form-box>
+      >
+        <div class="dib ml1" slot="additionalButtons">
+          <pure-button color="gray" :disabled="isUploading" @click="saveSound(false)" v-text="`${$t('Save')} (${$t('Private')})`"></pure-button>
+        </div>
+      </sound-form-box>
     </div>
     <div class="dn-ns">
       <input type="file" name="data" id="fileUploadInput" />
@@ -23,12 +27,12 @@
   import { addMusicFile } from '../../../api/StorageApi'
 
   const createSoundMutation = gql`
-    mutation ($name: String! $description: String $file: FileData! $creatorId: String!) {
+    mutation ($name: String! $description: String $file: FileData! $creatorId: String! $isPublic: Boolean!) {
       createSound(data: {
         name: $name,
         creatorId: $creatorId,
         file: $file,
-        isPublic: true,
+        isPublic: $isPublic,
         description: $description
       }) {
         _id
@@ -66,7 +70,7 @@
           this.isUploading = false
         })
       },
-      saveSound () {
+      saveSound (isPublic) {
         const { name, userId, description, file } = this
 
         this.$apollo
@@ -77,6 +81,7 @@
               description,
               file,
               creatorId: userId,
+              isPublic,
             },
           })
           .then((data) => (data.data.createSound ? this.$router.push({

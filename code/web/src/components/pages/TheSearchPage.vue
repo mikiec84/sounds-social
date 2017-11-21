@@ -28,6 +28,11 @@
       HeaderComponent,
       SoundList,
     },
+    metaInfo () {
+      return {
+        title: `${this.$t('Search')}: "${this.query}"`,
+      }
+    },
     data () {
       return {
         searchSoundQuery,

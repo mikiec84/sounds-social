@@ -43,6 +43,7 @@ export default {
     },
     Query: {
       listNotifications(root, args, context) {
+        if (!context.userId) return []
         check(context.userId, String)
         check(args.limit, Match.Maybe(Number))
 

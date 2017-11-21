@@ -1,10 +1,10 @@
 import moment from 'moment'
-import { check } from 'meteor/check'
-import { Random } from 'meteor/random'
-import { createCollectionSchema } from 'meteor/easy:graphqlizer'
-import { soundSchema, soundCollection } from '../../data/collection/SoundCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
-import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
+import {check} from 'meteor/check'
+import {Random} from 'meteor/random'
+import {createCollectionSchema} from 'meteor/easy:graphqlizer'
+import {soundCollection, soundSchema} from '../../data/collection/SoundCollection'
+import {fileCollection} from '../../data/collection/FileCollection'
+import {soundSearchIndex} from '../../data/search/SoundSearchIndex'
 
 let soundsBeingPlayed = []
 
@@ -86,6 +86,7 @@ type SoundPlay {
 
 extend type Mutation {
   createSound(data: SoundInput!): Sound
+  publishSound(soundId: String!): Sound
   addCoverFile(soundId: String! fileData: FileData!): Sound
   startPlayingSound(soundId: String!): SoundPlay
   countPlayingSound(soundPlayingId: String! soundId: String!): SoundPlay
@@ -101,6 +102,16 @@ soundGraphqlSchema.resolvers.Mutation.createSound = (root, args, context) => {
   check(userId, String)
 
   return soundCollection.addSound(args.data, userId)
+}
+
+soundGraphqlSchema.resolvers.Mutation.publishSound = (root, args, context) => {
+  const { userId } = context
+  const { soundId } = args
+
+  check(userId, String)
+  check(soundId, String)
+
+  return soundCollection.publishSound(soundId, userId)
 }
 
 soundGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) => {

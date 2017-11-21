@@ -9,6 +9,7 @@
               @open-sound="$emit('open-sound', sound)"
               @play-sound="$emit('play-sound', sound)"
               :inListView="true"
+              :isPrivate="sound.isPrivate"
               :coverFileUrl="getCoverImage(sound)"
               :fileUrl="$_fp.get('file.url')(sound)"></sound-component>
     </div>

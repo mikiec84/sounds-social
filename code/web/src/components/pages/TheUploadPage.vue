@@ -19,5 +19,10 @@
       HeaderComponent,
       UploadBoxComponent,
     },
+    metaInfo () {
+      return {
+        title: this.$t('Upload'),
+      }
+    },
   }
 </script>

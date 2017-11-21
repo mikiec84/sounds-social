@@ -14,6 +14,7 @@
               :coverFileUrl="$_fp.get('coverFile.url')(getSound)"
               :description="getSound.description"
               :username="getSound.creator.username"
+              :isPrivate="!getSound.isPublic"
               @open-profile="$router.push({ name: 'profile-detail', params: { id: getSound.creator._id } })"
               @open-sound="playSound"
               @play-sound="playSound"
@@ -40,6 +41,9 @@
               </div>
 
               <div v-if="getSound.isRemovable" class="mt4">
+                <div class="dib mr2-l pb2 pb0-l" v-if="!getSound.isPublic">
+                  <pure-button @click="publishSound" v-text="$t('Publish')"></pure-button>
+                </div>
                 <div class="dib mr2-l pb2 pb0-l">
                   <pure-button @click="$router.push({ name: 'sound-edit', params: { id: getSound._id } })" v-text="$t('Edit')"></pure-button>
                 </div>
@@ -79,7 +83,7 @@
   import { mapState } from 'vuex'
 
   import { addCoverFile } from '../../../api/StorageApi'
-  import { detailSoundQuery, removeSound } from '../../../api/SoundApi'
+  import { detailSoundQuery, removeSound, publishSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/StatefulCommentBox.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
@@ -89,6 +93,15 @@
     components: {
       HeaderComponent,
       CommentBox,
+    },
+    metaInfo () {
+      if (!this.getSound) {
+        return {}
+      }
+
+      return {
+        title: `${this.getSound.name} ${this.$t('by')} ${this.getSound.creator.username}`,
+      }
     },
     data () {
       return {
@@ -134,6 +147,9 @@
       playNext () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound(), relativePosition: 1 })
       },
+      publishSound () {
+        publishSound(this.getSound._id)
+      },
       seekSound (amountInRelativeDecimal) {
         if (this.isPlaying) {
           this.$store.dispatch('playerSeekRelativeDecimal', amountInRelativeDecimal)
@@ -146,9 +162,6 @@
 
         addCoverFile(file)
           .then(({ _id, secret, url }) => uploadCover(this.getSound._id, { _id, secret, url }))
-          .then(() => {
-            window.location.reload()
-          })
       },
     },
   }

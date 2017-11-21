@@ -55,23 +55,44 @@ class SoundCollection extends Mongo.Collection
 
     return this.findOne({ _id })
   }
+  publishSound(_id, creatorId) {
+    const doc = this.findOne({ _id, creatorId })
+
+    if (!doc) throw new Error('Not permitted')
+
+    this.update({ _id }, { $set: { isPublic: true } })
+
+    return this.findOneById(_id)
+  }
   find(selector) {
     if (this.graphqlFilters && this.graphqlFilters.length > 0) {
       const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
       const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
+      const { userId } = this.graphqlContext
 
       if (userFilter && userFilter.value) {
         selector.creatorId = userFilter.value
-      }
+        if (userFilter.value !== userId) selector.isPublic = true
+      } else if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
+        selector.$or = [
+          {
+            isPublic: true,
+            creatorId: { $in: userCollection.findFollowerIdsForUser(userId) },
+          },
+        ]
 
-      if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
-        const { userId } = this.graphqlContext
+        selector.$or.push({
+          creatorId: userId,
+        })
+      } else {
+        // discover
+        selector.$or = [
+          { isPublic: true },
+        ]
 
-        selector.isPublic = true
-        selector.creatorId = { $in: [
-          ...userCollection.findFollowerIdsForUser(userId),
-          userId,
-        ] }
+        selector.$or.push({
+          creatorId: userId,
+        })
       }
     }
 
@@ -80,6 +101,17 @@ class SoundCollection extends Mongo.Collection
         createdAt: -1,
       },
     })
+  }
+  findOne(selector, ...more) {
+    if (this.graphqlContext && selector._id) {
+      selector.isPublic = true
+
+      return super.findOne({
+        $or: [selector, { _id: selector._id, creatorId: this.graphqlContext.userId }],
+      }, ...more)
+    }
+
+    return super.findOne(selector, ...more)
   }
   updateCover(soundId, coverFileData) {
     const coverFileId = fileCollection.insert({ ...coverFileData })

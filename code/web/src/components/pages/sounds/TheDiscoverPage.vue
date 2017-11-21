@@ -29,5 +29,10 @@
       SubHeaderComponent,
       SoundListComponent,
     },
+    metaInfo () {
+      return {
+        title: this.$t('Discover'),
+      }
+    },
   }
 </script>

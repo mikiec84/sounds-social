@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-if="hasFile" class="ba bw1 b--light-gray br2 ph3 mw8">
-      <div class="pv3 b gray" v-if="isUploading" v-text="`${$t('Sound uploading')}...`"></div>
+      <div class="pv3 b gray" v-if="isUploading">
+        <pure-loader-text>
+          <div v-text="`${$t('Sound uploading')}...`"></div>
+        </pure-loader-text>
+      </div>
       <div class="pv3 b gray i" v-if="!isUploading" v-text="$t('Sound uploaded')"></div>
 
       <div class="pointer">
@@ -26,6 +30,7 @@
 
       <div class="pv3">
         <pure-button :disabled="isUploading" @click="$emit('publish')">{{buttonLabel}}</pure-button>
+        <slot name="additionalButtons"></slot>
       </div>
     </div>
     <div v-if="!hasFile">

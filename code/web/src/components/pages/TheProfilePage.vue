@@ -84,6 +84,15 @@
       HeaderComponent,
       SoundListComponent,
     },
+    metaInfo () {
+      if (this.getUser) {
+        return {
+          title: this.getUser.username,
+        }
+      }
+
+      return {}
+    },
     data () {
       return {
         getUser: null,

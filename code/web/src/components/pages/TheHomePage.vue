@@ -39,6 +39,19 @@
 
   export default {
     components: { FeedComponent },
+    metaInfo () {
+      return {
+        title: this.$t(this.userIsAuthenticated ? 'Home' : 'Login'),
+      }
+    },
+    watch: {
+      isAuthenticated () {
+        // @see https://github.com/ktquez/vue-head#update-elements-with-asynchronous-data-or-after-page-loaded
+        setTimeout(() => {
+          this.$emit('updateHead')
+        }, 200)
+      },
+    },
     data () {
       return {
         username: '',

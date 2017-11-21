@@ -37,6 +37,11 @@
     components: {
       HeaderComponent,
     },
+    metaInfo () {
+      return {
+        title: this.$t('Edit sound'),
+      }
+    },
     data () {
       return {
         loading: 0,

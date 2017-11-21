@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Meta from 'vue-meta'
 import { constant } from 'lodash'
 
 import { isAuthenticated } from './api/AuthApi'
@@ -16,6 +17,7 @@ import SoundsPage from './components/pages/sounds/TheSoundsPage'
 import SearchPage from './components/pages/TheSearchPage.vue'
 
 Vue.use(Router)
+Vue.use(Meta)
 
 const closePlayerListIfVisible = () => {
   if (store.state.soundPlayer.playerPlayingNowVisible) {

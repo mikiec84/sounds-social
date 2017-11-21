@@ -33,6 +33,7 @@
         }
         description
         createdAt
+        isPublic
         file {
           url
         }
@@ -101,7 +102,7 @@
         })
       },
       mapSounds (sounds) {
-        return (sounds || []).map(({ name, creator, createdAt, ...data }) => (
+        return (sounds || []).map(({ name, isPublic, creator, createdAt, ...data }) => (
           {
             ...data,
             label: name,
@@ -109,6 +110,7 @@
             username: creator.username,
             timeAgo: createdAt,
             creator: creator,
+            isPrivate: !isPublic,
           })
         )
       },

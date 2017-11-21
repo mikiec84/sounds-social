@@ -9,5 +9,9 @@
   import 'font-awesome/css/font-awesome.css'
 
   export default {
+    metaInfo: {
+      title: '...',
+      titleTemplate: '%s | Sounds Social'
+    }
   }
 </script>

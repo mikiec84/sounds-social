@@ -93,6 +93,11 @@
     components: {
       HeaderComponent,
     },
+    metaInfo () {
+      return {
+        title: this.$t('Edit profile'),
+      }
+    },
     data () {
       return {
         getUser: null,
