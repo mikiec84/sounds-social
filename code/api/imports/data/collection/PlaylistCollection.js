@@ -13,23 +13,26 @@ const playlistSchema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
+    autoValue: createdAtAutoValue,
   },
   creatorId: {
     type: String,
-    autoValue: createdAtAutoValue,
   },
   isPublic: {
     type: Boolean,
   },
   soundIds: {
     type: [String],
-  }
+    optional: true,
+  },
 })
 
 const updateSoundIdsIfPermission = (operation, collection, playlistId, userId, soundId) => {
   const sound = collection.findOneForUser(playlistId, userId)
 
   if (sound) collection.update({ _id: playlistId }, { [operation]: { soundIds: soundId } })
+
+  return collection.findOneForUser(playlistId, userId)
 }
 
 class PlaylistCollection extends Mongo.Collection
@@ -40,12 +43,12 @@ class PlaylistCollection extends Mongo.Collection
 
   addSound (playlistId, userId, soundId) {
     soundCollection.check(soundId)
-    updateSoundIdsIfPermission('$addToSet', this, playlistId, userId, soundId)
+    return updateSoundIdsIfPermission('$addToSet', this, playlistId, userId, soundId)
   }
 
   removeSound (playlistId, userId, soundId) {
     soundCollection.check(soundId)
-    updateSoundIdsIfPermission('$pull', this, playlistId, userId, soundId)
+    return updateSoundIdsIfPermission('$pull', this, playlistId, userId, soundId)
   }
 
   moveSounds (playlistId, userId, soundToMoveId, soundToBeMovedId) {

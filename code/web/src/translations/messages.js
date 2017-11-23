@@ -49,6 +49,10 @@ export const messages = {
       'Open notification center': 'Notification Center öffnen',
       'No notifications': 'Keine notifications',
       'Results for "{{query}}"': 'Resultate für "{{query}}"',
+      'Add to playlist': 'Zu Playlist hinzufügen',
+      'Playlist name': 'Playlist Name',
+      'No playlists found': 'Keine Playlists gefunden',
+      'Create new playlist': 'Neue Playlist kreieren',
     },
   }
 }

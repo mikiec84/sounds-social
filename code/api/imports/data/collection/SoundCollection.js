@@ -113,6 +113,11 @@ class SoundCollection extends Mongo.Collection
 
     return super.findOne(selector, ...more)
   }
+  findCoverFile(soundId) {
+    const sound = this.findOne(soundId)
+
+    if (sound) return fileCollection.findOneById(sound.coverFileId)
+  }
   updateCover(soundId, coverFileData) {
     const coverFileId = fileCollection.insert({ ...coverFileData })
 

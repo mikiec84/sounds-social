@@ -1,13 +1,17 @@
+import { some, defaultTo } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { playlistCollection } from '../../data/collection/PlaylistCollection'
+import { soundCollection } from '../../data/collection/SoundCollection'
 
 const typeDef = `
 type Playlist {
+  _id: String!
   name: String!
   description: String
   isPublic: Boolean
   sounds: [Sound]
   createdAt: Date
+  image: File
 }
 
 extend type Query {
@@ -26,11 +30,20 @@ extend type Mutation {
 export default {
   typeDefs: [typeDef],
   resolvers: {
+    Playlist: {
+      image: (root) => {
+        return defaultTo([])(root.soundIds).reduce((acc, soundId) => {
+          if (acc) return acc
+
+          return soundCollection.findCoverFile(soundId)
+        }, null)
+      },
+    },
     Query: {
       listPlaylist(root, args, context) {
         check(context.userId, String)
 
-        return playlistCollection.findForUser(context.userId)
+        return playlistCollection.findForUser(context.userId).fetch()
       },
       getPlaylist(root, args, context) {
         check(args.playlistId, String)
@@ -69,7 +82,7 @@ export default {
         const { userId } = context
         check(userId, String)
 
-        return playlistCollection.addSound(playlistId, userId, soundId)
+        return playlistCollection.removeSound(playlistId, userId, soundId)
       },
       moveSoundsInPlaylist(root, args, context) {
         const { playlistId, soundToBeMovedId, soundToMoveId } = args

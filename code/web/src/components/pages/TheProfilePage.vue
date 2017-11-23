@@ -23,9 +23,7 @@
           </div>
         </div>
 
-        <div v-if="getUser.profile.description" v-text="getUser.profile.description" class="mt3 pl4 lh-copy">
-
-        </div>
+        <div v-if="getUser.profile.description" v-text="getUser.profile.description" class="mt3 pl4 lh-copy"></div>
 
         <div v-if="getUser.profile.websiteUrl" class="mt3 pl4">
           <span class="b"><span v-text="$t('Website')"></span>: </span>
@@ -49,40 +47,25 @@
             <pure-button @click="authLogOut" color="gray" v-text="$t('Logout')"></pure-button>
           </div>
         </div>
+
+        <stateful-playlist-list :user-id="getUser._id"></stateful-playlist-list>
       </div>
     </div>
   </layout-with-sidebar>
 </template>
 <script type="text/ecmascript-6">
-  import gql from 'graphql-tag'
-
   import { getImage } from '../../func/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import SoundListComponent from '../stateful/sound/StatefulSoundList.vue'
+  import StatefulPlaylistList from '../stateful/Playlist/StatefulPlaylistList.vue'
   import { getUserId } from '../../api/AuthApi'
-  import { follow, unfollow } from '../../api/ProfileApi'
-
-  const query = gql`
-    query ProfilePage($id: String!) {
-      getUser(_id: $id) {
-        _id
-        username
-        isFollowedByCurrentUser
-        profile {
-          description
-          websiteUrl
-          avatarFile {
-            url
-          }
-        }
-      }
-    }
-  `
+  import { follow, unfollow, profilePageQuery as query } from '../../api/ProfileApi'
 
   export default {
     components: {
       HeaderComponent,
       SoundListComponent,
+      StatefulPlaylistList,
     },
     metaInfo () {
       if (this.getUser) {

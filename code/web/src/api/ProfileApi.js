@@ -37,3 +37,20 @@ export const unfollow = id => apolloClient.mutate({
   variables: { id },
   refetchQueries: ['ProfilePage', 'SoundListQuery'],
 })
+
+export const profilePageQuery = gql`
+  query ProfilePage($id: String!) {
+    getUser(_id: $id) {
+      _id
+      username
+      isFollowedByCurrentUser
+      profile {
+        description
+        websiteUrl
+        avatarFile {
+          url
+        }
+      }
+    }
+  }
+`

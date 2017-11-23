@@ -32,11 +32,14 @@
 
             <div class="ph3">
               <div class="mt4">
-                <div class="dib mr2-l pb2 pb0-l">
+                <div class="dib v-mid mr2-l pb2 pb0-l">
                   <pure-button @click="playNext" v-text="$t('Play next')"></pure-button>
                 </div>
-                <div class="dib mr2-l pb2 pb0-l">
+                <div class="dib v-mid mr2-l pb2 pb0-l">
                   <pure-button @click="addToSoundPlayer" v-text="$t('Play later')"></pure-button>
+                </div>
+                <div class="dib v-mid mr2-l pb2 pb0-l">
+                  <pure-button @click="openPlaylistAddModal" v-text="$t('Add to playlist')"></pure-button>
                 </div>
               </div>
 
@@ -66,6 +69,12 @@
               <h2 class="f3 mb3 mt5" v-text="$t('Comments')"></h2>
               <comment-box :id="getSound._id"></comment-box>
             </div>
+            <div v-if="playlistModalOpen">
+              <stateful-playlist-add-modal
+                :soundId="getSound._id"
+                @close="closePlaylistModal"
+              ></stateful-playlist-add-modal>
+            </div>
           </div>
 
           <div v-if="!getSound">
@@ -86,6 +95,7 @@
   import { detailSoundQuery, removeSound, publishSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import CommentBox from '../../stateful/Comment/StatefulCommentBox.vue'
+  import StatefulPlaylistAddModal from '../../stateful/Playlist/StatefulPlaylistAddModal.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
 
@@ -93,6 +103,7 @@
     components: {
       HeaderComponent,
       CommentBox,
+      StatefulPlaylistAddModal,
     },
     metaInfo () {
       if (!this.getSound) {
@@ -107,6 +118,7 @@
       return {
         loading: 0,
         playingPos: 0,
+        playlistModalOpen: false,
       }
     },
     computed: mapState({
@@ -140,6 +152,12 @@
       },
       addToSoundPlayer () {
         this.$store.dispatch('addSoundToPlayer', { sound: this.createSound() })
+      },
+      openPlaylistAddModal () {
+        this.playlistModalOpen = true
+      },
+      closePlaylistModal () {
+        this.playlistModalOpen = false
       },
       playSound () {
         this.$store.dispatch('playWithReset', { sound: this.createSound() })
