@@ -45,7 +45,7 @@
 
               <div v-if="getSound.isRemovable" class="mt4">
                 <div class="dib mr2-l pb2 pb0-l" v-if="!getSound.isPublic">
-                  <pure-button @click="publishSound" v-text="$t('Publish')"></pure-button>
+                  <pure-button :fill="true" @click="publishSound" v-text="$t('Publish')"></pure-button>
                 </div>
                 <div class="dib mr2-l pb2 pb0-l">
                   <pure-button @click="$router.push({ name: 'sound-edit', params: { id: getSound._id } })" v-text="$t('Edit')"></pure-button>

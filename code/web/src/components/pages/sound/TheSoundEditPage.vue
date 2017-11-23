@@ -24,7 +24,6 @@
         </div>
       </div>
       <div slot="sidebar">
-        Awesome sidebar! (add meta info and so on)
       </div>
     </layout-with-sidebar>
   </div>

@@ -188,7 +188,7 @@ soundGraphqlSchema.resolvers.Query.listSoundForPlaylist = (root, args, context) 
   const { userId } = context
   check(userId, Match.Optional(String))
 
-  return soundCollection.findForPlaylist(playlistId, userId).fetch()
+  return soundCollection.fetchForPlaylist(playlistId, userId)
 }
 
 export default soundGraphqlSchema

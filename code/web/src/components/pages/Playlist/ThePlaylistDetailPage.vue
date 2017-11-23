@@ -17,7 +17,7 @@
         </div>
         <pure-title v-text="playlistDetail.name"></pure-title>
 
-        <div v-if="playlistDetail.description" class="mt2 f3 gray lh-title" style="max-width: 600px" v-text="playlistDetail.description"></div>
+        <div v-if="playlistDetail.description" class="mt0 f4 fw6 gray lh-title" style="max-width: 600px" v-text="playlistDetail.description"></div>
 
         <div class="mt3">
           <stateful-sound-list :query="playlistSoundsQuery"

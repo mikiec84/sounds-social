@@ -27,42 +27,55 @@ const playlistSchema = new SimpleSchema({
   },
 })
 
-const updateSoundIdsIfPermission = (operation, collection, playlistId, userId, soundId) => {
+const updateSoundIdsIfPermission = (collection, playlistId, userId, updateOperator) => {
   const sound = collection.findOneForUser(playlistId, userId)
 
-  if (sound) collection.update({ _id: playlistId }, { [operation]: { soundIds: soundId } })
+  if (sound) collection.update({ _id: playlistId }, updateOperator)
 
   return collection.findOneForUser(playlistId, userId)
 }
 
-class PlaylistCollection extends Mongo.Collection
-{
+class PlaylistCollection extends Mongo.Collection {
   create (name, creatorId, isPublic = false, description = '') {
     this.insert({ name, creatorId, isPublic, description })
   }
 
   removeForUser (playlistId, userId) {
-    this.remove({ _id: playlistId, creatorId: userId  })
+    this.remove({ _id: playlistId, creatorId: userId })
   }
 
-  updateInfos ({ playlistId, name, userId, isPublic, description }) {
+  updateInfos ({ playlistId, name, userId, isPublic, description, soundIds }) {
     const fieldsToUpdate = { $set: {} }
 
     fieldsToUpdate.$set.name = name
     fieldsToUpdate.$set.description = description
     fieldsToUpdate.$set.isPublic = isPublic
+    fieldsToUpdate.$set.soundIds = soundIds
 
     this.update({ _id: playlistId, creatorId: userId }, fieldsToUpdate)
   }
 
   addSound (playlistId, userId, soundId) {
     soundCollection.check(soundId)
-    return updateSoundIdsIfPermission('$addToSet', this, playlistId, userId, soundId)
+
+    this.removeSound(playlistId, userId, soundId)
+
+    return updateSoundIdsIfPermission(this, playlistId, userId, {
+      $push: {
+        soundIds: {
+          $each: [soundId],
+          $position: 0,
+        },
+      },
+    })
   }
 
   removeSound (playlistId, userId, soundId) {
     soundCollection.check(soundId)
-    return updateSoundIdsIfPermission('$pull', this, playlistId, userId, soundId)
+
+    return updateSoundIdsIfPermission(this, playlistId, userId, {
+      $pull: { soundIds: soundId },
+    })
   }
 
   moveSounds (playlistId, userId, soundToMoveId, soundToBeMovedId) {
@@ -79,10 +92,12 @@ class PlaylistCollection extends Mongo.Collection
       if (!isInvalid(soundToMoveIndex) && !isInvalid(soundToBeMovedIndex)) {
         this.$update({
           _id: playlistId
-        }, { $set: {
-          [`soundIds.${soundToBeMovedIndex}`]: soundToMoveId,
-          [`soundIds.${soundToMoveIndex}`]: soundToBeMovedId,
-        } })
+        }, {
+          $set: {
+            [`soundIds.${soundToBeMovedIndex}`]: soundToMoveId,
+            [`soundIds.${soundToMoveIndex}`]: soundToBeMovedId,
+          }
+        })
       }
     }
   }

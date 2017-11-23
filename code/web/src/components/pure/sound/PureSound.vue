@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder }" style="max-width: 700px"  class="cf">
+    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder }" style="max-width: 700px" class="cf pointer" @click="openSound">
       <div class="fl w-50 w-30-m w-25-l pa2" v-if="coverFileUrl" >
         <div class="mw-100 cover bg-center" :style="`max-width: 150px; height: 150px; background: url(${coverFileUrl})`"></div>
       </div>
       <div :class="['fl', { 'w-50 w-70-m w-75-l': coverFileUrl, 'w-100': !coverFileUrl }]">
         <div class="ph3 mw8">
           <div class="pointer mt2 mt0-l">
-            <div class="dib v-mid pr2" @click="$emit('play-sound')">
+            <div class="dib v-mid pr2" @click="playSound($event)">
               <pure-icon icon="play"></pure-icon>
             </div>
-            <h2 @click="$emit('open-sound')" class="lh-copy f3-l f4 b dib v-mid black mv2 dim navy " v-text="label"></h2>
+            <h2 class="lh-copy f3-l f4 b dib v-mid black mv2 dim navy " v-text="label"></h2>
             <div v-if="isPrivate" class="lh-copy dib v-mid b ml3 f4 light-red" v-text="$t('Not published')"></div>
           </div>
           <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
@@ -83,6 +83,15 @@
         type: Number,
         required: false,
         default: 0,
+      },
+    },
+    methods: {
+      openSound () {
+        this.$emit('open-sound')
+      },
+      playSound (e) {
+        e.stopPropagation()
+        this.$emit('play-sound')
       },
     },
   }

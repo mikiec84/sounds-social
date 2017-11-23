@@ -25,7 +25,7 @@ extend type Query {
 
 extend type Mutation {
   createPlaylist(name: String! description: String isPublic: Boolean): Playlist
-  updatePlaylist(playlistId: String! name: String! description: String isPublic: Boolean): Playlist
+  updatePlaylist(playlistId: String! name: String! description: String isPublic: Boolean soundIds: [String]): Playlist
   removePlaylist(playlistId: String!): Playlist
   addSoundToPlaylist(playlistId: String! soundId: String!): Playlist
   removeSoundFromPlaylist(playlistId: String! soundId: String!): Playlist
@@ -48,6 +48,9 @@ export default {
       },
       creator: (root) => {
         return Meteor.users.findOne({ _id: root.creatorId })
+      },
+      sounds: (root, args, context) => {
+        return soundCollection.fetchForPlaylist(root._id, context.userId)
       },
       isEditable: isCreatorResolver,
       isRemovable: isCreatorResolver,
@@ -79,16 +82,19 @@ export default {
         return playlistCollection.create(name, userId, isPublic, description)
       },
       updatePlaylist(root, args, context) {
-        const { playlistId, name, description, isPublic } = args
+        const { playlistId, name, description, soundIds, isPublic } = args
         check(playlistId, String)
         check(name, Match.Maybe(String))
         check(description, Match.Maybe(String))
         check(isPublic, Match.Maybe(Boolean))
+        soundIds.forEach(soundId => soundCollection.check(soundId, String))
 
         const { userId } = context
         check(userId, String)
 
-        playlistCollection.updateInfos({ playlistId, name, userId, isPublic, description })
+        playlistCollection.updateInfos(
+          { playlistId, name, userId, isPublic, description, soundIds },
+          )
 
         return playlistCollection.findOneForUser(playlistId, userId)
       },

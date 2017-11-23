@@ -42,6 +42,20 @@
           </label>
         </div>
 
+        <div class="mt3">
+          <label>
+            <div class="mb2" v-text="$t('Sounds')"></div>
+            <div v-for="sound in formData.sounds"
+                 :key="sound._id"
+                 class="pointer bg-silver white mb2 pa3">
+              <div class="dib v-mid f4 mr3" @click="removeSound(sound._id)">
+                <pure-icon icon="remove"> </pure-icon>
+              </div>
+              <span class="dib v-mid" v-text="sound.name"></span>
+            </div>
+          </label>
+        </div>
+
         <div class="mv4">
           <pure-button
             @click="updatePlaylist"
@@ -54,13 +68,13 @@
   </layout-with-sidebar>
 </template>
 <script>
-  import { pick } from 'lodash/fp'
+  import { pick, get } from 'lodash/fp'
   import { required } from 'vuelidate/lib/validators'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { updatePlaylist, playlistEditQuery } from '../../../api/PlaylistApi'
 
-  const pickFields = pick(['playlistId', 'name', 'description', 'isPublic'])
+  const pickFields = pick(['playlistId', 'sounds', 'name', 'description', 'isPublic'])
 
   export default {
     components: {
@@ -76,13 +90,20 @@
         formData: {},
       }
     },
-    mounted () {
-      this.$apollo.query({
+    apollo: {
+      playlistEdit: {
         query: playlistEditQuery,
-        variables: { id: this.$route.params.id },
-      }).then(({ data: { playlistEdit } }) => {
-        this.formData = pickFields(playlistEdit)
-      })
+        variables () {
+          return { id: this.$route.params.id }
+        },
+        fetchPolicy: 'network-only',
+      },
+    },
+    watch: {
+      playlistEdit () {
+        this.formData = pickFields(this.playlistEdit)
+        this.formData.sounds = this.formData.sounds.map(pick(['_id', 'name']))
+      },
     },
     validations: {
       formData: {
@@ -96,10 +117,18 @@
         this.$v.formData[field].$touch()
         this.formData[field] = value
       },
+      removeSound (soundId) {
+        this.formData.sounds = this.formData.sounds.filter(
+          ({ _id }) => _id !== soundId,
+        )
+      },
       updatePlaylist () {
         const { formData } = this
 
-        updatePlaylist(formData).then(({ data: { playlist } }) => {
+        updatePlaylist({
+          ...formData,
+          soundIds: formData.sounds.map(get('_id')),
+        }).then(({ data: { playlist } }) => {
           this.$router.push({
             name: 'playlist-detail',
             params: { id: playlist._id },

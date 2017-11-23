@@ -1,3 +1,4 @@
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import ApolloClient, { from } from 'apollo-client-preset'
 import { authMiddleware } from './middleware/AuthMiddleware'
 import { langMiddleware } from './middleware/LangMiddleware'
@@ -9,4 +10,7 @@ export const apolloClient = new ApolloClient({
     langMiddleware,
     httpLink,
   ]),
+  cache: new InMemoryCache({
+    dataIdFromObject: o => o.uuid
+  })
 })

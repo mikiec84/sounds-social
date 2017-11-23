@@ -1,5 +1,6 @@
 import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
+import { Meteor } from 'meteor/meteor'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
@@ -41,9 +42,8 @@ export const soundSchema = new SimpleSchema({
   },
 })
 
-class SoundCollection extends Mongo.Collection
-{
-  addSound(doc, userId) {
+class SoundCollection extends Mongo.Collection {
+  addSound (doc, userId) {
     doc.creatorId = userId
     if (!doc.file) throw new Error('Need file to add sound')
     doc.fileId = fileCollection.insert({ ...doc.file })
@@ -56,7 +56,8 @@ class SoundCollection extends Mongo.Collection
 
     return this.findOne({ _id })
   }
-  publishSound(_id, creatorId) {
+
+  publishSound (_id, creatorId) {
     const doc = this.findOne({ _id, creatorId })
 
     if (!doc) throw new Error('Not permitted')
@@ -65,7 +66,8 @@ class SoundCollection extends Mongo.Collection
 
     return this.findOneById(_id)
   }
-  find(selector) {
+
+  find (selector) {
     if (this.graphqlFilters && this.graphqlFilters.length > 0) {
       const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
       const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
@@ -103,7 +105,8 @@ class SoundCollection extends Mongo.Collection
       },
     })
   }
-  findOne(selector, ...more) {
+
+  findOne (selector, ...more) {
     if (this.graphqlContext && selector._id) {
       selector.isPublic = true
 
@@ -114,31 +117,42 @@ class SoundCollection extends Mongo.Collection
 
     return super.findOne(selector, ...more)
   }
+
   findByIds (ids) {
     return this.find({ _id: { $in: ids } })
   }
-  findForPlaylist(playlistId, userId) {
+
+  fetchForPlaylist (playlistId, userId) {
     const playlist = playlistCollection.findOnePublic(playlistId, userId)
 
-    if (playlist) return this.findByIds(playlist.soundIds)
+    if (playlist) {
+      const { soundIds } = playlist
+
+      return soundIds.map(soundId => this.findOneById(soundId))
+    }
   }
-  findCoverFile(soundId) {
+
+  findCoverFile (soundId) {
     const sound = this.findOne(soundId)
 
     if (sound) return fileCollection.findOneById(sound.coverFileId)
   }
-  updateCover(soundId, coverFileData) {
+
+  updateCover (soundId, coverFileData) {
     const coverFileId = fileCollection.insert({ ...coverFileData })
 
     this.update({ _id: soundId }, { $set: { coverFileId } })
   }
-  countPlay(_id) {
+
+  countPlay (_id) {
     this.update({ _id }, { $inc: { playsCount: 1 } })
   }
-  findOneById(_id) {
+
+  findOneById (_id) {
     return this.findOne({ _id })
   }
-  check(_id) {
+
+  check (_id) {
     if (!this.findOneById(_id)) throw new Meteor.Error('Sound not found')
   }
 }
