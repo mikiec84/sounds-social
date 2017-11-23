@@ -124,6 +124,9 @@ class SoundCollection extends Mongo.Collection
   findOneById(_id) {
     return this.findOne({ _id })
   }
+  check(_id) {
+    if (!this.findOneById(_id)) throw new Meteor.Error('Sound not found')
+  }
 }
 
 export const soundCollection = new SoundCollection('sounds')

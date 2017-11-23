@@ -7,7 +7,8 @@ import fileSchema from './FileGraphqlSchema'
 import soundSchema from './SoundGraphqlSchema'
 import userSchema from './UserGraphqlSchema'
 import profileSchema from './ProfileGraphqlSchema'
-import notificationSchema from './NotificationSchema'
+import notificationSchema from './NotificationGraphqlSchema'
+import playlistSchema from './PlaylistGraphqlSchema'
 
 const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
   schemas: [
@@ -17,6 +18,7 @@ const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
     userSchema,
     profileSchema,
     notificationSchema,
+    playlistSchema,
   ],
 })
 
