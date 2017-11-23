@@ -26,6 +26,7 @@ const soundGraphqlSchema = createCollectionSchema({
       },
       isPublic: {
         type: Boolean,
+        optional: true,
       },
       creatorId: {
         type: String,

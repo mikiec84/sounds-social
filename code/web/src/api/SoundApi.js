@@ -56,6 +56,7 @@ export const editSoundFormQuery = gql`
       name
       description
       fileId
+      isPublic
       creator {
         _id
         username

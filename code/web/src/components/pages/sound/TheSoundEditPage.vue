@@ -12,11 +12,19 @@
                   :isUploading="false"
                   :name="formData.name || soundToEdit.name"
                   :description="formData.description || soundToEdit.description"
-                  buttonLabel="Save"
+                  :buttonLabel="$t('Save')"
                   @changeTitle="formData.name = arguments[0]"
                   @changeDescription="formData.description = arguments[0]"
                   @publish="saveSound()"
-          ></sound-form-box>
+          >
+            <div class="dib ml1" slot="additionalButtons">
+              <pure-button color="gray"
+                           :disabled="isUploading"
+                           @click="saveSound(false)"
+                           v-if="soundToEdit.isPublic"
+                           v-text="`${$t('Save')} (${$t('Private')})`"></pure-button>
+            </div>
+          </sound-form-box>
         </div>
 
         <div v-if="!soundToEdit">
@@ -59,11 +67,11 @@
       },
     },
     methods: {
-      saveSound () {
+      saveSound (isPublic) {
         updateSound(this.$route.params.id, {
           ...this.$_.pick(this.soundToEdit, ['name', 'description']),
           ...this.formData,
-          isPublic: true,
+          isPublic,
           creatorId: this.soundToEdit.creator._id,
         }).then(() => {
           this.$router.push({
