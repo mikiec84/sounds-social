@@ -1,6 +1,7 @@
 import { constant } from 'lodash/fp'
 
 import PlaylistDetailPage from '../components/pages/Playlist/ThePlaylistDetailPage.vue'
+import PlaylistEditPage from '../components/pages/Playlist/ThePlaylistEditPage.vue'
 
 export const playlistRoutes = [
   {
@@ -12,7 +13,7 @@ export const playlistRoutes = [
   {
     name: 'playlist-edit',
     path: '/playlist/:id/edit',
-    component: {},
+    component: PlaylistEditPage,
     meta: { needsAuth: constant(true) },
   },
 ]

@@ -41,6 +41,20 @@ class PlaylistCollection extends Mongo.Collection
     this.insert({ name, creatorId, isPublic, description })
   }
 
+  removeForUser (playlistId, userId) {
+    this.remove({ _id: playlistId, creatorId: userId  })
+  }
+
+  updateInfos ({ playlistId, name, userId, isPublic, description }) {
+    const fieldsToUpdate = { $set: {} }
+
+    fieldsToUpdate.$set.name = name
+    fieldsToUpdate.$set.description = description
+    fieldsToUpdate.$set.isPublic = isPublic
+
+    this.update({ _id: playlistId, creatorId: userId }, fieldsToUpdate)
+  }
+
   addSound (playlistId, userId, soundId) {
     soundCollection.check(soundId)
     return updateSoundIdsIfPermission('$addToSet', this, playlistId, userId, soundId)
@@ -85,10 +99,11 @@ class PlaylistCollection extends Mongo.Collection
   }
 
   findPublic (userId, currentUserId) {
-    return this.find({
-      creatorId: userId,
-      isPublic: userId !== currentUserId,
-    }, { sort: { createdAt: -1 } })
+    const findPublicSelector = { creatorId: userId }
+
+    if (userId !== currentUserId) findPublicSelector.isPublic = true
+
+    return this.find(findPublicSelector, { sort: { createdAt: -1 } })
   }
 
   findOnePublic (playlistId, currentUserId) {

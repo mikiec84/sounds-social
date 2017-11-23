@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { check } from 'meteor/check'
+import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { soundCollection, soundSchema } from '../../data/collection/SoundCollection'
@@ -186,7 +186,7 @@ soundGraphqlSchema.resolvers.Query.listSoundForPlaylist = (root, args, context) 
   check(playlistId, String)
 
   const { userId } = context
-  check(userId, String)
+  check(userId, Match.Optional(String))
 
   return soundCollection.findForPlaylist(playlistId, userId).fetch()
 }

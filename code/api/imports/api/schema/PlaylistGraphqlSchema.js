@@ -25,6 +25,8 @@ extend type Query {
 
 extend type Mutation {
   createPlaylist(name: String! description: String isPublic: Boolean): Playlist
+  updatePlaylist(playlistId: String! name: String! description: String isPublic: Boolean): Playlist
+  removePlaylist(playlistId: String!): Playlist
   addSoundToPlaylist(playlistId: String! soundId: String!): Playlist
   removeSoundFromPlaylist(playlistId: String! soundId: String!): Playlist
   moveSoundsInPlaylist(playlistId: String! soundToMoveId: String! soundToBeMovedId: String!): Playlist
@@ -59,7 +61,7 @@ export default {
       },
       getPlaylist(root, args, context) {
         check(args.playlistId, String)
-        check(context.userId, String)
+        check(context.userId, Match.Maybe(String))
 
         return playlistCollection.findOnePublic(args.playlistId, context.userId)
       },
@@ -75,6 +77,29 @@ export default {
         check(userId, String)
 
         return playlistCollection.create(name, userId, isPublic, description)
+      },
+      updatePlaylist(root, args, context) {
+        const { playlistId, name, description, isPublic } = args
+        check(playlistId, String)
+        check(name, Match.Maybe(String))
+        check(description, Match.Maybe(String))
+        check(isPublic, Match.Maybe(Boolean))
+
+        const { userId } = context
+        check(userId, String)
+
+        playlistCollection.updateInfos({ playlistId, name, userId, isPublic, description })
+
+        return playlistCollection.findOneForUser(playlistId, userId)
+      },
+      removePlaylist(root, args, context) {
+        const { playlistId } = args
+        check(playlistId, String)
+
+        const { userId } = context
+        check(userId, String)
+
+        return playlistCollection.removeForUser(playlistId, userId)
       },
       addSoundToPlaylist(root, args, context) {
         const { playlistId, soundId } = args

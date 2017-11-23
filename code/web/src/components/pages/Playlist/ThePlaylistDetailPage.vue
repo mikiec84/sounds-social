@@ -8,12 +8,16 @@
 
       <div v-if="playlistDetail">
         <div class="gray b f2">
-          <span v-text="$t('Playlist')"></span>
-          <span class="light-red" v-text="`(${$t('Private')})`"></span>
+          <span v-text="`${$t('Playlist')} ${$t('by')}`"></span>
+          <router-link
+            class="color-inherit no-underline"
+            :to="{ name: 'profile-detail', params: { id: playlistDetail.creator._id }}"
+            v-text="playlistDetail.creator.username"></router-link>
+          <span v-if="!playlistDetail.isPublic" class="light-red" v-text="`(${$t('Private')})`"></span>
         </div>
         <pure-title v-text="playlistDetail.name"></pure-title>
 
-        <div v-if="playlistDetail.description" class="mt2 f3 gray mw5" v-text="playlistDetail.description"></div>
+        <div v-if="playlistDetail.description" class="mt2 f3 gray lh-title" style="max-width: 600px" v-text="playlistDetail.description"></div>
 
         <div class="mt3">
           <stateful-sound-list :query="playlistSoundsQuery"
@@ -29,10 +33,14 @@
 
         <div class="tc">
           <div v-if="playlistDetail.isEditable" class="dib mt4">
-            <pure-button v-text="$t('Edit')"></pure-button>
+            <pure-button v-text="$t('Edit')"
+                         @click="$router.push({ name: 'playlist-edit', params: { id: playlistDetail._id } })"></pure-button>
           </div>
           <div v-if="playlistDetail.isRemovable" class="dib ml2 mt4">
-            <pure-button color="red" v-text="$t('Remove')"></pure-button>
+            <pure-confirm-modal-button @confirm="removePlaylist" buttonColor="red">
+              <div slot="button" v-text="$t('Remove')">Remove</div>
+              <div slot="modal" v-text="$t('Do you really want to delete this?')"></div>
+            </pure-confirm-modal-button>
           </div>
         </div>
       </div>
@@ -40,7 +48,7 @@
   </layout-with-sidebar>
 </template>
 <script>
-  import { playlistDetailQuery as query } from '../../../api/PlaylistApi'
+  import { playlistDetailQuery as query, removePlaylist } from '../../../api/PlaylistApi'
   import { playlistSoundsQuery } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import StatefulSoundList from '../../stateful/sound/StatefulSoundList.vue'
@@ -51,6 +59,16 @@
       return {
         loading: 0,
         playlistSoundsQuery,
+      }
+    },
+
+    metaInfo () {
+      if (!this.playlistDetail) {
+        return {}
+      }
+
+      return {
+        title: `${this.playlistDetail.name} ${this.$t('by')} ${this.playlistDetail.creator.username}`,
       }
     },
     apollo: {
@@ -73,6 +91,11 @@
         return {
           playlistId: this.playlistId,
         }
+      },
+      removePlaylist () {
+        removePlaylist(this.playlistId).then(({ data: { playlist } }) => {
+          this.$router.push({ name: 'profile-detail', params: { id: 'me' } })
+        })
       },
     },
   }

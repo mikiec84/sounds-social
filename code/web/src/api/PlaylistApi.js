@@ -46,6 +46,17 @@ export const playlistDetailQuery = gql`
   ${ProfileBoxFieldsFragment}
 `
 
+export const playlistEditQuery = gql`
+  query PlaylistEdit($id: String!) {
+    playlistEdit: getPlaylist(playlistId: $id) {
+      playlistId: _id
+      name
+      description
+      isPublic
+    }
+  }
+`
+
 export const createPlaylist = name => apolloClient.mutate({
   mutation: gql`
     mutation CreatePlaylist($name: String!) {
@@ -69,4 +80,27 @@ export const addSoundToPlaylist = (playlistId, soundId) => apolloClient.mutate({
     }
   `,
   variables: { playlistId, soundId },
+})
+
+export const updatePlaylist = ({ playlistId, name, description = '', isPublic }) => apolloClient.mutate({
+  mutation: gql`
+    mutation UpdatePlaylist($playlistId: String! $name: String! $description: String $isPublic: Boolean) {
+      playlist: updatePlaylist(playlistId: $playlistId name: $name description: $description isPublic: $isPublic) {
+        _id
+      }
+    }
+  `,
+  variables: { playlistId, name, description, isPublic },
+  refetchQueries: ['PlaylistDetail'],
+})
+
+export const removePlaylist = (playlistId) => apolloClient.mutate({
+  mutation: gql`
+    mutation RemovePlaylist($playlistId: String!) {
+      playlist: removePlaylist(playlistId: $playlistId) {
+        _id
+      }
+    }
+  `,
+  variables: { playlistId },
 })
