@@ -4,8 +4,7 @@
       <header-component current="upload"></header-component>
     </div>
     <div slot="main">
-      <h1 class="f-headline mv3" v-text="$t('Upload')"></h1>
-
+      <pure-title v-text="$t('Upload')"></pure-title>
       <upload-box-component></upload-box-component>
     </div>
   </layout-default>

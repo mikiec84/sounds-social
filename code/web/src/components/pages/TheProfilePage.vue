@@ -5,7 +5,7 @@
     </div>
     <div slot="main">
       <div v-if="getUser">
-        <h1 class="f-headline mv3" v-text="getUser.username"></h1>
+        <pure-title v-text="getUser.username"></pure-title>
         <div v-if="isCurrentUser">
           <h2 class="f2 mv3 gray" v-text="`(${$t('this is you')})`"></h2>
         </div>
@@ -17,29 +17,7 @@
     </div>
     <div slot="sidebar">
       <div v-if="getUser">
-        <div class="tc mv4">
-          <div class="dib">
-            <profile-image :source="profileAvatarImage"></profile-image>
-          </div>
-        </div>
-
-        <div v-if="getUser.profile.description" v-text="getUser.profile.description" class="mt3 pl4 lh-copy"></div>
-
-        <div v-if="getUser.profile.websiteUrl" class="mt3 pl4">
-          <span class="b"><span v-text="$t('Website')"></span>: </span>
-          <div class="mt2">
-            <a class="link dark-blue" :href="getUser.profile.websiteUrl" v-text="getUser.profile.websiteUrl"></a>
-          </div>
-        </div>
-
-        <div class="mv4 tc" v-if="!isCurrentUser && userIsAuthenticated">
-          <pure-button @click="getUser.isFollowedByCurrentUser ? unfollow(getUser._id) : follow(getUser._id)">
-            <div>
-              <div v-if="getUser.isFollowedByCurrentUser" v-text="$t('Unfollow')"></div>
-              <div v-if="!getUser.isFollowedByCurrentUser" v-text="$t('Follow')"></div>
-            </div>
-          </pure-button>
-        </div>
+        <stateful-profile-box :user="getUser"></stateful-profile-box>
 
         <div class="mv4 tc" v-if="isCurrentUser">
           <pure-button @click="$router.push({ name: 'profile-edit', params: { id: getUser._id } })" v-text="$t('Edit profile')"></pure-button>
@@ -54,18 +32,19 @@
   </layout-with-sidebar>
 </template>
 <script type="text/ecmascript-6">
-  import { getImage } from '../../func/getImage'
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import SoundListComponent from '../stateful/sound/StatefulSoundList.vue'
   import StatefulPlaylistList from '../stateful/Playlist/StatefulPlaylistList.vue'
+  import StatefulProfileBox from '../stateful/Profile/StatefulProfileBox.vue'
   import { getUserId } from '../../api/AuthApi'
-  import { follow, unfollow, profilePageQuery as query } from '../../api/ProfileApi'
+  import { profilePageQuery as query } from '../../api/ProfileApi'
 
   export default {
     components: {
       HeaderComponent,
       SoundListComponent,
       StatefulPlaylistList,
+      StatefulProfileBox,
     },
     metaInfo () {
       if (this.getUser) {
@@ -109,17 +88,6 @@
 
         return id
       },
-      profileAvatarImage () {
-        return getImage('getUser.profile.avatarFile.url')(this)
-      },
-    },
-    methods: {
-      follow (userId) {
-        follow(userId)
-      },
-      unfollow (userId) {
-        unfollow(userId)
-      },
-    },
+    }
   }
 </script>

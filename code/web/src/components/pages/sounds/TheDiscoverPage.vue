@@ -5,7 +5,7 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <h1 class="f-headline mv3">Sounds</h1>
+        <pure-title v-text="$t('Sounds')"></pure-title>
         <div class="pb3"><sub-header-component current="discover"></sub-header-component></div>
 
         <div class="pv3">

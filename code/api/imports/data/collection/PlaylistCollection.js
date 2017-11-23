@@ -83,6 +83,22 @@ class PlaylistCollection extends Mongo.Collection
       limit,
     })
   }
+
+  findPublic (userId, currentUserId) {
+    return this.find({
+      creatorId: userId,
+      isPublic: userId !== currentUserId,
+    }, { sort: { createdAt: -1 } })
+  }
+
+  findOnePublic (playlistId, currentUserId) {
+    return this.findOne({
+      $or: [
+        { _id: playlistId, isPublic: true },
+        { _id: playlistId, creatorId: currentUserId },
+      ]
+    })
+  }
 }
 
 export const playlistCollection = new PlaylistCollection('playlists')

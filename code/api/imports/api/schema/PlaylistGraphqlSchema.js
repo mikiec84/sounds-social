@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { some, defaultTo } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { playlistCollection } from '../../data/collection/PlaylistCollection'
@@ -12,10 +13,13 @@ type Playlist {
   sounds: [Sound]
   createdAt: Date
   image: File
+  creator: User
+  isEditable: Boolean
+  isRemovable: Boolean
 }
 
 extend type Query {
-  listPlaylist: [Playlist]
+  listPlaylist(userId: String): [Playlist]
   getPlaylist(playlistId: String!): Playlist
 }
 
@@ -26,6 +30,8 @@ extend type Mutation {
   moveSoundsInPlaylist(playlistId: String! soundToMoveId: String! soundToBeMovedId: String!): Playlist
 }
 `
+
+const isCreatorResolver = (root, args, context) => root.creatorId === context.userId
 
 export default {
   typeDefs: [typeDef],
@@ -38,18 +44,24 @@ export default {
           return soundCollection.findCoverFile(soundId)
         }, null)
       },
+      creator: (root) => {
+        return Meteor.users.findOne({ _id: root.creatorId })
+      },
+      isEditable: isCreatorResolver,
+      isRemovable: isCreatorResolver,
     },
     Query: {
       listPlaylist(root, args, context) {
-        check(context.userId, String)
+        const userId = defaultTo(context.userId)(args.userId)
+        check(userId, Match.Maybe(String))
 
-        return playlistCollection.findForUser(context.userId).fetch()
+        return playlistCollection.findPublic(userId, context.userId).fetch()
       },
       getPlaylist(root, args, context) {
         check(args.playlistId, String)
         check(context.userId, String)
 
-        return playlistCollection.findOneForUser(args.playlistId, context.userId)
+        return playlistCollection.findOnePublic(args.playlistId, context.userId)
       },
     },
     Mutation: {

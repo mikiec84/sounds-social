@@ -1,6 +1,28 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
+const listSoundFragment = gql`
+  fragment ListSoundFields on Sound {
+    _id
+    name
+    isPublic
+    coverFile {
+      url
+    }
+    description
+    createdAt {
+      fromNow
+    }
+    file {
+      url
+    }
+    creator {
+      _id
+      username
+    }
+  }
+`
+
 export const detailSoundQuery = gql`
   query DetailSound($id: String!) {
     getSound(_id: $id) {
@@ -104,25 +126,29 @@ export const countPlayingSound = (id, soundPlayingId) => apolloClient.mutate({
   refetchQueries: ['DetailSound'],
 })
 
-export const searchSoundQuery = gql`
-  query SearchSoundsQuery($query: String!) {
-    listSound: searchSound(query: $query) {
-      _id
-      name
-      coverFile {
-        url
-      }
-      description
-      createdAt {
-        fromNow
-      }
-      file {
-        url
-      }
-      creator {
-        _id
-        username
-      }
+export const listSoundDefaultQuery = gql`
+  query SoundListQuery($userId: String!, $loggedInFeed: String!) {
+    listSound(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
+      ...ListSoundFields
     }
   }
+  ${listSoundFragment}
+`
+
+export const searchSoundQuery = gql`  
+  query SearchSoundsQuery($query: String!) {
+    listSound: searchSound(query: $query) {
+      ...ListSoundFields
+    }
+  }
+  ${listSoundFragment}
+`
+
+export const playlistSoundsQuery = gql`  
+  query PlaylistSoundsQuery($playlistId: String!) {
+    listSound: listSoundForPlaylist(playlistId: $playlistId) {
+      ...ListSoundFields
+    }
+  }
+  ${listSoundFragment}
 `

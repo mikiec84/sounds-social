@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
+import { ProfileBoxFieldsFragment } from './ProfileApi'
 
 export const playlistToAddListQuery = gql`
   query PlaylistToAddList {
@@ -13,8 +14,8 @@ export const playlistToAddListQuery = gql`
 `
 
 export const playlistListQuery = gql`
-  query PlaylistList {
-    playlistList: listPlaylist {
+  query PlaylistList($userId: String!) {
+    playlistList: listPlaylist(userId: $userId) {
       _id
       name
       image {
@@ -25,9 +26,29 @@ export const playlistListQuery = gql`
   }
 `
 
+export const playlistDetailQuery = gql`
+  query PlaylistDetail($id: String!) {
+    playlistDetail: getPlaylist(playlistId: $id) {
+      _id
+      name
+      description
+      image {
+        url
+      }
+      creator {
+        ...ProfileBoxFields
+      }
+      isPublic
+      isEditable
+      isRemovable
+    }
+  }
+  ${ProfileBoxFieldsFragment}
+`
+
 export const createPlaylist = name => apolloClient.mutate({
   mutation: gql`
-    mutation AddPlaylist($name: String!) {
+    mutation CreatePlaylist($name: String!) {
       newPlaylist: createPlaylist(name: $name) {
         _id
       }

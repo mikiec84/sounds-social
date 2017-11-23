@@ -62,8 +62,7 @@
       },
       addSound (playlistId) {
         addSoundToPlaylist(playlistId, this.soundId).then(({ data: { playlist } }) => {
-          // TODO: navigate to playlist
-          console.log(playlist)
+          this.$router.push({ name: 'playlist-detail', params: { id: playlist._id } })
         })
       }
     },

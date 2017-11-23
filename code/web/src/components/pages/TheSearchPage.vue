@@ -5,8 +5,7 @@
         <header-component current="sounds"></header-component>
       </div>
       <div slot="main">
-        <!-- TODO create a header component with optional subtitle (see profile edit) -->
-        <h1 class="f-headline mv3" v-text="$t('Search')"></h1>
+        <pure-title v-text="$t('Search')"></pure-title>
         <h2 class="f1 lh-solid mt2 gray" v-text='$t(`Results for "{{query}}"`, { query })'></h2>
 
         <div v-if="query">

@@ -5,6 +5,7 @@ import Header from '../../components/pure/PureHeader.vue'
 import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
 import Input from '../../components/pure/PureInput.vue'
 import Modal from '../../components/pure/PureModal.vue'
+import Title from '../../components/pure/PureTitle.vue'
 import Icon from '../../components/pure/PureIcon.vue'
 import SubHeader from '../../components/pure/PureSubHeader.vue'
 import ConfirmModal from '../../components/pure/PureConfirmModal.vue'
@@ -24,6 +25,7 @@ import SoundPlayerButton from '../../components/pure/sound/PureSoundPlayerButton
 import SoundPlayerList from '../../components/pure/sound/PureSoundPlayerList.vue'
 import SoundPlayerTimeline from '../../components/pure/sound/PureSoundPlayerTimeline.vue'
 import NotificationList from '../../components/pure/Notification/PureNotificationList.vue'
+import ProfileBox from '../../components/pure/profile/PureProfileBox.vue'
 import LoaderBlock from '../../components/pure/Loader/PureLoaderBlock.vue'
 import LoaderText from '../../components/pure/Loader/PureLoaderText.vue'
 import LoaderSound from '../../components/pure/Loader/PureLoaderSound.vue'
@@ -38,6 +40,7 @@ export const ComponentsList = [
   { id: 'pure-input', component: Input },
   { id: 'pure-modal', component: Modal },
   { id: 'pure-icon', component: Icon },
+  { id: 'pure-title', component: Title },
   { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },
@@ -57,6 +60,7 @@ export const ComponentsList = [
   { id: 'pure-sound-player-list', component: SoundPlayerList },
   { id: 'pure-sound-player-timeline', component: SoundPlayerTimeline },
   { id: 'pure-notification-list', component: NotificationList },
+  { id: 'pure-profile-box', component: ProfileBox },
   { id: 'pure-loader-block', component: LoaderBlock },
   { id: 'pure-loader-text', component: LoaderText },
   { id: 'pure-loader-sound', component: LoaderSound },

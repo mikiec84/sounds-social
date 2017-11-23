@@ -11,41 +11,15 @@
           @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
           :sounds="mapSounds(listSound)"></sound-list>
 
-        <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')">
-
-        </div>
+        <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')"></div>
       </div>
     </pure-loader-transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import gql from 'graphql-tag'
+  import { listSoundDefaultQuery as soundsQuery } from '../../../api/SoundApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
-
-  const soundsQuery = gql`
-    query SoundListQuery($userId: String!, $loggedInFeed: String!) {
-      listSound(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
-        _id
-        name
-        coverFile {
-          url
-        }
-        description
-        createdAt {
-          fromNow
-        }
-        isPublic
-        file {
-          url
-        }
-        creator {
-          _id
-          username
-        }
-      }
-    }
-  `
 
   // TODO: remove both userId and isDiscover params
   export default {

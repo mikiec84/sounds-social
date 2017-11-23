@@ -13,6 +13,10 @@ const collectionSchema = createCollectionSchema({
   }),
   fields: {
     type: {
+      canFollow: {
+        type: 'Boolean',
+        resolve: (root, args, context) => context.userId && root._id !== context.userId,
+      },
       isFollowedByCurrentUser: {
         type: 'Boolean',
         resolve: (root, args, context) => userCollection

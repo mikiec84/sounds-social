@@ -8,6 +8,7 @@ import '../startup/StartupPopover'
 import '../store'
 
 import { buttonStories } from './ButtonStory'
+import { titleStories } from './TitleStory'
 import { errorStories } from './ErrorStory'
 import { headerStories } from './HeaderStory'
 import { modalStories } from './ModalStory'
@@ -21,6 +22,7 @@ import { iconStories } from './IconStory'
 import { loaderStories } from './LoaderStory'
 
 buttonStories(module)
+titleStories(module)
 errorStories(module)
 headerStories(module)
 selectStories(module)

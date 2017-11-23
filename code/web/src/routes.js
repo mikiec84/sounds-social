@@ -9,12 +9,11 @@ import store from './store'
 import HomePage from './components/pages/TheHomePage.vue'
 import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
 import UploadPage from './components/pages/TheUploadPage.vue'
-import ProfilePage from './components/pages/TheProfilePage.vue'
-import ProfileEditPage from './components/pages/profile/TheProfileEditPage.vue'
-import SoundDetailPage from './components/pages/sound/TheSoundDetailPage.vue'
-import SoundEditPage from './components/pages/sound/TheSoundEditPage.vue'
-import SoundsPage from './components/pages/sounds/TheSoundsPage'
 import SearchPage from './components/pages/TheSearchPage.vue'
+
+import { profileRoutes } from './routes/ProfileRoutes'
+import { soundRoutes } from './routes/SoundRoutes'
+import { playlistRoutes } from './routes/PlaylistRoutes'
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -44,12 +43,6 @@ const router = new Router({
       meta: { needsAuth: constant(false) },
     },
     {
-      name: 'sounds',
-      path: '/sounds',
-      component: SoundsPage,
-      meta: { needsAuth: constant(false) },
-    },
-    {
       name: 'upload',
       path: '/upload',
       component: UploadPage,
@@ -61,30 +54,9 @@ const router = new Router({
       component: SearchPage,
       meta: { needsAuth: constant(false) },
     },
-    {
-      name: 'profile-detail',
-      path: '/profile/:id',
-      component: ProfilePage,
-      meta: { needsAuth: ({ params }) => params.id === 'me' },
-    },
-    {
-      name: 'profile-edit',
-      path: '/profile/:id/edit',
-      component: ProfileEditPage,
-      meta: { needsAuth: constant(true) },
-    },
-    {
-      name: 'sound-detail',
-      path: '/sounds/:id',
-      component: SoundDetailPage,
-      meta: { needsAuth: constant(false) },
-    },
-    {
-      name: 'sound-edit',
-      path: '/sounds/:id/edit',
-      component: SoundEditPage,
-      meta: { needsAuth: constant(false) },
-    },
+    ...profileRoutes,
+    ...soundRoutes,
+    ...playlistRoutes,
   ],
 })
 

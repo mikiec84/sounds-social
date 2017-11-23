@@ -2,6 +2,7 @@ import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
+import { playlistCollection } from './PlaylistCollection'
 
 export const soundSchema = new SimpleSchema({
   name: {
@@ -112,6 +113,14 @@ class SoundCollection extends Mongo.Collection
     }
 
     return super.findOne(selector, ...more)
+  }
+  findByIds (ids) {
+    return this.find({ _id: { $in: ids } })
+  }
+  findForPlaylist(playlistId, userId) {
+    const playlist = playlistCollection.findOnePublic(playlistId, userId)
+
+    if (playlist) return this.findByIds(playlist.soundIds)
   }
   findCoverFile(soundId) {
     const sound = this.findOne(soundId)

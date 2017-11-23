@@ -6,7 +6,7 @@
     <div slot="main">
       <div v-if="formData && getUser" class="f3 mw7">
         <h2 class="f1 lh-solid mv0 gray" v-text="`${$t('Edit profile')}:`"></h2>
-        <h1 class="f-headline mv3"><span v-text="getUser.username"></span></h1>
+        <pure-title v-text="getUser.username"></pure-title>
 
         <div class="mt4">
           <upload-zone

@@ -90,6 +90,7 @@ extend type Mutation {
 
 extend type Query {
   searchSound(query: String!): [Sound]
+  listSoundForPlaylist(playlistId: String!): [Sound]
 }
 `)
 
@@ -178,6 +179,16 @@ soundGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
   check(userId, String)
 
   return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
+}
+
+soundGraphqlSchema.resolvers.Query.listSoundForPlaylist = (root, args, context) => {
+  const { playlistId } = args
+  check(playlistId, String)
+
+  const { userId } = context
+  check(userId, String)
+
+  return soundCollection.findForPlaylist(playlistId, userId).fetch()
 }
 
 export default soundGraphqlSchema

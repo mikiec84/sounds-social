@@ -1,6 +1,22 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
+export const ProfileBoxFieldsFragment = gql`
+  fragment ProfileBoxFields on User {
+    _id
+    username
+    isFollowedByCurrentUser
+    canFollow
+    profile {
+      description
+      websiteUrl
+      avatarFile {
+        url
+      }
+    }
+  }
+`
+
 export const updateProfile = profileData => apolloClient.mutate({
   mutation: gql`
     mutation ProfileUpdateMutation($profileData: ProfileData!) {
@@ -41,16 +57,8 @@ export const unfollow = id => apolloClient.mutate({
 export const profilePageQuery = gql`
   query ProfilePage($id: String!) {
     getUser(_id: $id) {
-      _id
-      username
-      isFollowedByCurrentUser
-      profile {
-        description
-        websiteUrl
-        avatarFile {
-          url
-        }
-      }
+      ...ProfileBoxFields
     }
   }
+  ${ProfileBoxFieldsFragment}
 `
