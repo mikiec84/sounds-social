@@ -44,15 +44,23 @@
 
         <div class="mt3">
           <label>
-            <div class="mb2" v-text="$t('Sounds')"></div>
-            <div v-for="sound in formData.sounds"
-                 :key="sound._id"
-                 class="pointer bg-silver white mb2 pa3">
-              <div class="dib v-mid f4 mr3" @click="removeSound(sound._id)">
-                <pure-icon icon="remove"> </pure-icon>
+            <div class="mb3" v-text="$t('Sounds')"></div>
+
+            <div class="dark-gray i mb3 f5" v-text="$t('Drag and drop to reorder')"></div>
+
+            <draggable v-model="formData.sounds"
+                       :options="{group:'sounds'}"
+                       @start="isDragging=true"
+                       @end="isDragging=false">
+              <div v-for="sound in formData.sounds"
+                   :key="sound._id"
+                   class="pointer bg-silver white mb2 pa3">
+                <div class="dib v-mid f4 mr3" @click="removeSound(sound._id)">
+                  <pure-icon icon="remove"> </pure-icon>
+                </div>
+                <span class="dib v-mid" v-text="sound.name"></span>
               </div>
-              <span class="dib v-mid" v-text="sound.name"></span>
-            </div>
+            </draggable>
           </label>
         </div>
 
@@ -68,6 +76,7 @@
   </layout-with-sidebar>
 </template>
 <script>
+  import Draggable from 'vuedraggable'
   import { pick, get } from 'lodash/fp'
   import { required } from 'vuelidate/lib/validators'
 
@@ -79,6 +88,7 @@
   export default {
     components: {
       HeaderComponent,
+      Draggable,
     },
     metaInfo () {
       return {
@@ -87,6 +97,7 @@
     },
     data () {
       return {
+        isDragging: false,
         formData: {},
       }
     },

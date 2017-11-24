@@ -57,6 +57,7 @@ export const messages = {
       'Playlist name': 'Playlist Name',
       'No playlists found': 'Keine Playlists gefunden',
       'Create new playlist': 'Neue Playlist kreieren',
+      'Drag and drop to reorder': 'Drag & Drop um zu sortieren',
     },
   }
 }
