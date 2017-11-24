@@ -17,9 +17,11 @@
           </label>
 
           <div v-if="$v.formData.name.$error" class="mt3">
-            <div v-if="!$v.formData.name.url">
-              <pure-error><div v-text="$t('Name cannot be empty')"></div></pure-error>
-            </div>
+            <pure-error>
+              <div v-if="!$v.formData.name.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"></div>
+              <div v-if="!$v.formData.name.minLength" v-text="$t('{{thing}} must be longer', { thing: $t('Name') })"></div>
+              <div v-if="!$v.formData.name.maxLength" v-text="$t('{{thing}} must be shorter', { thing: $t('Name') })"></div>
+            </pure-error>
           </div>
         </div>
         <div class="mt3">
@@ -29,8 +31,15 @@
               class="w-100"
               style="height: 180px"
               name="description"
-              @change="formData.description = $event.target.value">{{formData.description}}</textarea>
+              @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
           </label>
+
+          <div v-if="$v.formData.description.$error" class="mt3">
+            <pure-error>
+              <div v-if="!$v.formData.description.maxLength"
+                   v-text="$t('{{thing}} must be shorter', { thing: $t('Description') })"></div>
+            </pure-error>
+          </div>
         </div>
 
         <div class="mt3">
@@ -78,7 +87,7 @@
 <script>
   import Draggable from 'vuedraggable'
   import { pick, get } from 'lodash/fp'
-  import { required } from 'vuelidate/lib/validators'
+  import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { updatePlaylist, playlistEditQuery } from '../../../api/PlaylistApi'
@@ -120,6 +129,11 @@
       formData: {
         name: {
           required,
+          minLength: minLength(3),
+          maxLength: maxLength(14),
+        },
+        description: {
+          maxLength: maxLength(280),
         },
       },
     },

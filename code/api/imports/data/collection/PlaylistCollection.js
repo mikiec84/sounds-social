@@ -6,10 +6,13 @@ import { soundCollection } from './SoundCollection'
 const playlistSchema = new SimpleSchema({
   name: {
     type: String,
+    min: 3,
+    max: 14,
   },
   description: {
     type: String,
     optional: true,
+    max: 280,
   },
   createdAt: {
     type: Date,
