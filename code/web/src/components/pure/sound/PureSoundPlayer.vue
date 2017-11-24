@@ -32,7 +32,7 @@
           </div>
         </div>
         <div v-if="!currentSound">
-          <div class="i" v-text="$t('No sound playing')"></div>
+          <div class="dib v-mid i f6 f5-ns" v-text="$t('No sound playing')"></div>
         </div>
       </div>
       <div class="fl w-40 w-20-l f5">
@@ -46,14 +46,14 @@
                              @click="$emit('stepForward')"
                              :disabled="!hasSounds || lastPlaying"></pure-sound-player-button>
         <pure-sound-player-button icon="random"
-                             @click="$emit('randomize', !inRandomMode)"
-                             :disabled="!hasSounds"
-                             :inactive="!inRandomMode"></pure-sound-player-button>
+                                  @click="$emit('randomize', !inRandomMode)"
+                                  :disabled="!hasSounds"
+                                  :inactive="!inRandomMode"></pure-sound-player-button>
         <div class="dib">
           <pure-sound-player-button icon="repeat"
-                               @click="changeLoopMode"
-                               :disabled="!hasSounds"
-                               :inactive="!inLoopMode && !inLoopSingleMode"></pure-sound-player-button>
+                                    @click="changeLoopMode"
+                                    :disabled="!hasSounds"
+                                    :inactive="!inLoopMode && !inLoopSingleMode"></pure-sound-player-button>
           <div class="relative" v-if="inLoopSingleMode">
             <div class="absolute f7 b pointer" @click="changeLoopMode" style="bottom: 10px;left: 14px">
               1
@@ -67,7 +67,7 @@
                                @click="$emit(isMuted ? 'unmute' : 'mute')"
                                :disabled="!hasSounds"></pure-sound-player-button>
         </div>
-        <div v-if="playingTime" v-text="playingTime" class="dib f7"></div>
+        <div v-if="playingTime" v-text="playingTime" class="dn dib-ns f7"></div>
       </div>
       <div class="dn db-l fl w-40" v-if="hasSounds">
         <div style="margin-top: 5px">

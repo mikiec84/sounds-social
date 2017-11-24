@@ -1,5 +1,5 @@
 <template>
-  <div :class="['dib v-mid mr3', {
+  <div :class="['dib v-mid mr2 mr3-ns', {
       'pointer': !disabled,
       'gray': disabled || inactive,
     }]" @click="!disabled && $emit('click')">

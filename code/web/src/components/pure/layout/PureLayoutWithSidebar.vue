@@ -9,7 +9,7 @@
       </div>
 
       <div class="fl w-100 w-20-l fixed-l custom-layout-sidebar-left-offset-l">
-        <div class="pa2 mt4 mt0-m mt0-l overflow-y-auto" style="max-height: calc(100vh - 200px)">
+        <div class="pa2 mt4 mt0-m mt0-l overflow-y-auto-ns custom-max-height-sidebar-l">
           <slot name="sidebar"></slot>
         </div>
       </div>

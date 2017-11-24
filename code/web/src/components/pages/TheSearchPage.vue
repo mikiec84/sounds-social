@@ -6,7 +6,7 @@
       </div>
       <div slot="main">
         <pure-title v-text="$t('Search')"></pure-title>
-        <h2 class="f1 lh-solid mt2 gray" v-text='$t(`Results for "{{query}}"`, { query })'></h2>
+        <h2 class="f1-ns f3 lh-solid mt2 gray" v-text='$t(`Results for "{{query}}"`, { query })'></h2>
 
         <div v-if="query">
           <sound-list :query="searchSoundQuery" :defineQueryVariables="defineQueryVariables"></sound-list>

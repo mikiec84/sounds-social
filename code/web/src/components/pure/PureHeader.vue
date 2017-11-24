@@ -1,25 +1,18 @@
 <template>
   <nav class="dt w-100 center bg-dark-blue">
-    <div class="dtc v-mid pa3 w3">
+    <div class="dtc v-mid pa3 ph1 ph3-l">
       <router-link to="/" class="dib w2 h2 pa1 b--white-90 grow-large border-box">
         <!-- TODO: svg logo -->
         <svg class="link white-90 hover-white" data-icon="skull" viewBox="0 0 32 32" style="fill:currentcolor"><title>skull icon</title><path d="M16 0 C6 0 2 4 2 14 L2 22 L6 24 L6 30 L26 30 L26 24 L30 22 L30 14 C30 4 26 0 16 0 M9 12 A4.5 4.5 0 0 1 9 21 A4.5 4.5 0 0 1 9 12 M23 12 A4.5 4.5 0 0 1 23 21 A4.5 4.5 0 0 1 23 12"></path></svg>
       </router-link>
     </div>
-    <div class="dtc v-mid pv3">
-      <div class="dib ml3-l ml2 gray">
+    <div class="dtc v-mid pv3" style="width: 30%">
+      <div class="dib ml3-l ml2 f6 f5-ns gray">
         <pure-input :value="searchQuery" @onEnter="$emit('search', arguments[0])" :placeholder="$t('Search')"></pure-input>
       </div>
     </div>
-    <div class="dtc v-mid tr pa3-l pa1 white-70">
-      <router-link
-              v-for="item in menuItems"
-              :key="item.id"
-              class="f6 fw4 no-underline pv2 ph3-l ph2"
-              :class="{ 'color-inherit hover-white': !isActive(item), 'white-40': isActive(item) }"
-              :to="item.href"
-              v-text="item.label"></router-link>
-      <div v-if="isLoggedIn" class="dib ml1 mr3">
+    <div class="dtc v-mid tr pa3-l pa1 white-70" style="width: 70%">
+      <div v-if="isLoggedIn" class="dib mr1 mr3-ns">
         <pure-menu-dropdown
           icon="bell"
           dropdownKey="notifications"
@@ -37,6 +30,13 @@
           </div>
         </pure-menu-dropdown>
       </div>
+      <router-link
+              v-for="item in menuItems"
+              :key="item.id"
+              class="f6 fw4 no-underline pv2 ph3-l ph1"
+              :class="{ 'color-inherit hover-white': !isActive(item), 'white-40': isActive(item) }"
+              :to="item.href"
+              v-text="item.label"></router-link>
       <div class="pointer f6 fw4 hover-white no-underline dn dib-l ml2 pv2 ph3 ba"
            v-if="isLoggedIn"
            @click="$emit('logout')"

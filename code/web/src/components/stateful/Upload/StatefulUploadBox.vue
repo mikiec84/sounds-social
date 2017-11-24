@@ -16,7 +16,7 @@
         </div>
       </sound-form-box>
     </div>
-    <div class="dn-ns">
+    <div class="dn">
       <input type="file" name="data" id="fileUploadInput" />
     </div>
   </div>

@@ -10,10 +10,10 @@
             <div class="dib v-mid pr2" @click="playSound($event)">
               <pure-icon icon="play"></pure-icon>
             </div>
-            <h2 class="lh-copy f3-l f4 b dib v-mid black mv2 dim navy " v-text="label"></h2>
-            <div v-if="isPrivate" class="lh-copy dib v-mid b ml3 f4 light-red" v-text="$t('Not published')"></div>
+            <h2 class="lh-copy f3-l f4 b di dib-ns v-mid black mv2 dim navy " v-text="label"></h2>
+            <div v-if="isPrivate" class="lh-copy dib v-mid b ml0 ml3-ns f4 light-red" v-text="$t('Not published')"></div>
           </div>
-          <div class="description username f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
+          <div class="description username mt2 mt0-ns f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
           <div class="mt3 pointer">
             <sound-waveform
                     v-if="!inListView"

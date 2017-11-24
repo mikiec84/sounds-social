@@ -44,8 +44,7 @@
   import { required, minLength, maxLength } from 'vuelidate/lib/validators'
   import { playlistToAddListQuery, createPlaylist, addSoundToPlaylist } from '../../../api/PlaylistApi'
 
-  const changeNameDebounced = debounce(100)((name, scope) => {
-    scope.newPlaylistName = name
+  const checkNameSlow = debounce(200)((name, scope) => {
     scope.$v.newPlaylistName.$touch()
   })
 
@@ -82,7 +81,8 @@
     },
     methods: {
       changePlaylistName (name) {
-        changeNameDebounced(name, this)
+        this.newPlaylistName = name
+        checkNameSlow(name, this)
       },
       createPlaylist () {
         createPlaylist(this.newPlaylistName).then(({ data: { newPlaylist } }) => {

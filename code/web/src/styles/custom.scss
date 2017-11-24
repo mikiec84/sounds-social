@@ -5,6 +5,12 @@
   .custom-layout-sidebar-left-offset-l {
     margin-left: 730px;
   }
+  .custom-max-height-sidebar-l {
+    max-height: calc(100vh - 200px);
+  }
+  .custom-max-height-playlist-list-l {
+    max-height: 190px;
+  }
 }
 
 // vuejs animation
