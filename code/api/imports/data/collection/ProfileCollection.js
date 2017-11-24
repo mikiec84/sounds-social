@@ -13,6 +13,7 @@ export const profileSchema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    max: 200,
   },
   avatarFileId: {
     type: String,
@@ -21,6 +22,7 @@ export const profileSchema = new SimpleSchema({
   websiteUrl: {
     type: String,
     optional: true,
+    max: 50,
   },
   language: {
     type: String,

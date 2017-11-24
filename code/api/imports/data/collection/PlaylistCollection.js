@@ -7,7 +7,7 @@ const playlistSchema = new SimpleSchema({
   name: {
     type: String,
     min: 3,
-    max: 14,
+    max: 20,
   },
   description: {
     type: String,

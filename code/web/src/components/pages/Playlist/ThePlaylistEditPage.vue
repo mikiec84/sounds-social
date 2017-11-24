@@ -130,7 +130,7 @@
         name: {
           required,
           minLength: minLength(3),
-          maxLength: maxLength(14),
+          maxLength: maxLength(20),
         },
         description: {
           maxLength: maxLength(280),

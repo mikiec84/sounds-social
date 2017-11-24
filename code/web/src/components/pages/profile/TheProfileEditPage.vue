@@ -21,10 +21,15 @@
             <div class="mb2" v-text="$t('Description')"></div>
             <textarea
                     class="w-100"
-                    style="height: 180px"
+                    style="height: 130px"
                     name="description"
-                    @change="formData.description = $event.target.value">{{formData.description}}</textarea>
+                    @keyup="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
           </label>
+          <div v-if="$v.formData.description.$error" class="mt3">
+            <pure-error v-if="!$v.formData.description.maxLength"
+                        v-text="$t('{{thing}} must be shorter', { thing: $t('Description') })"
+            ></pure-error>
+          </div>
         </div>
 
         <div class="mt3">
@@ -36,9 +41,9 @@
                     :value="formData.websiteUrl"></pure-input>
 
             <div v-if="$v.formData.websiteUrl.$error" class="mt3">
-              <div v-if="!$v.formData.websiteUrl.url">
-                <pure-error><div v-text="$t('Not a valid URL')"></div></pure-error>
-              </div>
+              <pure-error v-if="!$v.formData.websiteUrl.url" v-text="$t('Not a valid URL')"></pure-error>
+              <pure-error v-if="!$v.formData.websiteUrl.maxLength"
+                          v-text="$t('{{thing}} must be shorter', { thing: $t('URL') })"></pure-error>
             </div>
           </label>
         </div>
@@ -66,7 +71,7 @@
 </template>
 <script>
   import gql from 'graphql-tag'
-  import { url } from 'vuelidate/lib/validators'
+  import { url, maxLength } from 'vuelidate/lib/validators'
 
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
@@ -122,6 +127,10 @@
       formData: {
         websiteUrl: {
           url,
+          maxLength: maxLength(50),
+        },
+        description: {
+          maxLength: maxLength(180),
         },
       },
     },

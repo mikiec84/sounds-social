@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h2 class="mt5 mb3 f3" v-text="$t('Playlists')"></h2>
-    <div class="overflow-y-auto" style="max-height: 280px">
+    <h2 class="mt4 mb3 f3" v-text="$t('Playlists')"></h2>
+    <div class="overflow-y-auto" style="max-height: 190px">
       <div v-for="playlist in playlistList" class="pa2 ba bw1 b--light-gray mb2 pointer" @click="openPlaylist(playlist)">
         <div class="dib v-mid cover"
              :style="`width: 50px; height: 50px; background-image: url(${getPlaylistImage(playlist)})`"></div>
-        <div class="dib v-mid f5 ml3" v-text="playlist.name"></div>
+        <div class="dib v-mid f5 ml3" style="max-width: 125px" v-text="playlist.name"></div>
       </div>
     </div>
 

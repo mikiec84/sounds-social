@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="tc mv4">
+    <div class="tc mt3 mb3">
       <div class="dib">
         <profile-image :source="profileAvatarImage"></profile-image>
       </div>
     </div>
 
-    <div v-if="user.profile.description" v-text="user.profile.description" class="mt3 pl4 lh-copy"></div>
+    <div v-if="user.profile.description" v-text="user.profile.description" class="mt3 pl4 f5 lh-copy"></div>
 
     <div v-if="user.profile.websiteUrl" class="mt3 pl4">
       <span class="b"><span v-text="$t('Website')"></span>: </span>

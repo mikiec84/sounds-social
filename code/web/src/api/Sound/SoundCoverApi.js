@@ -14,4 +14,5 @@ export const uploadCover = (soundId, fileData) => apolloClient.mutate({
     fileData,
   },
   fetchPolicy: 'network-only',
+  refetchQueries: ['DetailSound'],
 })

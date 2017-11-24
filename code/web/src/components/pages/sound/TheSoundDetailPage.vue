@@ -61,6 +61,7 @@
                   </pure-confirm-modal-button>
                 </div>
                 <file-upload-button
+                  ref="coverFileUploadButton"
                   :buttonLabel="$t('Upload cover')"
                   :modalLabel="$t('Click here to upload image')"
                   @upload="uploadCover(arguments[0])"></file-upload-button>
@@ -180,6 +181,9 @@
 
         addCoverFile(file)
           .then(({ _id, secret, url }) => uploadCover(this.getSound._id, { _id, secret, url }))
+          .then(() => {
+            this.$refs.coverFileUploadButton.modalOpen = false
+          })
       },
     },
   }

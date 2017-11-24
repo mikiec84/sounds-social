@@ -15,20 +15,39 @@
 
       <h3 class="f4 mv4 dark-gray" v-text="$t('Create new playlist')"></h3>
 
-
       <div class="cf">
         <div class="fl w-50">
-          <pure-input @keyup="newPlaylistName = arguments[0]" :placeholder="$t('Playlist name')"></pure-input>
+          <pure-input :value="newPlaylistName"
+                      @keyup="changePlaylistName(arguments[0])" :placeholder="$t('Playlist name')"></pure-input>
         </div>
         <div class="fl w-50 pl4">
-          <pure-button @click="createPlaylist" v-text="$t('Save')"></pure-button>
+          <pure-button @click="createPlaylist" :disabled="$v.$invalid" v-text="$t('Save')"></pure-button>
         </div>
+      </div>
+
+      <div class="mt3" v-if="$v.newPlaylistName.$error">
+        <pure-error v-if="!$v.newPlaylistName.required"
+                    v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"
+        ></pure-error>
+        <pure-error v-if="!$v.newPlaylistName.minLength"
+                    v-text="$t('{{thing}} must be longer', { thing: $t('Name') })"
+        ></pure-error>
+        <pure-error v-if="!$v.newPlaylistName.maxLength"
+                    v-text="$t('{{thing}} must be shorter', { thing: $t('Name') })"
+        ></pure-error>
       </div>
     </div>
   </pure-modal>
 </template>
 <script>
+  import { debounce } from 'lodash/fp'
+  import { required, minLength, maxLength } from 'vuelidate/lib/validators'
   import { playlistToAddListQuery, createPlaylist, addSoundToPlaylist } from '../../../api/PlaylistApi'
+
+  const changeNameDebounced = debounce(100)((name, scope) => {
+    scope.newPlaylistName = name
+    scope.$v.newPlaylistName.$touch()
+  })
 
   export default {
     props: {
@@ -54,10 +73,21 @@
         return this.playlistToAddList && this.playlistToAddList.length
       },
     },
+    validations: {
+      newPlaylistName: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(20),
+      },
+    },
     methods: {
+      changePlaylistName (name) {
+        changeNameDebounced(name, this)
+      },
       createPlaylist () {
         createPlaylist(this.newPlaylistName).then(({ data: { newPlaylist } }) => {
           this.newPlaylistName = ''
+          this.$v.newPlaylistName.$reset()
         })
       },
       addSound (playlistId) {
