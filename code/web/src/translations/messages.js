@@ -40,7 +40,7 @@ export const messages = {
       'Edit profile': 'Profil editieren',
       'User not found': 'User nicht gefunden',
       '{{thing}} not found': '{{thing}} nicht gefunden',
-      'No {{things}} not found': 'Keine {{things}} gefunden',
+      'No {{things}} found': 'Keine {{things}} gefunden',
       'No sounds found': 'Keine Sounds gefunden',
       'No sound playing': 'Kein Sound ausgewählt',
       'File uploaded': 'File heraufgeladen',

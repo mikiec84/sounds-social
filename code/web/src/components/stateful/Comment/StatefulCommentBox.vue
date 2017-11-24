@@ -9,6 +9,10 @@
               :content="comment.content"></comment-component>
     </div>
 
+    <div v-if="!loadingComments && !listComments.length"
+         class="f5 i"
+         v-text="$t('No {{things}} found', { things: $t('Comments') })"></div>
+
     <div class="mt4" v-if="userIsAuthenticated">
       <form @submit.prevent="addComment">
         <textarea class="w-50" style="height: 50px" v-model="comment"></textarea>

@@ -176,8 +176,10 @@ soundGraphqlSchema.resolvers.Query.searchSound = (root, args, context) => {
   const { query } = args
   check(query, String)
 
-  const { userId } = context
-  check(userId, String)
+  let { userId } = context
+  check(userId, Match.Optional(String))
+
+  if (!userId) userId = null
 
   return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
 }

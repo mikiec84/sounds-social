@@ -45,7 +45,10 @@
   </nav>
 </template>
 <script>
-  import { collectionHasNotificationFields } from '../../func/collectionHasFields'
+  import {
+    collectionHasNotificationFields,
+    collectionHasMenuFields,
+  } from '../../func/collectionHasFields'
 
   export default {
     props: {
@@ -67,6 +70,10 @@
         required: false,
         validator: collectionHasNotificationFields,
       },
+      menuItems: {
+        type: Array,
+        validator: collectionHasMenuFields,
+      },
     },
     methods: {
       isActive (item) {
@@ -75,27 +82,6 @@
       closeNotificationDropdown () {
         this.$refs.notificationMenuDropdownEl.closePopover()
       },
-    },
-    data () {
-      return {
-        menuItems: [
-          {
-            id: 'upload',
-            href: '/upload',
-            label: this.$t('Upload'),
-          },
-          {
-            id: 'sounds',
-            href: '/sounds',
-            label: 'Sounds',
-          },
-          {
-            id: 'profile',
-            href: '/profile/me',
-            label: this.$t('Profile'),
-          },
-        ],
-      }
     },
   }
 </script>

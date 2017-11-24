@@ -13,3 +13,7 @@ export const collectionHasPlaylistFields = collectionHasFields(
 export const collectionHasNotificationFields = collectionHasFields(
   ['id', 'content', 'imageUrl', 'authorId', 'authorName'],
 )
+
+export const collectionHasMenuFields = collectionHasFields(
+  ['id', 'href', 'label'],
+)

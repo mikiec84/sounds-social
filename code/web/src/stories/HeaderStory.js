@@ -7,24 +7,63 @@ const authorName2 = 'Peter Müller'
 const authorId = 1
 const authorId2 = 2
 
+const headerMenuItems = [
+  {
+    id: 'upload',
+    href: { name: 'upload' },
+    label: 'Upload',
+  },
+  {
+    id: 'sounds',
+    href: { name: 'home' },
+    label: 'Sounds',
+  },
+  {
+    id: 'profile',
+    href: { name: 'profile-detail', params: { id: 'me' } },
+    label: 'Profile',
+  },
+]
+
 export const headerStories = moduleArg => storiesOf('Pure Header', moduleArg)
   .add('profile active', () => ({
-    template: '<pure-header activeItemId="profile"></pure-header>',
+    template: '<pure-header :menuItems="headerMenuItems" activeItemId="profile"></pure-header>',
+    data () {
+      return {
+        headerMenuItems,
+      }
+    },
   }))
   .add('sounds active', () => ({
-    template: '<pure-header activeItemId="sounds"></pure-header>',
+    template: '<pure-header :menuItems="headerMenuItems" activeItemId="sounds"></pure-header>',
+    data () {
+      return {
+        headerMenuItems,
+      }
+    },
   }))
   .add('search term, search active', () => ({
-    template: '<pure-header searchQuery="house music" @search="search" activeItemId="sounds"></pure-header>',
+    template: '<pure-header :menuItems="headerMenuItems" searchQuery="house music" @search="search" activeItemId="sounds"></pure-header>',
+    data () {
+      return {
+        headerMenuItems,
+      }
+    },
     methods: {
       search: action('search'),
     },
   }))
   .add('sounds active, logged in', () => ({
-    template: '<pure-header :isLoggedIn="true" activeItemId="sounds"></pure-header>',
+    template: '<pure-header :menuItems="headerMenuItems" :isLoggedIn="true" activeItemId="sounds"></pure-header>',
+    data () {
+      return {
+        headerMenuItems,
+      }
+    },
   }))
   .add('with notifications', () => ({
     template: `<pure-header 
+:menuItems="headerMenuItems"
 :notifications="notifications" 
 :isLoggedIn="true"
 @openNotification="openNotification" 
@@ -32,6 +71,7 @@ export const headerStories = moduleArg => storiesOf('Pure Header', moduleArg)
 activeItemId="sounds"></pure-header>`,
     data () {
       return {
+        headerMenuItems,
         notifications: [
           { id: 1, link: '#', content: 'Sound has successfully uploaded', authorId, authorName, imageUrl },
           { id: 2, link: '#', content: 'New comment on "Electro House"', authorId, authorName, imageUrl },

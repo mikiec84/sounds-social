@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div v-if="!playlistLoading && !playlistList.length" v-text="$t('No {{things}} not found', { things: $t('Playlists') })"></div>
+    <div v-if="!playlistLoading && !playlistList.length" v-text="$t('No {{things}} found', { things: $t('Playlists') })"></div>
   </div>
 </template>
 <script>

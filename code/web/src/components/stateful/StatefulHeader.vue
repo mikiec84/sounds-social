@@ -7,6 +7,7 @@
         :is-logged-in="userIsAuthenticated"
         :notifications="notificationList"
         :search-query="searchQuery"
+        :menu-items="menuItems"
         @search="doSearch"
         @openNotification="openNotification"
         @openAuthor="openAuthor"
@@ -63,6 +64,25 @@
       },
       searchQuery () {
         if (this.$route.name === 'search') return this.$route.query.q
+      },
+      menuItems () {
+        return [
+          {
+            id: 'upload',
+            href: { name: 'upload' },
+            label: this.$t('Upload'),
+          },
+          {
+            id: 'sounds',
+            href: { name: (this.userIsAuthenticated ? 'home' : 'discover') },
+            label: this.$t('Sounds'),
+          },
+          {
+            id: 'profile',
+            href: { name: 'profile-detail', params: { id: 'me' } },
+            label: this.$t('Profile'),
+          },
+        ]
       },
     },
     methods: {
