@@ -7,7 +7,7 @@
       <div v-if="!loading && !playlistDetail" v-text="$t('{{thing}} not found', { thing: $t('Playlist') })"></div>
 
       <div v-if="playlistDetail">
-        <div class="gray b f2">
+        <div class="gray b f3 f2-ns">
           <span v-text="`${$t('Playlist')} ${$t('by')}`"></span>
           <router-link
             class="color-inherit no-underline"

@@ -7,7 +7,7 @@
       <div v-if="getUser">
         <pure-title v-text="getUser.username"></pure-title>
         <div v-if="isCurrentUser">
-          <h2 class="f2 mv3 gray" v-text="`(${$t('this is you')})`"></h2>
+          <h2 class="f3 f2-ns mv3 gray" v-text="`(${$t('this is you')})`"></h2>
         </div>
         <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
       </div>

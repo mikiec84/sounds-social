@@ -1,6 +1,6 @@
 <template>
   <div class="cf">
-    <div :class="[{ 'fl w-33 pa2': grid }]" v-for="item in notifications" :key="item.id">
+    <div :class="[{ 'fl w-33-ns w-100 pa2': grid }]" v-for="item in notifications" :key="item.id">
       <div class="pointer db mv2 pv2 dim" @click="$emit('openNotification', item)">
         <div class="mt3 black f6" v-if="detailed">
           <div class="mb2 f5 i" v-text="`${item.createdAtFromNow}:`"></div>

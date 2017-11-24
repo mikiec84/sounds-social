@@ -6,7 +6,7 @@
       </div>
       <div :class="['fl', { 'w-50 w-70-m w-75-l': coverFileUrl, 'w-100': !coverFileUrl }]">
         <div class="ph3 mw8">
-          <div class="pointer mt2 mt0-l">
+          <div class="pointer f6 f5-ns mt2 mt0-l">
             <div class="dib v-mid pr2" @click="playSound($event)">
               <pure-icon icon="play"></pure-icon>
             </div>

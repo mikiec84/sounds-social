@@ -37,7 +37,7 @@
               :class="{ 'color-inherit hover-white': !isActive(item), 'white-40': isActive(item) }"
               :to="item.href"
               v-text="item.label"></router-link>
-      <div class="pointer f6 fw4 hover-white no-underline dn dib-l ml2 pv2 ph3 ba"
+      <div class="pointer f6 fw4 hover-white no-underline dn dib-ns mr2 mr0-l ml2 pv2 ph3 ba"
            v-if="isLoggedIn"
            @click="$emit('logout')"
            v-text="$t('Logout')"></div>
