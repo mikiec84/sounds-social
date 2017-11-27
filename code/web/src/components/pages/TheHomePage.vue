@@ -6,22 +6,25 @@
 
     <div v-if="!isAuthenticated">
       <div class="bg-dark-blue white hover-bg-white all-transition hover-dark-blue ">
-        <div class="center" style="max-width: 450px">
+        <div class="center" style="max-width: 500px">
           <pure-identity-header></pure-identity-header>
         </div>
         <div class="mw8 center">
-          <div class="lh-copy f4 f3-l ph3 pb4  tc">
-            <span v-text="$t('The open and social music platform.')"></span>
+          <div class="lh-copy f4 f3-l ph3 pb4 tc">
+            <span v-text="$t('The open and social music platform')"></span>
             <br />
-            <div class="f5 mt1">
-              <span v-text="$t('This project is is a work in progress.')"></span>
-              <a class="color-inherit" href="#" v-text="$t('Want to help out?')"></a>
+            <div class="f5-l f6 mt1">
+              <span v-text="$t('This project is is a work in progress')"></span>. <a class="color-inherit" href="#" v-text="$t('Want to help out?')"></a>
             </div>
           </div>
         </div>
       </div>
 
       <div class="mt4 center mw5">
+        <div v-if="errorType" class="mb3">
+          <pure-error><div v-text="$t('Could not {{action}}', { action: errorType })"></div></pure-error>
+        </div>
+
         <pure-input @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></pure-input>
         <div class="mt2">
           <pure-input @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></pure-input>
@@ -53,18 +56,11 @@
         title: this.$t(this.userIsAuthenticated ? 'Home' : 'Login'),
       }
     },
-    watch: {
-      isAuthenticated () {
-        // @see https://github.com/ktquez/vue-head#update-elements-with-asynchronous-data-or-after-page-loaded
-        setTimeout(() => {
-          this.$emit('updateHead')
-        }, 200)
-      },
-    },
     data () {
       return {
         username: '',
         password: '',
+        errorType: '',
         isAuthenticated: null,
       }
     },
@@ -74,26 +70,27 @@
       })
     },
     methods: {
+      authenticate () {
+        this.errorType = ''
+        this.isAuthenticated = true
+        Vue.prototype.userIsAuthenticated = true
+      },
       doLogin () {
         this.authLogIn(this.username, this.password)
           .then(() => {
             getUserId().then(id => {
-              if (id) this.isAuthenticated = true
-              Vue.prototype.userIsAuthenticated = true
+              if (id) this.authenticate()
             })
           })
-          .catch(err => {
-            console.log(err)
-            alert('Could not log in')
+          .catch(() => {
+            this.errorType = 'login'
           })
       },
       doRegister () {
         this.authCreateUser(this.username, this.password)
-          .then(data => {
-            this.isAuthenticated = true
-          })
-          .catch(err => {
-            console.log(err)
+          .then(() => this.authenticate())
+          .catch(() => {
+            this.errorType = 'register'
             alert('Could not create user')
           })
       },
