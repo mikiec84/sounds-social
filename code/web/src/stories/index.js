@@ -11,6 +11,7 @@ import { buttonStories } from './ButtonStory'
 import { titleStories } from './TitleStory'
 import { errorStories } from './ErrorStory'
 import { headerStories } from './HeaderStory'
+import { identityHeaderStories } from './IdentityHeaderStory'
 import { modalStories } from './ModalStory'
 import { confirmModalStories } from './ConfirmModalStory'
 import { confirmModalButtonStories } from './ConfirmModalButtonStory'
@@ -25,6 +26,7 @@ buttonStories(module)
 titleStories(module)
 errorStories(module)
 headerStories(module)
+identityHeaderStories(module)
 selectStories(module)
 iconStories(module)
 modalStories(module)

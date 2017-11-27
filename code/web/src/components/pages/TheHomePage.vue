@@ -5,14 +5,23 @@
     </div>
 
     <div v-if="!isAuthenticated">
-      <div class="bg-dark-blue white">
-        <h1 class="f-headline lh-title lh-copy-l tc ma0 pv5-l pt5">Sound Social</h1>
+      <div class="bg-dark-blue white hover-bg-white all-transition hover-dark-blue ">
+        <div class="center" style="max-width: 450px">
+          <pure-identity-header></pure-identity-header>
+        </div>
         <div class="mw8 center">
-          <div class="lh-copy f4 f3-l ph3 pv4 tc">Join the community of artists and so on! Also get a better description</div>
+          <div class="lh-copy f4 f3-l ph3 pb4  tc">
+            <span v-text="$t('The open and social music platform.')"></span>
+            <br />
+            <div class="f5 mt1">
+              <span v-text="$t('This project is is a work in progress.')"></span>
+              <a class="color-inherit" href="#" v-text="$t('Want to help out?')"></a>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="mt2 center mw5">
+      <div class="mt4 center mw5">
         <pure-input @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></pure-input>
         <div class="mt2">
           <pure-input @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></pure-input>
