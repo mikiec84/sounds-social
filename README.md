@@ -1,3 +1,5 @@
-# sound-social
+# [![Sounds Social](docs/sound_social_logo.png)]()
 
-a WIP
+The open and social music platform.
+
+> A work in progress
