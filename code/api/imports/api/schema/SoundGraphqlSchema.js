@@ -116,7 +116,7 @@ soundGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) 
   const { userId } = context
   const { soundId } = args
 
-  check(userId, String)
+  check(userId, Match.Optional(String))
   check(soundId, String)
 
   const soundPlayingId = Random.id()
@@ -133,7 +133,7 @@ soundGraphqlSchema.resolvers.Mutation.startPlayingSound = (root, args, context) 
 
 soundGraphqlSchema.resolvers.Mutation.countPlayingSound = (root, args, context) => {
   const { userId } = context
-  check(userId, String)
+  check(userId, Match.Optional(String))
 
   const { soundPlayingId, soundId } = args
   check(soundPlayingId, String)

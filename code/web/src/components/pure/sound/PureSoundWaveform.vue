@@ -32,7 +32,7 @@
       }
     },
     mounted () {
-      const context = new AudioContext()
+      const context = window.AudioContext ? new AudioContext() : null
 
       wavesurfer = WaveSurfer.create({
         container: '#waveform',
@@ -59,6 +59,7 @@
           }, 100)
         }
 
+        // FIXME: not working reliably
         this.isPlaying ? wavesurfer.play() : wavesurfer.pause()
       },
     },

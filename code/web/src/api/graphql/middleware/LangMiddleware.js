@@ -1,5 +1,5 @@
 import { ApolloLink } from 'apollo-client-preset'
-import { getLanguage } from '../../../startup/StartupUserLanguage'
+import { getLanguage } from '../../localStorage/LanguageStorage'
 
 export const langMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({

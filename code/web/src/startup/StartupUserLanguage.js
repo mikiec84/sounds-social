@@ -2,12 +2,7 @@ import gql from 'graphql-tag'
 import moment from 'moment'
 import { get } from 'lodash/fp'
 import { apolloClient } from '../api/graphql/client'
-
-const { localStorage } = window
-const LANGUAGE_KEY = 'user_lang_sounds_social'
-
-export const getLanguage = () => localStorage.getItem(LANGUAGE_KEY)
-export const changeLanguage = (lang) => localStorage.setItem(LANGUAGE_KEY, lang)
+import { getLanguage, changeLanguage } from '../api/localStorage/LanguageStorage'
 
 if (!getLanguage()) {
   apolloClient.query({

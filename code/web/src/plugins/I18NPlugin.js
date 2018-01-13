@@ -1,6 +1,6 @@
 import i18next from 'i18next'
-import { getLanguage } from '../startup/StartupUserLanguage'
 import { messages } from '../translations/messages'
+import { getLanguage } from '../api/localStorage/LanguageStorage'
 
 const language = getLanguage()
 

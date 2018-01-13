@@ -76,7 +76,7 @@
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
   import { addProfileAvatarFile } from '../../../api/StorageApi'
   import { updateProfile } from '../../../api/ProfileApi'
-  import { changeLanguage } from '../../../startup/StartupUserLanguage'
+  import { changeLanguage } from '../../../api/localStorage/LanguageStorage'
   import { initI18N } from '../../../plugins/I18NPlugin'
 
   const query = gql`
