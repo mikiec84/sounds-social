@@ -14,7 +14,9 @@
             <span v-text="$t('The open and social music platform')"></span>
             <br />
             <div class="f5-l f6 mt1">
-              <span v-text="$t('This project is is a work in progress')"></span>. <a class="color-inherit" href="#" v-text="$t('Want to help out?')"></a>
+              <span v-text="$t('This project is is a work in progress')"></span>. <a class="color-inherit"
+                                                                                     href="https://github.com/matteodem/sounds-social"
+                                                                                     v-text="$t('Want to help out?')"></a>
             </div>
           </div>
         </div>
