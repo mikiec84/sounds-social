@@ -87,11 +87,16 @@
           })
       },
       doRegister () {
+        if (this.username.length < 3 || this.password.length < 6) {
+          this.errorType = 'register because username and password dont meet length requirements'
+          return null
+        }
+
         this.authCreateUser(this.username, this.password)
           .then(() => this.authenticate())
-          .catch(() => {
+          .catch((e) => {
             this.errorType = 'register'
-            alert('Could not create user')
+            alert(`Could not create user (${e.message})`)
           })
       },
     },
