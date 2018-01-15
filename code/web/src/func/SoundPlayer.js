@@ -29,6 +29,7 @@ export const playSound = url => {
     currentHandle = setInterval(() => {
       currentSoundData.duration = soundPlayer.duration()
       currentSoundData.seek = soundPlayer.seek()
+      currentSoundData.isPlaying = soundPlayer.playing()
     }, 50)
   }, 1000)
 
@@ -40,11 +41,11 @@ export const playSound = url => {
 
 export const onPlayerEvent = (emit) => {
   setInterval(() => {
-    const { seek, duration } = currentSoundData
+    const { seek, duration, isPlaying } = currentSoundData
 
     if (hasPaused) return null
 
-    if (seek === 0) {
+    if (seek === 0 && !isPlaying) {
       emit('done')
       currentSoundData.seek = null
     } else if (isNumber(seek)) {

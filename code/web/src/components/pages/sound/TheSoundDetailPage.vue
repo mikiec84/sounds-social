@@ -38,7 +38,7 @@
                 <div class="dib v-mid mr2-l pb2 pb0-l">
                   <pure-button @click="addToSoundPlayer" v-text="$t('Play later')"></pure-button>
                 </div>
-                <div class="dib v-mid mr2-l pb2 pb0-l">
+                <div class="dib v-mid mr2-l pb2 pb0-l" v-if="userIsAuthenticated">
                   <pure-button @click="openPlaylistAddModal" v-text="$t('Add to playlist')"></pure-button>
                 </div>
               </div>

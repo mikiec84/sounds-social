@@ -1,16 +1,13 @@
 <template>
-  <div class="mv3" id="waveform" ref="waveformDiv"></div>
+  <div>
+    <div class="f7 i gray">Seeking is disabled temporarily</div>
+    <div class="mv3" id="waveform" ref="waveformDiv"></div>
+  </div>
 </template>
 <script>
   import WaveSurfer from 'wavesurfer.js'
 
   let wavesurfer
-
-  const getSeekDifference = ({ seek }) => {
-    return Math.abs(seek - (wavesurfer.getCurrentTime() / wavesurfer.getDuration()))
-  }
-
-  const isSeekDifferenceTooBig = ({ seek }) => getSeekDifference({ seek }) > 0.02
 
   export default {
     props: {
@@ -32,6 +29,7 @@
       }
     },
     mounted () {
+      let recentlyStopped = false
       const context = window.AudioContext ? new AudioContext() : null
 
       wavesurfer = WaveSurfer.create({
@@ -44,24 +42,19 @@
       wavesurfer.setMute(true)
       wavesurfer.load(this.fileUrl)
 
-      wavesurfer.on('seek', progress => {
-        if (progress > 0) this.$emit('seekSound', progress)
+      wavesurfer.on('seek', () => {
+        if (!recentlyStopped) {
+          recentlyStopped = true
+          wavesurfer.stop()
+
+          setTimeout(() => {
+            recentlyStopped = false
+          }, 200)
+        }
       })
     },
     destroyed () {
       wavesurfer.stop()
-    },
-    watch: {
-      seek () {
-        if (isSeekDifferenceTooBig(this)) {
-          setTimeout(() => {
-            if (isSeekDifferenceTooBig(this)) wavesurfer.seekTo(this.seek)
-          }, 100)
-        }
-
-        // FIXME: not working reliably
-        this.isPlaying ? wavesurfer.play() : wavesurfer.pause()
-      },
     },
   }
 </script>

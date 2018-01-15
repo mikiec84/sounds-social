@@ -40,6 +40,7 @@ export const messages = {
       'Edit profile': 'Profil editieren',
       'User not found': 'User nicht gefunden',
       '{{thing}} not found': '{{thing}} nicht gefunden',
+      'Discover all sounds on Sounds Social!': 'Entdecke alle Sounds auf Sounds Social!',
       'No {{things}} found': 'Keine {{things}} gefunden',
       'No sounds found': 'Keine Sounds gefunden',
       'No sound playing': 'Kein Sound ausgewählt',

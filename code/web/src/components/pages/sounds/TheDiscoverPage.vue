@@ -9,7 +9,7 @@
         <div class="pb3"><sub-header-component current="discover"></sub-header-component></div>
 
         <div class="pv3">
-          <div class="lh-copy f5">Discover all sounds on Sounds Social!</div>
+          <div class="lh-copy f5" v-text="$t('Discover all sounds on Sounds Social!')"></div>
         </div>
         <sound-list-component :isDiscover="true"></sound-list-component>
       </div>
