@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder }" style="max-width: 700px" class="cf pointer" @click="openSound">
+    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder, 'cf pointer': inListView }" style="max-width: 700px" @click="openSound">
       <div class="fl w-50 w-30-m w-25-l pa2" v-if="coverFileUrl" >
         <div class="mw-100 cover bg-center" :style="`max-width: 150px; height: 150px; background: url(${coverFileUrl})`"></div>
       </div>
@@ -14,7 +14,7 @@
             <div v-if="isPrivate" class="lh-copy dib v-mid b ml0 ml3-ns f4 light-red" v-text="$t('Not published')"></div>
           </div>
           <div class="description username mt2 mt0-ns f5 gray"><span class="black-50">{{timeAgo}}</span> <span v-text="$t('by')"></span> <span class="dim pointer" @click="$emit('open-profile')">{{username}}</span></div>
-          <div class="mt3 pointer">
+          <div class="mt3">
             <sound-waveform
                     v-if="!inListView"
                     @seekSound="$emit('seekSound', arguments[0])"
@@ -24,7 +24,7 @@
           </div>
           <slot name="metadata"></slot>
 
-          <div v-if="description" class="mt4 f5 black-80 lh-copy measure-wide" v-text="description">
+          <div v-if="description" class="mt4 mb2 f5 black-80 lh-copy measure-wide" v-text="description">
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@
     },
     methods: {
       openSound () {
-        this.$emit('open-sound')
+        if (this.inListView) this.$emit('open-sound')
       },
       playSound (e) {
         e.stopPropagation()

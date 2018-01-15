@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="f7 i gray">Seeking is disabled temporarily</div>
-    <div class="mv3" id="waveform" ref="waveformDiv"></div>
+    <div class="mv3 pointer" id="waveform" ref="waveformDiv"></div>
   </div>
 </template>
 <script>
@@ -52,6 +52,10 @@
           }, 200)
         }
       })
+
+      this.$refs.waveformDiv.onclick = () => {
+        this.$emit('seekSound', 0)
+      }
     },
     destroyed () {
       wavesurfer.stop()
