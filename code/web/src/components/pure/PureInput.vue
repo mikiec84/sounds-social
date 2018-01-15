@@ -5,7 +5,7 @@
     :type="type"
     :value="value"
     :name="name"
-    class="input-reset h2 black ba b--light-gray ph2 w-100"
+    class="input-reset h2 black ba b--light-gray ph2 source-sans-pro w-100"
     :placeholder="placeholder" />
 </template>
 <script>
