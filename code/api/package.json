@@ -5,6 +5,7 @@
     "dev": "meteor run",
     "prod": "meteor run --production",
     "test": "meteor test --once --port=4333 --driver-package=dispatch:mocha",
+    "deploy-dev": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy sounds-social-dev --settings prod-settings.json",
     "cli": "meteor npm run test"
   },
   "dependencies": {

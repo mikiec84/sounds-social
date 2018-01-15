@@ -19,19 +19,6 @@ const webpackRules = utils.styleLoaders({
   extract: true
 })
 
-webpackRules.push({
-  test: /\.scss$/,
-  use: extractSass.extract({
-    use: [{
-      loader: "css-loader"
-    }, {
-      loader: "sass-loader"
-    }],
-    // use style-loader in development
-    fallback: "style-loader"
-  })
-})
-
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: webpackRules

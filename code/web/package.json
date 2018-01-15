@@ -14,7 +14,8 @@
     "cli": "npm run lint && npm run test",
     "lint": "eslint --ext .js,.vue src",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-dev": "npm run build && cd dist && mv index.html 200.html && surge --domain sounds-social-dev.surge.sh ."
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.1",
