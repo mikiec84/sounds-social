@@ -4,7 +4,7 @@
       <div class="dib v-mid mr4-l mr0" style="font-size: 8rem">
         <pure-icon icon="play-circle"></pure-icon>
         <div class="relative">
-          <div class="f5 absolute" style="bottom: 4.4em; left: 2.8em">
+          <div class="f5 absolute" style="bottom: 4.05em; left: 2.8em">
             <div class="di v-mid">
               <pure-icon icon="user-o"></pure-icon>
             </div>
