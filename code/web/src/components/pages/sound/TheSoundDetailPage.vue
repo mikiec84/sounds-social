@@ -31,7 +31,7 @@
             </sound-component>
 
             <div class="ph3">
-              <div class="mt4">
+              <div class="mt2">
                 <div class="dib v-mid mr2-l pb2 pb0-l">
                   <pure-button @click="playNext" v-text="$t('Play next')"></pure-button>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
               </div>
 
-              <div v-if="getSound.isRemovable" class="mt4">
+              <div v-if="getSound.isRemovable" class="mt2">
                 <div class="dib mr2-l pb2 pb0-l" v-if="!getSound.isPublic">
                   <pure-button :fill="true" @click="publishSound" v-text="$t('Publish')"></pure-button>
                 </div>

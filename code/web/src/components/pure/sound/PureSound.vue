@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{ 'ba bw1 b--light-gray br2': !noBorder, 'cf pointer': inListView }" style="max-width: 700px" @click="openSound">
+    <div class="cf" :class="{ 'ba bw1 b--light-gray br2': !noBorder, 'cf pointer': inListView }" style="max-width: 700px" @click="openSound">
       <div class="fl w-50 w-30-m w-25-l pa2" v-if="coverFileUrl" >
         <div class="mw-100 cover bg-center" :style="`max-width: 150px; height: 150px; background: url(${coverFileUrl})`"></div>
       </div>
@@ -24,7 +24,7 @@
           </div>
           <slot name="metadata"></slot>
 
-          <div v-if="description" class="mt4 mb2 f5 black-80 lh-copy measure-wide" v-text="description">
+          <div v-if="description" class="mt3 mb2 f5 black-80 lh-copy measure-wide" v-text="description">
           </div>
         </div>
       </div>
