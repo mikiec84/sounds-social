@@ -30,37 +30,3 @@ createApolloServer(req => ({
     graphQLServer.use(cors())
   },
 })
-
-// server side rendering
-/*renderIntoElementById('app', async request => {
-  import fetch from 'node-fetch'
-  const renderer = require('vue-server-renderer').createRenderer()
-
-  global.fetch = fetch
-
-  import { app, router } from '../imports/ui/app'
-  import { resolvePromiseForCallback } from '../imports/lib/resolvePromiseForCallback'
-
-  await new Promise((resolve, reject) => {
-    router.push(request.url)
-
-    router.onError(err => {
-      console.log(err)
-      reject(err)
-    })
-
-    router.onReady(() => {
-      const matchedComponents = router.getMatchedComponents()
-
-      if (!matchedComponents.length) {
-        return reject({ code: 404 })
-      }
-
-      resolve(app)
-    }, reject)
-  })
-
-  return new Promise((resolve, reject) => {
-    renderer.renderToString(app, resolvePromiseForCallback(resolve, reject))
-  })
-})*/

@@ -10,31 +10,20 @@
   },
   "dependencies": {
     "apollo-client": "^1.9.0-0",
-    "asteroid": "^2.0.3",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",
-    "dropzone": "^4.3.0",
     "express": "^4.15.2",
     "graphql": "^0.10.5",
     "graphql-loader": "^1.2.1",
     "graphql-server-express": "^0.5.2",
     "graphql-tag": "^2.4.2",
     "graphql-tools": "^1.1.0",
-    "howler": "^2.0.4",
     "jquery": "^3.2.1",
     "lodash": "^4.17.3",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
-    "node-fetch": "^1.7.1",
-    "tachyons": "^4.7.4",
-    "vue": "^2.3.4",
-    "vue-apollo": "^2.1.0-beta.18",
-    "vue-router": "^2.7.0",
-    "vue-server-renderer": "^2.3.4",
-    "vuex": "^2.3.1",
-    "vuex-router-sync": "^4.2.0",
-    "waveform-data": "^2.0.1"
+    "node-fetch": "^1.7.1"
   }
 }
