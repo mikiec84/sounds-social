@@ -1,3 +1,5 @@
+import { checkImageFileType, checkAudioFileType } from '../func/checkFileType'
+
 const uploadFile = (file) => {
   const data = new FormData()
   data.append('data', file)
@@ -11,6 +13,16 @@ const uploadFile = (file) => {
   }).then(({ id: _id, secret, url }) => ({ _id, secret, url }))
 }
 
-export const addProfileAvatarFile = uploadFile
-export const addCoverFile = uploadFile
-export const addMusicFile = uploadFile
+const uploadImageFile = async (file) => {
+  checkImageFileType(file)
+  return uploadFile(file)
+}
+
+export const addProfileAvatarFile = uploadImageFile
+
+export const addCoverFile = uploadImageFile
+
+export const addMusicFile = async (file) => {
+  checkAudioFileType(file)
+  return uploadFile(file)
+}

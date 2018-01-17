@@ -64,11 +64,17 @@
         this.hasFile = true
         this.isUploading = true
 
-        addMusicFile(file).then(({ _id, secret, url }) => {
-          this.file = { _id, secret, url }
-          this.fileId = _id
-          this.isUploading = false
-        })
+        addMusicFile(file)
+          .then(({ _id, secret, url }) => {
+            this.file = { _id, secret, url }
+            this.fileId = _id
+            this.isUploading = false
+          })
+          .catch(() => {
+            this.isUploading = false
+            this.hasFile = false
+            alert(this.$t('Wrong file format'))
+          })
       },
       saveSound (isPublic) {
         const { name, userId, description, file } = this

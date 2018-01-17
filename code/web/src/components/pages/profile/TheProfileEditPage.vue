@@ -148,10 +148,12 @@
       uploadAvatarFileImage (e) {
         const file = e.target.files[0]
 
-        addProfileAvatarFile(file).then(({ _id, secret, url }) => {
-          this.formData.avatarFile = { _id, secret, url }
-          this.hasUploadedFile = !!_id
-        })
+        addProfileAvatarFile(file)
+          .then(({ _id, secret, url }) => {
+            this.formData.avatarFile = { _id, secret, url }
+            this.hasUploadedFile = !!_id
+          })
+          .catch(() => alert(this.$t('Wrong file format')))
       },
       changeFormData (field, value) {
         this.$v.formData[field].$touch()

@@ -59,6 +59,7 @@ export const messages = {
       'No playlists found': 'Keine Playlists gefunden',
       'Create new playlist': 'Neue Playlist kreieren',
       'Drag and drop to reorder': 'Drag & Drop um zu sortieren',
+      'Wrong file format': 'Falsches Datei-Format',
     },
   }
 }

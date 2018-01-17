@@ -184,6 +184,7 @@
           .then(() => {
             this.$refs.coverFileUploadButton.modalOpen = false
           })
+          .catch(() => alert(this.$t('Wrong file format')))
       },
     },
   }
