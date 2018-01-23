@@ -6,7 +6,7 @@
 
 This platform is here to form new connections with artists, creatives and passionate listeners. No matter if it's a tiny drum loop, professional podcast or an unfinished track, Sounds Social provides a way to **share your sound** usefully.
 
-## Interested?
+## Are you interested?
 
 You can play around on the [dev environment](https://sounds-social-dev.surge.sh/), have a look at the open [issues](https://github.com/matteodem/sounds-social/issues) or read through the [docs](/docs). I'm doing this in my free time and there's no monetary support as of now. 
 
