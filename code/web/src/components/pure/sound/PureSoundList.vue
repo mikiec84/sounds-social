@@ -10,7 +10,7 @@
               @play-sound="$emit('play-sound', sound)"
               :inListView="true"
               :isPrivate="sound.isPrivate"
-              :coverFileUrl="getSoundCoverImage(sound)"
+              :coverFileUrl="getCoverImage(sound)"
               :fileUrl="$_fp.get('file.url')(sound)"></sound-component>
     </div>
   </div>
