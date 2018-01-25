@@ -5,7 +5,7 @@
     </div>
 
     <div v-if="!isAuthenticated">
-      <div class="bg-dark-blue white hover-bg-white all-transition hover-dark-blue ">
+      <div class="bg-dark-blue white">
         <div class="center" style="max-width: 500px">
           <pure-identity-header></pure-identity-header>
         </div>
