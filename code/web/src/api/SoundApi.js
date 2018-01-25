@@ -136,6 +136,17 @@ export const listSoundDefaultQuery = gql`
   ${listSoundFragment}
 `
 
+export const exploreCoversQuery = gql`
+  query SoundListQuery {
+    exploreCovers: listSound(limit: 8, filters: [{ key: "user", value: "" }, { key: "loggedInFeed", value: "false" }]) {
+      _id
+      coverFile {
+        url
+      }
+    }
+  }
+`
+
 export const searchSoundQuery = gql`  
   query SearchSoundsQuery($query: String!) {
     listSound: searchSound(query: $query) {

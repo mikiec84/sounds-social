@@ -14,13 +14,15 @@
             <span v-text="$t('The open and social music platform')"></span>
             <br />
             <div class="f5-l f6 mt1">
-              <span v-text="$t('This project is is a work in progress')"></span>. <a class="color-inherit"
+              <span v-text="$t('This project is is a')"></span> <a class="color-inherit"
                                                                                      href="https://github.com/matteodem/sounds-social"
-                                                                                     v-text="$t('Want to help out?')"></a>
+                                                                                     v-text="$t('work in progress')"></a>
             </div>
           </div>
         </div>
       </div>
+
+      <stateful-sound-explore-covers></stateful-sound-explore-covers>
 
       <div class="mt4 center mw5">
         <div v-if="errorType" class="mb3">
@@ -50,9 +52,10 @@
   import { isAuthenticated, getUserId } from '../../api/AuthApi'
 
   import FeedComponent from './sounds/TheFeedPage.vue'
+  import StatefulSoundExploreCovers from '../stateful/sound/StatefulSoundExploreCovers'
 
   export default {
-    components: { FeedComponent },
+    components: { FeedComponent, StatefulSoundExploreCovers },
     metaInfo () {
       return {
         title: this.$t(this.userIsAuthenticated ? 'Home' : 'Login'),

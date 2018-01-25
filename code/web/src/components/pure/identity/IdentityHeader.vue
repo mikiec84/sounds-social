@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="dib-l v-mid">
-      <h1 class="f-headline-l f-subheadline lh-solid tl-l tc ma0 pv5-l pv3">Sounds<br />Social</h1>
+      <h1 class="f-headline-l f1 lh-solid tl-l tc ma0 pv4-l pv3">Sounds<br />Social</h1>
     </div>
   </div>
 </template>

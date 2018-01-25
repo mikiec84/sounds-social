@@ -17,7 +17,7 @@
 <script type="text/ecmascript-6">
   import SoundListComponent from '../../stateful/sound/StatefulSoundList.vue'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import SubHeaderComponent from '../../stateful/sounds/StatefulSoundsSubHeader.vue'
+  import SubHeaderComponent from '../../stateful/sound/StatefulSoundsSubHeader.vue'
 
   export default {
     components: {

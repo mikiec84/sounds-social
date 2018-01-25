@@ -10,13 +10,13 @@
               @play-sound="$emit('play-sound', sound)"
               :inListView="true"
               :isPrivate="sound.isPrivate"
-              :coverFileUrl="getCoverImage(sound)"
+              :coverFileUrl="getSoundCoverImage(sound)"
               :fileUrl="$_fp.get('file.url')(sound)"></sound-component>
     </div>
   </div>
 </template>
 <script>
-  import { getImage } from '../../../func/getImage'
+  import { getSoundCoverImage } from '../../../func/getImage'
 
   export default {
     props: {
@@ -27,7 +27,7 @@
     },
     methods: {
       getCoverImage (sound) {
-        return getImage('coverFile.url')(sound)
+        return getSoundCoverImage(sound)
       },
     },
   }
