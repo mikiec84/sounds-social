@@ -1,6 +1,12 @@
 import gql from 'graphql-tag'
 import { get, isUndefined } from 'lodash/fp'
-import { logout, loginWithPassword, createUser as apolloCreateUser, userId } from 'meteor-apollo-accounts'
+import {
+  logout,
+  loginWithPassword,
+  createUser as apolloCreateUser,
+  userId,
+  forgotPassword,
+} from 'meteor-apollo-accounts'
 import { apolloClient } from './graphql/client'
 import { isValidMail } from '../func/isValidMail'
 
@@ -43,5 +49,7 @@ export const createUser = async (username, email, password) => {
     apolloClient,
   )
 }
+
+export const sendForgotPasswordMail = (email) => forgotPassword({ email }, apolloClient)
 
 export const logOut = () => logout(apolloClient)
