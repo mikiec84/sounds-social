@@ -9,8 +9,8 @@ export default {
     authLogIn (username, password) {
       return doLogin(username, password)
     },
-    authCreateUser (username, password) {
-      return createUser(username, password)
+    authCreateUser (username, email, password) {
+      return createUser(username, email, password)
     },
     authLogOut () {
       this.$router.push({ name: 'home' })

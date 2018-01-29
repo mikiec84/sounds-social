@@ -1,7 +1,8 @@
 import gql from 'graphql-tag'
-import { get } from 'lodash/fp'
+import { get, isUndefined } from 'lodash/fp'
 import { logout, loginWithPassword, createUser as apolloCreateUser, userId } from 'meteor-apollo-accounts'
 import { apolloClient } from './graphql/client'
+import { isValidMail } from '../func/isValidMail'
 
 export const getUsername = async () => {
   const userData = await apolloClient.query({
@@ -29,9 +30,18 @@ export const doLogin = (username, password) => loginWithPassword(
   apolloClient,
 )
 
-export const createUser = (username, password) => apolloCreateUser(
-  { username, password },
-  apolloClient,
-)
+export const hasInvalidUserCredentials = (username, password, email) =>
+  (username.length < 3 || (!isUndefined(email) && !isValidMail(email)) || password.length < 6)
+
+export const createUser = async (username, email, password) => {
+  if (hasInvalidUserCredentials(username, password, email)) {
+    throw new Error('length requirements wrong')
+  }
+
+  return apolloCreateUser(
+    { username, email, password },
+    apolloClient,
+  )
+}
 
 export const logOut = () => logout(apolloClient)

@@ -41,7 +41,26 @@
         </div>
 
         <div class="pv4 dib">
-          <pure-button @click="doRegister">Register</pure-button>
+          <pure-button @click="startRegister">Register</pure-button>
+          <pure-modal @close="openRegisterModal = false" v-show="openRegisterModal">
+            <div class="pa4">
+              <h2 class="f2">Hi <span v-text="username"></span> 👋</h2>
+
+              <div class="f4" v-text="$t('We need your email to prove that you\'re human.')"></div>
+
+              <div class="mt3 mw5 center">
+                <pure-input @onEnter="doRegister" @keyup="email = arguments[0]" placeholder="Email"></pure-input>
+
+                <div class="mt2" v-if="hasInvalidMail">
+                  <pure-error> <div v-text="$t('Invalid mail')"></div></pure-error>
+                </div>
+              </div>
+
+              <div class="mt3">
+                <pure-button @click="doRegister">Register</pure-button>
+              </div>
+            </div>
+          </pure-modal>
         </div>
       </div>
     </div>
@@ -49,7 +68,8 @@
 </template>
 <script>
   import Vue from 'vue'
-  import { isAuthenticated, getUserId } from '../../api/AuthApi'
+  import { isAuthenticated, getUserId, hasInvalidUserCredentials } from '../../api/AuthApi'
+  import { isValidMail } from '../../func/isValidMail'
 
   import FeedComponent from './sounds/TheFeedPage.vue'
   import StatefulSoundExploreCovers from '../stateful/sound/StatefulSoundExploreCovers'
@@ -65,8 +85,11 @@
       return {
         username: '',
         password: '',
+        email: '',
         errorType: '',
         isAuthenticated: null,
+        hasInvalidMail: false,
+        openRegisterModal: false,
       }
     },
     mounted () {
@@ -91,15 +114,32 @@
             this.errorType = 'login'
           })
       },
-      doRegister () {
-        if (this.username.length < 3 || this.password.length < 6) {
-          this.errorType = 'register because username and password dont meet length requirements'
+      showLengthRequirementsError () {
+        this.errorType = 'register because username and password dont meet length requirements'
+      },
+      startRegister () {
+        if (hasInvalidUserCredentials(this.username, this.password)) {
+          this.showLengthRequirementsError()
           return null
         }
 
-        this.authCreateUser(this.username, this.password)
+        this.openRegisterModal = true
+      },
+      doRegister () {
+        if (!isValidMail(this.email)) {
+          this.hasInvalidMail = true
+          return null
+        }
+
+        this.authCreateUser(this.username, this.email, this.password)
           .then(() => this.authenticate())
           .catch((e) => {
+            this.openRegisterModal = false
+
+            if (e.message.indexOf('length requirements') !== -1) {
+              return this.showLengthRequirementsError()
+            }
+
             this.errorType = 'register'
             alert(`Could not create user (${e.message})`)
           })

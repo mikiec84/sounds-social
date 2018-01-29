@@ -1,2 +1,3 @@
+import './AccountListener'
 import './CommentListener'
 
