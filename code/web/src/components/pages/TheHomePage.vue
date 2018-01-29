@@ -36,14 +36,15 @@
       </div>
 
       <div class="mw8 center tc">
-        <div class="pv4 dib">
+        <div class="pv3 dib">
           <pure-button @click="doLogin">Login</pure-button>
         </div>
 
-        <div class="pv4 dib">
+        <div class="pv3 dib">
           <pure-button @click="startRegister">Register</pure-button>
+
           <pure-modal @close="openRegisterModal = false" v-show="openRegisterModal">
-            <div class="pa4">
+            <div class="pa4 tc">
               <h2 class="f2">Hi <span v-text="username"></span> 👋</h2>
 
               <div class="f4" v-text="$t('We need your email to prove that you\'re human.')"></div>
@@ -64,6 +65,13 @@
         </div>
       </div>
     </div>
+
+    <div class="mv2 mw5 center pa3 white bg-blue tc" v-show="succesfullySentForgotPasswordMessage" v-text="$t('The email to reset your password has been sent')"></div>
+    <div class="f7 pointer tc gray" @click="$refs.forgotPasswordModal.openModal()" v-text="$t('Forgot my password')"></div>
+    <auth-forgot-password-modal
+      @sentForgotPasswordMail="displayForgotPasswordMessage"
+      ref="forgotPasswordModal"></auth-forgot-password-modal>
+
   </div>
 </template>
 <script>
@@ -73,9 +81,14 @@
 
   import FeedComponent from './sounds/TheFeedPage.vue'
   import StatefulSoundExploreCovers from '../stateful/sound/StatefulSoundExploreCovers'
+  import AuthForgotPasswordModal from '../stateful/Auth/AuthForgotPasswordModal.vue'
 
   export default {
-    components: { FeedComponent, StatefulSoundExploreCovers },
+    components: {
+      FeedComponent,
+      StatefulSoundExploreCovers,
+      AuthForgotPasswordModal,
+    },
     metaInfo () {
       return {
         title: this.$t(this.userIsAuthenticated ? 'Home' : 'Login'),
@@ -90,6 +103,7 @@
         isAuthenticated: null,
         hasInvalidMail: false,
         openRegisterModal: false,
+        succesfullySentForgotPasswordMessage: false,
       }
     },
     mounted () {
@@ -143,6 +157,9 @@
             this.errorType = 'register'
             alert(`Could not create user (${e.message})`)
           })
+      },
+      displayForgotPasswordMessage () {
+        this.succesfullySentForgotPasswordMessage = true
       },
     },
   }

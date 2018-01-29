@@ -7,6 +7,7 @@ import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { renderIntoElementById } from 'meteor/server-render'
 import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 
+import '../imports/config'
 import '../imports/listener'
 import { typeDefs, resolvers } from '../imports/api/schema'
 
