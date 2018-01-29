@@ -6,6 +6,7 @@ import {
   createUser as apolloCreateUser,
   userId,
   forgotPassword,
+  resetPassword as apolloResetPassword,
 } from 'meteor-apollo-accounts'
 import { apolloClient } from './graphql/client'
 import { isValidMail } from '../func/isValidMail'
@@ -36,8 +37,10 @@ export const doLogin = (username, password) => loginWithPassword(
   apolloClient,
 )
 
+export const hasInvalidPassword = password => password.length < 6
+
 export const hasInvalidUserCredentials = (username, password, email) =>
-  (username.length < 3 || (!isUndefined(email) && !isValidMail(email)) || password.length < 6)
+  (username.length < 3 || (!isUndefined(email) && !isValidMail(email)) || hasInvalidPassword(password))
 
 export const createUser = async (username, email, password) => {
   if (hasInvalidUserCredentials(username, password, email)) {
@@ -51,5 +54,8 @@ export const createUser = async (username, email, password) => {
 }
 
 export const sendForgotPasswordMail = (email) => forgotPassword({ email }, apolloClient)
+
+export const resetPassword = (newPassword, token) =>
+  apolloResetPassword({ newPassword, token }, apolloClient)
 
 export const logOut = () => logout(apolloClient)

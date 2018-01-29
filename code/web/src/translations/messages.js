@@ -19,6 +19,7 @@ export const messages = {
       'Private': 'Privat',
       'Website Url': 'Webseiten Url',
       'Publish': 'Publizieren',
+      'Reset': 'Zurücksetzen',
       'Profile Language': 'Profil Sprache',
       'Sound name': 'Sound Name',
       'Comments': 'Kommentare',
@@ -62,6 +63,8 @@ export const messages = {
       'Wrong file format': 'Falsches Datei-Format',
       'Forgot my password': 'Passwort vergessen',
       'Forgot your password?': 'Passwort vergessen?',
+      'New password': 'Neues Passwort',
+      'Repeat password': 'Passwort wiederholen',
     },
   }
 }
