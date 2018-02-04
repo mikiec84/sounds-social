@@ -9,6 +9,7 @@ import userSchema from './UserGraphqlSchema'
 import profileSchema from './ProfileGraphqlSchema'
 import notificationSchema from './NotificationGraphqlSchema'
 import playlistSchema from './PlaylistGraphqlSchema'
+import groupSchema from './GroupGraphqlSchema'
 
 const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
   schemas: [
@@ -19,6 +20,7 @@ const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
     profileSchema,
     notificationSchema,
     playlistSchema,
+    groupSchema,
   ],
 })
 
