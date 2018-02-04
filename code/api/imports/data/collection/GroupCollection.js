@@ -64,6 +64,10 @@ class GroupCollection extends Mongo.Collection {
     return unfollow(toUnfollowId)(followerId)(this)
   }
 
+  isMemberOfGroup (memberToCheckId, _id) {
+    return this.findOne({ _id, memberIds: memberToCheckId })
+  }
+
   findOneById (_id) {
     return this.findOne({ _id })
   }

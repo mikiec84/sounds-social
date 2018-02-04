@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
+import { groupCollection } from './GroupCollection'
 
 export const soundSchema = new SimpleSchema({
   name: {
@@ -21,6 +22,11 @@ export const soundSchema = new SimpleSchema({
   },
   creatorId: {
     type: String,
+  },
+  ownerType: {
+    type: String,
+    optional: true,
+    allowedValues: ['group', 'user'], // if empty it's a user
   },
   coverFileId: {
     type: String,
@@ -43,8 +49,13 @@ export const soundSchema = new SimpleSchema({
 })
 
 class SoundCollection extends Mongo.Collection {
-  addSound (doc, userId) {
+  addSound (doc, userId, groupId) {
     doc.creatorId = userId
+
+    if (groupId && groupCollection.isMemberOfGroup(userId, groupId)) {
+      doc.creatorId = groupId
+    }
+
     if (!doc.file) throw new Error('Need file to add sound')
     doc.fileId = fileCollection.insert({ ...doc.file })
 

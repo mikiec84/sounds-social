@@ -1,5 +1,5 @@
 import { get, flow } from 'lodash/fp'
-import { check, Match } from 'meteor/check'
+import { check } from 'meteor/check'
 import { groupCollection } from '../../data/collection/GroupCollection'
 
 const typeDef = `

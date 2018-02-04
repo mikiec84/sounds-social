@@ -82,7 +82,7 @@ type SoundPlay {
 }
 
 extend type Mutation {
-  createSound(data: SoundInput!): Sound
+  createSound(data: SoundInput! groupId: String): Sound
   publishSound(soundId: String!): Sound
   addCoverFile(soundId: String! fileData: FileData!): Sound
   startPlayingSound(soundId: String!): SoundPlay
@@ -97,9 +97,11 @@ extend type Query {
 
 soundGraphqlSchema.resolvers.Mutation.createSound = (root, args, context) => {
   const { userId } = context
+  const { groupId } = args
   check(userId, String)
+  check(groupId, Match.Maybe(String))
 
-  return soundCollection.addSound(args.data, userId)
+  return soundCollection.addSound(args.data, userId, groupId)
 }
 
 soundGraphqlSchema.resolvers.Mutation.publishSound = (root, args, context) => {
