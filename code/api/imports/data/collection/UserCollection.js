@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor'
-import { uniq } from 'lodash'
-
-const updateFollowerIds = (collection, userId, followerIds) => collection.update(
-  { _id: userId },
-  { $set: { followerIds: followerIds } },
-)
+import {
+  follow,
+  unfollow,
+  isFollowedBy,
+  findFollowerIds,
+} from '../../lib/Follower/FollowerMethods'
 
 export const userCollection = Meteor.users
 
@@ -12,28 +12,16 @@ userCollection.findOneById = function (userId) {
   return this.findOne({ _id: userId })
 }
 
-userCollection.findFollowerIdsForUser = function (userId) {
-  return ((this.findOneById(userId) || {}).followerIds || [])
-}
+userCollection.findFollowerIdsForUser = userId => findFollowerIds(userId)(userCollection)
 
 userCollection.isFollowedByUser = function (toFollowId, potentialFollowerId) {
-  return this.findFollowerIdsForUser(potentialFollowerId).includes(toFollowId)
-}
-
-userCollection.getUserNameById = function (userId) {
-  const user = this.findOneById(userId)
-
-  return user.username
+  return isFollowedBy(toFollowId)(potentialFollowerId)(userCollection)
 }
 
 userCollection.follow = function (toFollowId, followerId) {
-  const followerIds = this.findFollowerIdsForUser(followerId)
-
-  updateFollowerIds(this, followerId, uniq([...followerIds, toFollowId]))
+  return follow(toFollowId)(followerId)(userCollection)
 }
 
 userCollection.unfollow = function (toUnfollowId, followerId) {
-  const followerIds = this.findFollowerIdsForUser(followerId)
-
-  updateFollowerIds(this, followerId, followerIds.filter(id => id !== toUnfollowId))
+  return unfollow(toUnfollowId)(followerId)(userCollection)
 }
