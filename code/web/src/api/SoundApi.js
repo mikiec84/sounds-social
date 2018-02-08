@@ -164,3 +164,12 @@ export const playlistSoundsQuery = gql`
   }
   ${listSoundFragment}
 `
+
+export const groupSoundsQuery = gql`  
+  query GroupSoundsQuery($groupId: String!) {
+    listSound(filters: [{ key: "group", value: $groupId }]) {
+      ...ListSoundFields
+    }
+  }
+  ${listSoundFragment}
+`

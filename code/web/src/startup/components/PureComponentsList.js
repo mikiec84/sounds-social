@@ -32,6 +32,7 @@ import LoaderText from '../../components/pure/Loader/PureLoaderText.vue'
 import LoaderSound from '../../components/pure/Loader/PureLoaderSound.vue'
 import LoaderSoundList from '../../components/pure/Loader/PureLoaderSoundList.vue'
 import LoaderTransition from '../../components/pure/Loader/PureLoaderTransition.vue'
+import MemberList from '../../components/pure/Group/PureMemberList.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -68,4 +69,5 @@ export const ComponentsList = [
   { id: 'pure-loader-sound', component: LoaderSound },
   { id: 'pure-loader-sound-list', component: LoaderSoundList },
   { id: 'pure-loader-transition', component: LoaderTransition },
+  { id: 'member-list', component: MemberList },
 ]

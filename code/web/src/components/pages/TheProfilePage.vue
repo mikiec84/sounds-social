@@ -35,7 +35,7 @@
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import SoundListComponent from '../stateful/sound/StatefulSoundList.vue'
   import StatefulPlaylistList from '../stateful/Playlist/StatefulPlaylistList.vue'
-  import StatefulProfileBox from '../stateful/Profile/StatefulProfileBox.vue'
+  import StatefulProfileBox from '../stateful/Profile/StatefulUserProfileBox.vue'
   import { getUserId } from '../../api/AuthApi'
   import { profilePageQuery as query } from '../../api/ProfileApi'
 

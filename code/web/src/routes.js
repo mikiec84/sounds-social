@@ -12,9 +12,10 @@ import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
 import UploadPage from './components/pages/TheUploadPage.vue'
 import SearchPage from './components/pages/TheSearchPage.vue'
 
-import { profileRoutes } from './routes/ProfileRoutes'
 import { soundRoutes } from './routes/SoundRoutes'
+import { profileRoutes } from './routes/ProfileRoutes'
 import { playlistRoutes } from './routes/PlaylistRoutes'
+import { groupRoutes } from './routes/GroupRoutes'
 import { authRoutes } from './routes/AuthRoutes'
 
 Vue.use(Router)
@@ -56,9 +57,10 @@ const router = new Router({
       component: SearchPage,
       meta: { needsAuth: constant(false) },
     },
-    ...profileRoutes,
     ...soundRoutes,
+    ...profileRoutes,
     ...playlistRoutes,
+    ...groupRoutes,
     ...authRoutes,
   ],
 })

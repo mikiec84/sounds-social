@@ -1,4 +1,4 @@
-import { omit } from 'lodash/fp'
+import { omit, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { Meteor } from 'meteor/meteor'
 import { userCollection } from './UserCollection'
@@ -81,12 +81,22 @@ class SoundCollection extends Mongo.Collection {
   find (selector) {
     if (this.graphqlFilters && this.graphqlFilters.length > 0) {
       const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
+      const groupFilter = this.graphqlFilters.filter(({ key }) => key === 'group')[0]
       const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
       const { userId } = this.graphqlContext
+      const getValue = get('value')
+      const mainFilterValue = getValue(userFilter) || getValue(groupFilter)
 
-      if (userFilter && userFilter.value) {
-        selector.creatorId = userFilter.value
-        if (userFilter.value !== userId) selector.isPublic = true
+      if (mainFilterValue) {
+        selector.creatorId = mainFilterValue
+
+        if (groupFilter) {
+          selector.ownerType = 'group'
+        } else {
+          selector.$or = [ { ownerType: { $exists: false } }, { ownerType: 'user' } ]
+        }
+
+        if (mainFilterValue !== userId) selector.isPublic = true
       } else if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
         selector.$or = [
           {

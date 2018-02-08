@@ -1,19 +1,19 @@
 import { constant } from 'lodash/fp'
 
-import ProfilePage from '../components/pages/TheProfilePage.vue'
-import ProfileEditPage from '../components/pages/profile/TheProfileEditPage.vue'
+import SoundDetailPage from '../components/pages/sound/TheSoundDetailPage.vue'
+import SoundEditPage from '../components/pages/sound/TheSoundEditPage.vue'
 
 export const soundRoutes = [
   {
-    name: 'profile-detail',
-    path: '/profile/:id',
-    component: ProfilePage,
-    meta: { needsAuth: ({ params }) => params.id === 'me' },
+    name: 'sound-detail',
+    path: '/sounds/:id',
+    component: SoundDetailPage,
+    meta: { needsAuth: constant(false) },
   },
   {
-    name: 'profile-edit',
-    path: '/profile/:id/edit',
-    component: ProfileEditPage,
-    meta: { needsAuth: constant(true) },
+    name: 'sound-edit',
+    path: '/sounds/:id/edit',
+    component: SoundEditPage,
+    meta: { needsAuth: constant(false) },
   },
 ]

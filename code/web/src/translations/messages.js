@@ -65,6 +65,9 @@ export const messages = {
       'Forgot your password?': 'Passwort vergessen?',
       'New password': 'Neues Passwort',
       'Repeat password': 'Passwort wiederholen',
+      'Group not found': 'Gruppe nicht gefunden',
+      'Edit group': 'Gruppe editieren',
+      'Consists of': 'Besteht aus',
     },
   }
 }

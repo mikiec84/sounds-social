@@ -52,7 +52,7 @@ const groupSchema = new SimpleSchema({
 })
 
 class GroupCollection extends Mongo.Collection {
-  isFollowedByGroup (toFollowId, potentialFollowerId) {
+  isFollowedBy (toFollowId, potentialFollowerId) {
     return isFollowedBy(toFollowId)(potentialFollowerId)(this)
   }
 
