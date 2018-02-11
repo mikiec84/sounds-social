@@ -27,6 +27,11 @@
         </div>
 
         <stateful-playlist-list :user-id="getUser._id"></stateful-playlist-list>
+
+        <group-list
+          @openGroup="$router.push({ name: 'group-detail', params: { id: arguments[0]._id } })"
+          :canCreate="isCurrentUser"
+          :groups="getUser.groups"></group-list>
       </div>
     </div>
   </layout-with-sidebar>

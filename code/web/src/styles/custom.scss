@@ -6,12 +6,12 @@
     margin-left: 730px;
   }
   .custom-max-height-sidebar-l {
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 130px);
   }
   .custom-max-height-playlist-list-l {
     max-height: 190px;
   }
-  .custom-max-height-member-list-l {
+  .custom-max-height-member-list-l, .custom-max-height-group-list-l {
     max-height: 190px;
   }
 }
