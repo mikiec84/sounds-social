@@ -4,7 +4,8 @@ import Select from '../../components/pure/PureSelect.vue'
 import Header from '../../components/pure/PureHeader.vue'
 import IdentityHeader from '../../components/pure/identity/IdentityHeader.vue'
 import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
-import Input from '../../components/pure/PureInput.vue'
+import Input from '../../components/pure/Input/PureInput.vue'
+import LabelInput from '../../components/pure/Input/PureLabelInput.vue'
 import Modal from '../../components/pure/PureModal.vue'
 import Title from '../../components/pure/PureTitle.vue'
 import Icon from '../../components/pure/PureIcon.vue'
@@ -45,6 +46,7 @@ export const ComponentsList = [
   { id: 'pure-icon', component: Icon },
   { id: 'pure-title', component: Title },
   { id: 'pure-identity-header', component: IdentityHeader },
+  { id: 'label-input', component: LabelInput },
   { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },

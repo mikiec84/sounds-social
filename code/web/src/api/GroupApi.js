@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { apolloClient } from './graphql/client'
 
 export const GroupDetailedFieldsFragment = gql`
   fragment GroupDetailedFields on Group {
@@ -23,6 +24,17 @@ export const GroupDetailedFieldsFragment = gql`
     }
   }
 `
+
+export const createGroup = (name, type, description = '') => apolloClient.mutate({
+  mutation: gql`
+    mutation CreateGroup($name: String! $type: String! $description: String) {
+      group: createGroup(data: { name: $name type: $type description: $description }) {
+        _id
+      }
+    }
+  `,
+  variables: { name, type, description },
+})
 
 export const follow = () => {}
 export const unfollow = () => {}

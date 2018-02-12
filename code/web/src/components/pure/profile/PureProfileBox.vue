@@ -36,11 +36,11 @@
       },
       canFollow: {
         type: Boolean,
-        required: true,
+        required: false,
       },
       isFollowedByCurrentUser: {
         type: Boolean,
-        required: true,
+        required: false,
       },
     },
     computed: {

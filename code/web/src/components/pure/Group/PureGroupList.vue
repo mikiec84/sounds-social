@@ -1,6 +1,8 @@
 <template>
-  <div class="mt4">
-    <pure-button v-if="canCreate" class="mb2" @click="$emit('createGroup')">Create group</pure-button>
+  <div>
+    <div class="tc">
+      <pure-button v-if="canCreate" class="mb1 dib" @click="$emit('createGroup')">Create group</pure-button>
+    </div>
 
     <h2 v-if="groups && groups.length" class="mb3 f3" v-text="$t('Part of')"></h2>
 

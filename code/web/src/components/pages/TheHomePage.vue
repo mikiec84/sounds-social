@@ -64,14 +64,13 @@
           </pure-modal>
         </div>
       </div>
+
+      <div class="mv2 mw5 center pa3 white bg-blue tc" v-show="succesfullySentForgotPasswordMessage" v-text="$t('The email to reset your password has been sent')"></div>
+      <div class="f7 pointer tc gray" @click="$refs.forgotPasswordModal.openModal()" v-text="$t('Forgot my password')"></div>
+      <auth-forgot-password-modal
+        @sentForgotPasswordMail="displayForgotPasswordMessage"
+        ref="forgotPasswordModal"></auth-forgot-password-modal>
     </div>
-
-    <div class="mv2 mw5 center pa3 white bg-blue tc" v-show="succesfullySentForgotPasswordMessage" v-text="$t('The email to reset your password has been sent')"></div>
-    <div class="f7 pointer tc gray" @click="$refs.forgotPasswordModal.openModal()" v-text="$t('Forgot my password')"></div>
-    <auth-forgot-password-modal
-      @sentForgotPasswordMail="displayForgotPasswordMessage"
-      ref="forgotPasswordModal"></auth-forgot-password-modal>
-
   </div>
 </template>
 <script>
