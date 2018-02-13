@@ -17,6 +17,9 @@ export const ProfileBoxFieldsFragment = gql`
     groups {
       _id
       name
+      avatarFile {
+        url
+      }
     }
   }
 `

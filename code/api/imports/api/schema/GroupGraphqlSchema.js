@@ -11,6 +11,7 @@ type Group {
   # For example collective, label, duo etc.
   type: String
   description: String
+  websiteUrl: String
   avatarFile: File
   members: [User]
   createdAt: Date

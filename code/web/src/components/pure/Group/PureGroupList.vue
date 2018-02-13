@@ -32,7 +32,7 @@
     },
     methods: {
       getGroupImage (group) {
-        return getImage('profile.avatarFile.url')(group)
+        return getImage('avatarFile.url')(group)
       }
     }
   }

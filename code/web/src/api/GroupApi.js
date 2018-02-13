@@ -1,3 +1,5 @@
+import { startCase } from 'lodash/fp'
+
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
@@ -25,16 +27,27 @@ export const GroupDetailedFieldsFragment = gql`
   }
 `
 
-export const createGroup = (name, type, description = '') => apolloClient.mutate({
-  mutation: gql`
-    mutation CreateGroup($name: String! $type: String! $description: String) {
-      group: createGroup(data: { name: $name type: $type description: $description }) {
-        _id
+export const saveGroup = (id, name, type, websiteUrl, avatarFile, description = '') => {
+  const action = id ? 'update' : 'create'
+
+  return apolloClient.mutate({
+    mutation: gql`
+      mutation ${startCase(action)}Group(
+          ${id ? '$id: String!' : ''}
+          $name: String! 
+          $type: String! 
+          $websiteUrl: String 
+          $avatarFile: FileData 
+          $description: String
+      ) {
+        group: ${action}Group(${id ? '_id: $id' : ''} data: { name: $name type: $type websiteUrl: $websiteUrl avatarFile: $avatarFile description: $description }) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { name, type, description },
-})
+    `,
+    variables: { id, name, type, websiteUrl, avatarFile, description },
+  })
+}
 
 export const follow = () => {}
 export const unfollow = () => {}
@@ -46,4 +59,15 @@ export const groupPageQuery = gql`
     }
   }
   ${GroupDetailedFieldsFragment}
+`
+
+export const groupFormDataQuery = gql`
+  query GroupFormData($id: String!) {
+    groupFormData: getGroup(_id: $id) {
+      name
+      type
+      description
+      websiteUrl
+    }
+  }
 `
