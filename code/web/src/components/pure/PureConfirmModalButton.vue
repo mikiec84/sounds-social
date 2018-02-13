@@ -1,11 +1,11 @@
 <template>
   <div>
-    <pure-button @click="modalOpen = true" :color="buttonColor"><slot name="button"></slot></pure-button>
+    <pure-button @click="modalOpen = true" :color="buttonColor"><slot name="button" v-text="$t('Remove')"></slot></pure-button>
     <confirm-modal v-if="modalOpen"
                    @confirm="confirm"
                    @abort="modalOpen = false"
                    :icon="modalIcon">
-      <slot name="modal"></slot>
+      <slot name="modal"><div v-text="$t('Do you really want to delete this?')"></div></slot>
     </confirm-modal>
   </div>
 </template>

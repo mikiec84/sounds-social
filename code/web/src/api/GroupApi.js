@@ -49,6 +49,17 @@ export const saveGroup = (id, name, type, websiteUrl, avatarFile, description = 
   })
 }
 
+export const removeGroup = id => apolloClient.mutate({
+  mutation: gql`
+    mutation RemoveGroup($id: String!) {
+      group: removeGroup(_id: $id) {
+        _id
+      }
+    }
+  `,
+  variables: { id },
+})
+
 export const follow = () => {}
 export const unfollow = () => {}
 

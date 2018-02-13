@@ -64,8 +64,18 @@
       <pure-button
         @click="saveGroup"
         :disabled="$v.$invalid"
+        :fill="true"
         v-text="$t(groupId ? 'Edit group' : 'Create group')"
       ></pure-button>
+
+      <div class="dib">
+        <pure-confirm-modal-button
+          @confirm="removeGroup"
+          v-if="groupId"
+          buttonColor="light-red">
+          <div slot="button" v-text="$t('Delete group')"></div>
+        </pure-confirm-modal-button>
+      </div>
     </div>
   </div>
 </template>
@@ -73,7 +83,7 @@
   import { pick } from 'lodash/fp'
   import { url, required, minLength, maxLength } from 'vuelidate/lib/validators'
 
-  import { saveGroup, groupFormDataQuery } from '../../../api/GroupApi'
+  import { saveGroup, removeGroup, groupFormDataQuery } from '../../../api/GroupApi'
   import { addGroupAvatarFile } from '../../../api/StorageApi'
 
   const pickFields = pick(['name', 'type', 'description', 'websiteUrl'])
@@ -155,6 +165,13 @@
             params: { id: group._id },
           }))
       },
+      removeGroup () {
+        removeGroup(this.groupId)
+          .then(({ data: { group } }) => this.$router.push({
+            name: 'profile-detail',
+            params: { id: 'me' },
+          }))
+      }
     },
   }
 </script>
