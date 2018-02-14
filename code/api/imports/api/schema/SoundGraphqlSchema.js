@@ -4,6 +4,7 @@ import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { soundCollection, soundSchema } from '../../data/collection/SoundCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
+import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
 let soundsBeingPlayed = []
@@ -58,8 +59,20 @@ const soundGraphqlSchema = createCollectionSchema({
         type: 'Date',
       },
       creator: {
-        type: 'User',
-        resolve: root => Meteor.users.findOne({ _id: root.creatorId }),
+        type: 'Creator',
+        resolve: root => {
+          if (!root.ownerType || root.ownerType === 'user') {
+            return {
+              ...Meteor.users.findOne({ _id: root.creatorId }),
+              type: 'user',
+            }
+          }
+
+          const group = groupCollection.findOneById(root.creatorId)
+
+          console.log(group)
+          if (group) return { ...group, username: group.name, type: 'group' }
+        },
       },
       coverFile: {
         type: 'File',

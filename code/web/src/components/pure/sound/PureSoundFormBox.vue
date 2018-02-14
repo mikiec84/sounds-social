@@ -19,7 +19,11 @@
                 @change="$emit('changeTitle', $event.target.value)"
                 :placeholder="$t('Sound name')" />
       </div>
-      <div class="description username f5 gray"><span v-text="$t('by')"></span> <span class="dim pointer" >{{username}}</span></div>
+      <div class="description username f5 gray">
+        <span v-text="$t('by')"></span>
+        <select class="dim pointer bg-transparent b--black-20 gray dib v-mid" @change="$emit('changeUploader', $event.target.value)">
+          <option v-for="option in uploaderOptions" :value="option.value" v-text="option.label"></option>
+        </select></div>
 
       <textarea
               class="mt4 f5 black-80 lh-copy measure-wide bn w-50"
@@ -41,11 +45,20 @@
   </div>
 </template>
 <script>
+  import { collectionHasFields } from '../../../func/collectionHasFields'
+
   export default {
     props: {
       username: {
         type: String,
         required: true,
+      },
+      groups: {
+        type: Array,
+        default () {
+          return []
+        },
+        validator: collectionHasFields(['_id', 'name'])
       },
       hasFile: {
         type: Boolean,
@@ -69,6 +82,14 @@
           return this.$t('Publish')
         },
       }
+    },
+    computed: {
+      uploaderOptions () {
+        return [
+          { label: this.username, value: 'user' },
+          ...this.groups.map(group => ({ label: group.name, value: group._id })),
+        ]
+      },
     },
   }
 </script>

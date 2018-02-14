@@ -92,7 +92,7 @@
     props: {
       groupId: {
         type: String,
-        required: false,
+        default: '',
       },
     },
     data () {
@@ -108,6 +108,7 @@
     },
     apollo: {
       groupFormData: {
+        // TODO: only run when groupId provided
         query: groupFormDataQuery,
         variables () {
           return { id: this.groupId }
@@ -117,7 +118,9 @@
     },
     watch: {
       groupFormData () {
-        this.formData = pickFields(this.groupFormData)
+        if (this.groupId) {
+          this.formData = pickFields(this.groupFormData)
+        }
       },
     },
     validations: {

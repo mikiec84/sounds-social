@@ -51,9 +51,11 @@ export const soundSchema = new SimpleSchema({
 class SoundCollection extends Mongo.Collection {
   addSound (doc, userId, groupId) {
     doc.creatorId = userId
+    doc.ownerType = 'user'
 
     if (groupId && groupCollection.isMemberOfGroup(userId, groupId)) {
       doc.creatorId = groupId
+      doc.ownerType = 'group'
     }
 
     if (!doc.file) throw new Error('Need file to add sound')
@@ -131,8 +133,19 @@ class SoundCollection extends Mongo.Collection {
     if (this.graphqlContext && selector._id) {
       selector.isPublic = true
 
+      const { userId } = this.graphqlContext
+
       return super.findOne({
-        $or: [selector, { _id: selector._id, creatorId: this.graphqlContext.userId }],
+        $or: [
+          selector,
+          {
+            _id: selector._id,
+            creatorId: { $in: [
+              userId,
+              ...groupCollection.findForUser(userId).map(get('_id'))
+            ] },
+          },
+        ],
       }, ...more)
     }
 

@@ -43,6 +43,7 @@ export const detailSoundQuery = gql`
       }
       creator {
         _id
+        type
         username
       }
       playsCount
