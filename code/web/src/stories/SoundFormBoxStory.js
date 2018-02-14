@@ -22,7 +22,7 @@ export const soundFormBoxStories = moduleArg => storiesOf('Pure Sound Form Box',
     methods: {
       actionCall (type, args) { action(type)(args) },
     },
-    data() {
+    data () {
       return {
         groups: [
           { _id: 'test1', name: 'Group 1' },
