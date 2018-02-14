@@ -70,7 +70,6 @@ const soundGraphqlSchema = createCollectionSchema({
 
           const group = groupCollection.findOneById(root.creatorId)
 
-          console.log(group)
           if (group) return { ...group, username: group.name, type: 'group' }
         },
       },

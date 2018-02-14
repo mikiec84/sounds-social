@@ -79,7 +79,6 @@ export default {
         check(context.userId, String)
 
         const id = groupCollection.createGroup(context.userId, args.data)
-        console.log(id, args.data)
 
         return groupCollection.findOneById(id)
       },
