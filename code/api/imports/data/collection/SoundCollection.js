@@ -89,16 +89,21 @@ class SoundCollection extends Mongo.Collection {
       const getValue = get('value')
       const mainFilterValue = getValue(userFilter) || getValue(groupFilter)
 
+      // fixme: make this code simpler
       if (mainFilterValue) {
         selector.creatorId = mainFilterValue
 
         if (groupFilter) {
           selector.ownerType = 'group'
+
+          if (!groupCollection.isMemberOfGroup(userId, mainFilterValue)) {
+            selector.isPublic = true
+          }
         } else {
           selector.$or = [ { ownerType: { $exists: false } }, { ownerType: 'user' } ]
-        }
 
-        if (mainFilterValue !== userId) selector.isPublic = true
+          if (mainFilterValue !== userId) selector.isPublic = true
+        }
       } else if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
         selector.$or = [
           {

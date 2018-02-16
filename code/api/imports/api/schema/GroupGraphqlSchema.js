@@ -37,6 +37,8 @@ extend type Mutation {
   createGroup(data: GroupData!): Group
   updateGroup(_id: String! data: GroupData!): Group
   removeGroup(_id: String!): Group
+  followGroup(toFollowId: String!): Group
+  unfollowGroup(toUnfollowId: String!): Group
 }
 `
 
@@ -48,7 +50,7 @@ export default {
         return fileCollection.findOneById(root.avatarFileId)
       },
       members: root => root.memberIds.map(_id => Meteor.users.findOne({ _id })),
-      canFollow: (root, args, context) => !root.memberIds.includes(context.userId),
+      canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {
         check(context.userId, Match.Maybe(String))
 
@@ -76,7 +78,6 @@ export default {
     Mutation: {
       createGroup (root, args, context) {
         if (!context.userId) return null
-        check(context.userId, String)
 
         const id = groupCollection.createGroup(context.userId, args.data)
 
@@ -84,7 +85,6 @@ export default {
       },
       updateGroup (root, args, context) {
         if (!context.userId) return null
-        check(context.userId, String)
         check(args._id, String)
 
         groupCollection.updateGroup(context.userId, args._id, args.data)
@@ -93,7 +93,6 @@ export default {
       },
       removeGroup (root, args, context) {
         if (!context.userId) return null
-        check(context.userId, String)
         check(args._id, String)
 
         const group = groupCollection.findOneById(args._id)
@@ -101,6 +100,24 @@ export default {
         groupCollection.removeGroup(context.userId, args._id)
 
         return group
+      },
+      followGroup (root, args, context) {
+        if (!context.userId) return null
+
+        const { toFollowId } = args
+        check(toFollowId, String)
+
+        groupCollection.follow(toFollowId, context.userId)
+        return groupCollection.findOneById(toFollowId)
+      },
+      unfollowGroup (root, args, context) {
+        if (!context.userId) return null
+
+        const { toUnfollowId } = args
+        check(toUnfollowId, String)
+
+        groupCollection.unfollow(toUnfollowId, context.userId)
+        return groupCollection.findOneById(toUnfollowId)
       },
     },
   },

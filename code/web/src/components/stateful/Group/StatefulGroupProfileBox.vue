@@ -20,10 +20,10 @@
     },
     methods: {
       follow () {
-        follow(this.user._id)
+        follow(this.group._id)
       },
       unfollow () {
-        unfollow(this.user._id)
+        unfollow(this.group._id)
       },
     }
   }

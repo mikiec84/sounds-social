@@ -6,17 +6,17 @@ export const findFollowerIds = entityId => collection => {
 }
 
 export const follow = toFollowId => followerId => collection => {
-  const followerIds = findFollowerIds(followerId)(collection)
+  const followerIds = findFollowerIds(toFollowId)(collection)
 
-  updateFollowerIds(collection, followerId, uniq([...followerIds, toFollowId]))
+  updateFollowerIds(collection, toFollowId, uniq([...followerIds, followerId]))
 }
 
 export const unfollow = toUnfollowId => followerId => collection => {
-  const followerIds = findFollowerIds(followerId)(collection)
+  const followerIds = findFollowerIds(toUnfollowId)(collection)
 
-  updateFollowerIds(collection, followerId, followerIds.filter(id => id !== toUnfollowId))
+  updateFollowerIds(collection, toUnfollowId, followerIds.filter(id => id !== followerId))
 }
 
 export const isFollowedBy = toFollowId => potentialFollowerId => collection => {
-  return findFollowerIds(potentialFollowerId)(collection).includes(toFollowId)
+  return findFollowerIds(toFollowId)(collection).includes(potentialFollowerId)
 }

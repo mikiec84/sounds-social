@@ -1,4 +1,4 @@
-export const updateFollowerIds = (collection, groupId, followerIds) => collection.update(
-  { _id: groupId },
-  { $set: { followerIds: followerIds } },
+export const updateFollowerIds = (collection, _id, followerIds) => collection.update(
+  { _id },
+  { $set: { followerIds } },
 )
