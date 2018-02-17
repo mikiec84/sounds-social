@@ -132,10 +132,6 @@ class SoundCollection extends Mongo.Collection {
           },
         ]
 
-        console.log([
-          ...userCollection.findFollowerIdsForUser(userId),
-        ], getCreatorSoundsSelector(userId))
-
         selector.$or.push(getCreatorSoundsSelector(userId))
       } else {
         // discover
