@@ -1,8 +1,14 @@
-import { uniq } from 'lodash'
+import { uniq, get } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
 
-export const findFollowerIds = entityId => collection => {
+const findFollowerIds = entityId => collection => {
   return ((collection.findOneById(entityId) || {}).followerIds || [])
+}
+
+export const findFollowerIdsForUser = userId => collection => {
+  return collection.find({
+    followerIds: userId
+  }, { fields: { _id: 1 } }).map(get('_id'))
 }
 
 export const follow = toFollowId => followerId => collection => {

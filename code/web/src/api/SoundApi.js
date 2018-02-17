@@ -6,6 +6,7 @@ const listSoundFragment = gql`
     _id
     name
     isPublic
+    ownerType
     coverFile {
       url
     }

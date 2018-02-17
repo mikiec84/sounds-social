@@ -79,7 +79,13 @@ const soundGraphqlSchema = createCollectionSchema({
       },
       isRemovable: {
         type: 'Boolean',
-        resolve: (root, args, context) => root.creatorId === context.userId,
+        resolve: (root, args, context) => {
+          if (!root.ownerType || root.ownerType === 'user') {
+            return root.creatorId === context.userId
+          }
+
+          return !!groupCollection.isMemberOfGroup(context.userId, root.creatorId)
+        },
       },
     },
   },

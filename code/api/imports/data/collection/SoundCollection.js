@@ -48,6 +48,15 @@ export const soundSchema = new SimpleSchema({
   },
 })
 
+const getCreatorSoundsSelector = userId => ({
+  creatorId: {
+    $in: [
+      userId,
+      ...groupCollection.findForUser(userId).map(get('_id'))
+    ]
+  },
+})
+
 class SoundCollection extends Mongo.Collection {
   addSound (doc, userId, groupId) {
     doc.creatorId = userId
@@ -70,14 +79,22 @@ class SoundCollection extends Mongo.Collection {
     return this.findOne({ _id })
   }
 
-  publishSound (_id, creatorId) {
-    const doc = this.findOne({ _id, creatorId })
-
-    if (!doc) throw new Error('Not permitted')
+  publishSound (_id, userId) {
+    if (!this.isPermittedToChange(userId, _id)) throw new Error('Not permitted')
 
     this.update({ _id }, { $set: { isPublic: true } })
 
     return this.findOneById(_id)
+  }
+
+  isPermittedToChange (userId, docId) {
+    const doc = this.findOneById(docId)
+
+    if (doc.ownerType === 'group') {
+      return groupCollection.isMemberOfGroup(userId, doc.creatorId)
+    }
+
+    return doc.creatorId === userId
   }
 
   find (selector) {
@@ -108,22 +125,25 @@ class SoundCollection extends Mongo.Collection {
         selector.$or = [
           {
             isPublic: true,
-            creatorId: { $in: userCollection.findFollowerIdsForUser(userId) },
+            creatorId: { $in: [
+              ...userCollection.findFollowerIdsForUser(userId),
+              ...groupCollection.findFollowerIdsForUser(userId),
+            ] },
           },
         ]
 
-        selector.$or.push({
-          creatorId: userId,
-        })
+        console.log([
+          ...userCollection.findFollowerIdsForUser(userId),
+        ], getCreatorSoundsSelector(userId))
+
+        selector.$or.push(getCreatorSoundsSelector(userId))
       } else {
         // discover
         selector.$or = [
           { isPublic: true },
         ]
 
-        selector.$or.push({
-          creatorId: userId,
-        })
+        selector.$or.push(getCreatorSoundsSelector(userId))
       }
     }
 

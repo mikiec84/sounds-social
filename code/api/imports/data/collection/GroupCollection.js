@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo'
-import { omitBy, isNil } from 'lodash/fp'
+import { omitBy, isNil, get } from 'lodash/fp'
 import { createdAtAutoValue } from './autoValue/createdAtAutoValue'
 import { fileCollection } from './FileCollection'
 import {
@@ -65,7 +65,7 @@ class GroupCollection extends Mongo.Collection {
   }
 
   isMemberOfGroup (memberToCheckId, _id) {
-    return this.findOne({ _id, memberIds: memberToCheckId })
+    return !!this.findOne({ _id, memberIds: memberToCheckId })
   }
 
   findOneById (_id) {
@@ -78,6 +78,12 @@ class GroupCollection extends Mongo.Collection {
 
   removeGroup (userId, _id) {
     return this.remove({ _id, creatorId: userId })
+  }
+
+  findFollowerIdsForUser (userId) {
+    return this.find({
+      followerIds: userId
+    }, { fields: { _id: 1 } }).map(get('_id'))
   }
 
   createGroup (userId, { name, type, description, websiteUrl, avatarFile }) {

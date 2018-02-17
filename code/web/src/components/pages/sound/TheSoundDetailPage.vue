@@ -141,8 +141,9 @@
     },
     methods: {
       openProfile (creator) {
+        // fixme: reuse in sound list
         this.$router.push({
-          name: creator.type === 'user' ? 'profile-detail' : 'group-detail',
+          name: creator.type === 'group' ? 'group-detail' : 'profile-detail',
           params: { id: creator._id },
         })
       },

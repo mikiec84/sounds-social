@@ -8,7 +8,10 @@
         <sound-list
           @play-sound="playSound"
           @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
-          @open-profile="$router.push({ name: 'profile-detail', params: { id: arguments[0].creatorUserId } })"
+          @open-profile="$router.push({
+            name: arguments[0].ownerType === 'group' ? 'group-detail' : 'profile-detail',
+            params: { id: arguments[0].creatorUserId },
+          })"
           :sounds="mapSounds(listSound)"></sound-list>
 
         <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')"></div>
