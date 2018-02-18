@@ -7,76 +7,49 @@
       <div v-if="Object.keys(formData)" class="f3 mw7">
         <pure-title v-text="$t('Edit playlist')"></pure-title>
 
-        <div class="mt3">
-          <label>
-            <div class="mb2" v-text="$t('Name')"></div>
-            <pure-input
-              name="name"
-              @keyup="changeFormData('name', arguments[0])"
-              :value="formData.name"></pure-input>
-          </label>
+        <form-field :label="$t('Name')" :error="$v.formData.name">
+          <pure-input
+            name="name"
+            @keyup="changeFormData('name', arguments[0])"
+            :value="formData.name"></pure-input>
+        </form-field>
 
-          <div v-if="$v.formData.name.$error" class="mt3">
-            <pure-error>
-              <div v-if="!$v.formData.name.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"></div>
-              <div v-if="!$v.formData.name.minLength" v-text="$t('{{thing}} must be longer', { thing: $t('Name') })"></div>
-              <div v-if="!$v.formData.name.maxLength" v-text="$t('{{thing}} must be shorter', { thing: $t('Name') })"></div>
-            </pure-error>
-          </div>
-        </div>
-        <div class="mt3">
-          <label>
-            <div class="mb2" v-text="$t('Description')"></div>
+        <form-field :label="$t('Description')" :error="$v.formData.description">
             <textarea
               class="w-100"
               style="height: 180px"
               name="description"
               @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
-          </label>
+        </form-field>
 
-          <div v-if="$v.formData.description.$error" class="mt3">
-            <pure-error>
-              <div v-if="!$v.formData.description.maxLength"
-                   v-text="$t('{{thing}} must be shorter', { thing: $t('Description') })"></div>
-            </pure-error>
-          </div>
-        </div>
+        <label-input :label="$t('Public')">
+          <input type="checkbox"
+                 :checked="formData.isPublic"
+                 @change="formData.isPublic = $event.target.checked" />
+        </label-input>
 
-        <div class="mt3">
-          <label>
-            <div class="mb2" v-text="$t('Public')"></div>
-            <input type="checkbox"
-                   :checked="formData.isPublic"
-                   @change="formData.isPublic = $event.target.checked" />
-          </label>
-        </div>
+        <label-input :label="$t('Sounds')">
+          <div class="dark-gray i mv3 f5" v-text="$t('Drag and drop to reorder')"></div>
 
-        <div class="mt3">
-          <label>
-            <div class="mb3" v-text="$t('Sounds')"></div>
-
-            <div class="dark-gray i mb3 f5" v-text="$t('Drag and drop to reorder')"></div>
-
-            <draggable v-model="formData.sounds"
-                       :options="{group:'sounds'}"
-                       @start="isDragging=true"
-                       @end="isDragging=false">
-              <div v-for="sound in formData.sounds"
-                   :key="sound._id"
-                   class="pointer bg-silver white mb2 pa3">
-                <div class="dib v-mid f4 mr3" @click="removeSound(sound._id)">
-                  <pure-icon icon="remove"> </pure-icon>
-                </div>
-                <span class="dib v-mid" v-text="sound.name"></span>
+          <draggable v-model="formData.sounds"
+                     :options="{group:'sounds'}"
+                     @start="isDragging=true"
+                     @end="isDragging=false">
+            <div v-for="sound in formData.sounds"
+                 :key="sound._id"
+                 class="pointer bg-silver white mb2 pa3">
+              <div class="dib v-mid f4 mr3" @click="removeSound(sound._id)">
+                <pure-icon icon="remove"> </pure-icon>
               </div>
-            </draggable>
-          </label>
-        </div>
+              <span class="dib v-mid" v-text="sound.name"></span>
+            </div>
+          </draggable>
+        </label-input>
 
         <div class="mv4">
           <pure-button
             @click="updatePlaylist"
-            :disabled="$v.$error"
+            :disabled="$v.$invalid"
             v-text="$t('Update playlist')"
           ></pure-button>
         </div>

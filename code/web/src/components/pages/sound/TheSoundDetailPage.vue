@@ -15,7 +15,7 @@
               :description="getSound.description"
               :username="getSound.creator.username"
               :isPrivate="!getSound.isPublic"
-              @open-profile="$router.push({ name: 'profile-detail', params: { id: getSound.creator._id } })"
+              @open-profile="openProfile(getSound.creator)"
               @open-sound="playSound"
               @play-sound="playSound"
               @pauseSound="pauseSound"
@@ -140,6 +140,9 @@
       },
     },
     methods: {
+      openProfile (creator) {
+        this.$routeNavigator.openProfile(creator._id, creator.type)
+      },
       removeSound () {
         removeSound(this.getSound._id).then(() => {
           this.$router.push({ name: 'profile-detail', params: { id: 'me' } })

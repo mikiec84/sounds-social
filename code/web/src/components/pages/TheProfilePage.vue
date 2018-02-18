@@ -11,7 +11,7 @@
         </div>
         <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
       </div>
-      <div v-if="!getUser">
+      <div v-if="!getUser && !userLoading">
         <div class="i" v-text="$t('User not found')"></div>
       </div>
     </div>
@@ -19,14 +19,28 @@
       <div v-if="getUser">
         <stateful-profile-box :user="getUser"></stateful-profile-box>
 
-        <div class="mv4 tc" v-if="isCurrentUser">
+        <div class="mt4 mb3 tc" v-if="isCurrentUser">
           <pure-button @click="$router.push({ name: 'profile-edit', params: { id: getUser._id } })" v-text="$t('Edit profile')"></pure-button>
           <div class="dib dn-l">
             <pure-button @click="authLogOut" color="gray" v-text="$t('Logout')"></pure-button>
           </div>
         </div>
 
+        <group-list
+          @openGroup="$router.push({ name: 'group-detail', params: { id: arguments[0]._id } })"
+          @createGroup="openGroupModal = true"
+          :canCreate="isCurrentUser"
+          :groups="getUser.groups"></group-list>
+
         <stateful-playlist-list :user-id="getUser._id"></stateful-playlist-list>
+
+        <pure-modal @close="openGroupModal = false" v-show="openGroupModal">
+          <div class="pa4">
+            <pure-title size="f1" v-text="$t('Create group')"></pure-title>
+
+            <stateful-group-form></stateful-group-form>
+          </div>
+        </pure-modal>
       </div>
     </div>
   </layout-with-sidebar>
@@ -35,7 +49,8 @@
   import HeaderComponent from '../stateful/StatefulHeader.vue'
   import SoundListComponent from '../stateful/sound/StatefulSoundList.vue'
   import StatefulPlaylistList from '../stateful/Playlist/StatefulPlaylistList.vue'
-  import StatefulProfileBox from '../stateful/Profile/StatefulProfileBox.vue'
+  import StatefulProfileBox from '../stateful/Profile/StatefulUserProfileBox.vue'
+  import StatefulGroupForm from '../stateful/Group/StatefulGroupForm.vue'
   import { getUserId } from '../../api/AuthApi'
   import { profilePageQuery as query } from '../../api/ProfileApi'
 
@@ -45,6 +60,7 @@
       SoundListComponent,
       StatefulPlaylistList,
       StatefulProfileBox,
+      StatefulGroupForm,
     },
     metaInfo () {
       if (this.getUser) {
@@ -57,7 +73,9 @@
     },
     data () {
       return {
+        openGroupModal: false,
         getUser: null,
+        userLoading: 0,
         userId: '',
       }
     },
@@ -69,6 +87,7 @@
     apollo: {
       getUser: {
         query,
+        loadingKey: 'userLoading',
         fetchPolicy: 'network-only',
         variables () {
           return { id: this.profileUserId }

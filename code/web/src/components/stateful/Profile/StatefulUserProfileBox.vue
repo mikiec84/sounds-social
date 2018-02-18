@@ -1,6 +1,8 @@
 <template>
   <pure-profile-box
-    :user="user"
+    :profile="user.profile"
+    :canFollow="user.canFollow"
+    :isFollowedByCurrentUser="user.isFollowedByCurrentUser"
     @follow="follow"
     @unfollow="unfollow"
   ></pure-profile-box>

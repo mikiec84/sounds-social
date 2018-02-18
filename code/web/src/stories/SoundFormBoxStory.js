@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions'
 const eventHandlers = `
 @changeTitle="actionCall('changing title', arguments[0])"
 @changeDescription="actionCall('changing description', arguments[0])"
+@changeUploader="actionCall('changed uploader', arguments[0])"
 @publish="actionCall('publish')"
 @uploadFile="actionCall('uploaded file')"
 `
@@ -21,9 +22,18 @@ export const soundFormBoxStories = moduleArg => storiesOf('Pure Sound Form Box',
     methods: {
       actionCall (type, args) { action(type)(args) },
     },
+    data () {
+      return {
+        groups: [
+          { _id: 'test1', name: 'Group 1' },
+          { _id: 'test2', name: 'Group 2' },
+        ],
+      }
+    },
     template: `
 <sound-form-box
   username="Hans Peter"
+  :groups="groups"
   :hasFile="true"
   :isUploading="false"
   name=""

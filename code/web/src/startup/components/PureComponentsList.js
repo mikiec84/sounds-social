@@ -4,7 +4,8 @@ import Select from '../../components/pure/PureSelect.vue'
 import Header from '../../components/pure/PureHeader.vue'
 import IdentityHeader from '../../components/pure/identity/IdentityHeader.vue'
 import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
-import Input from '../../components/pure/PureInput.vue'
+import Input from '../../components/pure/Input/PureInput.vue'
+import LabelInput from '../../components/pure/Input/PureLabelInput.vue'
 import Modal from '../../components/pure/PureModal.vue'
 import Title from '../../components/pure/PureTitle.vue'
 import Icon from '../../components/pure/PureIcon.vue'
@@ -32,6 +33,10 @@ import LoaderText from '../../components/pure/Loader/PureLoaderText.vue'
 import LoaderSound from '../../components/pure/Loader/PureLoaderSound.vue'
 import LoaderSoundList from '../../components/pure/Loader/PureLoaderSoundList.vue'
 import LoaderTransition from '../../components/pure/Loader/PureLoaderTransition.vue'
+import MemberList from '../../components/pure/Group/PureMemberList.vue'
+import GroupList from '../../components/pure/Group/PureGroupList.vue'
+import FormError from '../../components/pure/Form/PureFormError.vue'
+import FormField from '../../components/pure/Form/PureFormField.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -43,6 +48,9 @@ export const ComponentsList = [
   { id: 'pure-icon', component: Icon },
   { id: 'pure-title', component: Title },
   { id: 'pure-identity-header', component: IdentityHeader },
+  { id: 'label-input', component: LabelInput },
+  { id: 'form-error', component: FormError },
+  { id: 'form-field', component: FormField },
   { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },
@@ -68,4 +76,6 @@ export const ComponentsList = [
   { id: 'pure-loader-sound', component: LoaderSound },
   { id: 'pure-loader-sound-list', component: LoaderSoundList },
   { id: 'pure-loader-transition', component: LoaderTransition },
+  { id: 'member-list', component: MemberList },
+  { id: 'group-list', component: GroupList },
 ]

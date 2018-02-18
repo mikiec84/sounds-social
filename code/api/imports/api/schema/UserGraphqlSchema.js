@@ -2,6 +2,7 @@ import { check } from 'meteor/check'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
 import { profileCollection } from '../../data/collection/ProfileCollection'
+import { groupCollection } from '../../data/collection/GroupCollection'
 
 const collectionSchema = createCollectionSchema({
   type: 'User',
@@ -26,6 +27,10 @@ const collectionSchema = createCollectionSchema({
         type: 'Profile',
         resolve: (root, args, context) => (profileCollection.findOneUserProfile(root._id) || {}),
       },
+      groups: {
+        type: '[Group]',
+        resolve: (root) => groupCollection.findForUser(root._id).fetch(),
+      }
     },
   },
   crud: {

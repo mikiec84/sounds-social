@@ -1,9 +1,8 @@
 import '../App.vue'
 import '../startup/StartupRegisterPureComponents'
-import '../startup/StartupI18N'
+import '../startup/StartupPlugins'
 import '../startup/StartupVueSelect'
 import '../startup/StartupAuthMixin'
-import '../startup/StartupLodashPlugin'
 import '../startup/StartupPopover'
 import '../store'
 

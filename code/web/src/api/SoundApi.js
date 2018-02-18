@@ -6,6 +6,7 @@ const listSoundFragment = gql`
     _id
     name
     isPublic
+    ownerType
     coverFile {
       url
     }
@@ -18,6 +19,7 @@ const listSoundFragment = gql`
     }
     creator {
       _id
+      type
       username
     }
   }
@@ -43,6 +45,7 @@ export const detailSoundQuery = gql`
       }
       creator {
         _id
+        type
         username
       }
       playsCount
@@ -159,6 +162,15 @@ export const searchSoundQuery = gql`
 export const playlistSoundsQuery = gql`  
   query PlaylistSoundsQuery($playlistId: String!) {
     listSound: listSoundForPlaylist(playlistId: $playlistId) {
+      ...ListSoundFields
+    }
+  }
+  ${listSoundFragment}
+`
+
+export const groupSoundsQuery = gql`  
+  query GroupSoundsQuery($groupId: String!) {
+    listSound(filters: [{ key: "group", value: $groupId }]) {
       ...ListSoundFields
     }
   }

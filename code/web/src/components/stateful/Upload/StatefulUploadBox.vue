@@ -3,11 +3,13 @@
     <div id="soundUploadBox">
       <sound-form-box
         :username="username"
+        :groups="groups"
         :hasFile="hasFile"
         :isUploading="isUploading"
         :name="name"
         @changeTitle="name = arguments[0]"
         @changeDescription="description = arguments[0]"
+        @changeUploader="uploader = arguments[0]"
         @publish="saveSound(true)"
         @uploadFile="uploadMusicFile(arguments[0])"
       >
@@ -27,12 +29,12 @@
   import { addMusicFile } from '../../../api/StorageApi'
 
   const createSoundMutation = gql`
-    mutation ($name: String! $description: String $file: FileData! $creatorId: String! $isPublic: Boolean!) {
-      createSound(data: {
-        name: $name,
-        creatorId: $creatorId,
-        file: $file,
-        isPublic: $isPublic,
+    mutation ($name: String! $groupId: String $description: String $file: FileData! $creatorId: String! $isPublic: Boolean!) {
+      createSound(groupId: $groupId data: {
+        name: $name
+        creatorId: $creatorId
+        file: $file
+        isPublic: $isPublic
         description: $description
       }) {
         _id
@@ -49,6 +51,8 @@
         name: '',
         description: '',
         file: {},
+        groups: [],
+        uploader: 'user',
         userId: '',
         fileId: '',
       }
@@ -56,6 +60,18 @@
     mounted () {
       getUsername().then(username => { this.username = username })
       getUserId().then(id => { this.userId = id })
+    },
+    apollo: {
+      groups: {
+        query: gql`
+          query GroupOptionData {
+            groups: listGroupForUser {
+              _id
+              name
+            }
+          }
+        `,
+      }
     },
     methods: {
       uploadMusicFile (e) {
@@ -77,7 +93,9 @@
           })
       },
       saveSound (isPublic) {
-        const { name, userId, description, file } = this
+        const { name, userId, uploader, description, file } = this
+
+        const isUser = uploader === 'user'
 
         this.$apollo
           .mutate({
@@ -86,6 +104,7 @@
               name,
               description,
               file,
+              groupId: isUser ? null : uploader,
               creatorId: userId,
               isPublic,
             },

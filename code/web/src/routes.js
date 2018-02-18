@@ -6,19 +6,22 @@ import { constant } from 'lodash'
 
 import { isAuthenticated } from './api/AuthApi'
 import store from './store'
+import { RouteNavigatorPlugin } from './plugins/RouteNavigatorPlugin'
 
 import HomePage from './components/pages/TheHomePage.vue'
 import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
 import UploadPage from './components/pages/TheUploadPage.vue'
 import SearchPage from './components/pages/TheSearchPage.vue'
 
-import { profileRoutes } from './routes/ProfileRoutes'
 import { soundRoutes } from './routes/SoundRoutes'
+import { profileRoutes } from './routes/ProfileRoutes'
 import { playlistRoutes } from './routes/PlaylistRoutes'
+import { groupRoutes } from './routes/GroupRoutes'
 import { authRoutes } from './routes/AuthRoutes'
 
 Vue.use(Router)
 Vue.use(Meta)
+Vue.use(RouteNavigatorPlugin)
 
 const closePlayerListIfVisible = () => {
   if (store.state.soundPlayer.playerPlayingNowVisible) {
@@ -56,9 +59,10 @@ const router = new Router({
       component: SearchPage,
       meta: { needsAuth: constant(false) },
     },
-    ...profileRoutes,
     ...soundRoutes,
+    ...profileRoutes,
     ...playlistRoutes,
+    ...groupRoutes,
     ...authRoutes,
   ],
 })

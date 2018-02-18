@@ -17,7 +17,7 @@
 
     <stateful-sound-player
       @openSound="$router.push({ name: 'sound-detail', params: { id: arguments[0] } })"
-      @openProfile="$router.push({ name: 'profile-detail', params: { id: arguments[0] } })"
+      @openProfile="openProfile"
     ></stateful-sound-player>
 
     <div v-if="notificationCenterOpen">
@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+  import { find } from 'lodash/fp'
   import StatefulSoundPlayer from './sound/StatefulSoundPlayer.vue'
   import StatefulNotificationCenterModal from './notification/StatefulNotificationCenterModal.vue'
   import { listRecentNotificationsQuery as query } from '../../api/NotificationApi'
@@ -91,6 +92,11 @@
       },
       openNotification (item) {
         notificationMethods.openNotification(this.$router, item)
+      },
+      openProfile (byId) {
+        const sound = find({ byId })(this.$store.state.soundPlayer.sounds)
+
+        this.$routeNavigator.openProfile(byId, sound.byType)
       },
       openNotificationPage () {
         this.$refs.pureHeader.closeNotificationDropdown()

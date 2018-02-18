@@ -2,6 +2,7 @@ import { get, constant } from 'lodash/fp'
 import { Meteor } from 'meteor/meteor'
 import { Index, MongoDBEngine } from 'meteor/easysearch:core'
 import { soundCollection } from '../collection/SoundCollection'
+import { groupCollection } from '../collection/GroupCollection'
 import { findRelatedFieldDocuments } from './findRelatedFieldDocuments'
 
 const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
@@ -11,6 +12,15 @@ const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
   localField: 'creatorId',
   foreignField: '_id',
   as: 'aggregatedAuthor',
+})
+
+const searchByGroupName = (config, query, cb) => findRelatedFieldDocuments({
+  collection: soundCollection,
+  selector: config.selectorPerField('aggregatedGroupAuthor.name', query),
+  from: groupCollection.rawCollection().collectionName,
+  localField: 'creatorId',
+  foreignField: '_id',
+  as: 'aggregatedGroupAuthor',
 })
 
 export const soundSearchIndex = new Index({
@@ -30,7 +40,10 @@ export const soundSearchIndex = new Index({
           ...selector.$or,
           {
             _id: {
-              $in: searchByUsername(defaultConfig, queryObject.name).map(get('_id')),
+              $in: [
+                ...searchByUsername(defaultConfig, queryObject.name).map(get('_id')),
+                ...searchByGroupName(defaultConfig, queryObject.name).map(get('_id')),
+              ],
             },
           },
         ],

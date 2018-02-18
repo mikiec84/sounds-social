@@ -4,6 +4,7 @@ import { Random } from 'meteor/random'
 import { createCollectionSchema } from 'meteor/easy:graphqlizer'
 import { soundCollection, soundSchema } from '../../data/collection/SoundCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
+import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
 let soundsBeingPlayed = []
@@ -58,8 +59,19 @@ const soundGraphqlSchema = createCollectionSchema({
         type: 'Date',
       },
       creator: {
-        type: 'User',
-        resolve: root => Meteor.users.findOne({ _id: root.creatorId }),
+        type: 'Creator',
+        resolve: root => {
+          if (!root.ownerType || root.ownerType === 'user') {
+            return {
+              ...Meteor.users.findOne({ _id: root.creatorId }),
+              type: 'user',
+            }
+          }
+
+          const group = groupCollection.findOneById(root.creatorId)
+
+          if (group) return { ...group, username: group.name, type: 'group' }
+        },
       },
       coverFile: {
         type: 'File',
@@ -67,7 +79,13 @@ const soundGraphqlSchema = createCollectionSchema({
       },
       isRemovable: {
         type: 'Boolean',
-        resolve: (root, args, context) => root.creatorId === context.userId,
+        resolve: (root, args, context) => {
+          if (!root.ownerType || root.ownerType === 'user') {
+            return root.creatorId === context.userId
+          }
+
+          return !!groupCollection.isMemberOfGroup(context.userId, root.creatorId)
+        },
       },
     },
   },
@@ -82,7 +100,7 @@ type SoundPlay {
 }
 
 extend type Mutation {
-  createSound(data: SoundInput!): Sound
+  createSound(data: SoundInput! groupId: String): Sound
   publishSound(soundId: String!): Sound
   addCoverFile(soundId: String! fileData: FileData!): Sound
   startPlayingSound(soundId: String!): SoundPlay
@@ -97,9 +115,11 @@ extend type Query {
 
 soundGraphqlSchema.resolvers.Mutation.createSound = (root, args, context) => {
   const { userId } = context
+  const { groupId } = args
   check(userId, String)
+  check(groupId, Match.Maybe(String))
 
-  return soundCollection.addSound(args.data, userId)
+  return soundCollection.addSound(args.data, userId, groupId)
 }
 
 soundGraphqlSchema.resolvers.Mutation.publishSound = (root, args, context) => {
