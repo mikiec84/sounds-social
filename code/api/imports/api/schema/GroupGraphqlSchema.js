@@ -46,9 +46,7 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Group: {
-      avatarFile(root) {
-        return fileCollection.findOneById(root.avatarFileId)
-      },
+      avatarFile: root => fileCollection.findOneById(root.avatarFileId),
       members: root => root.memberIds.map(_id => Meteor.users.findOne({ _id })),
       canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {

@@ -11,7 +11,7 @@
         </div>
         <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
       </div>
-      <div v-if="!getUser">
+      <div v-if="!getUser && !userLoading">
         <div class="i" v-text="$t('User not found')"></div>
       </div>
     </div>
@@ -75,6 +75,7 @@
       return {
         openGroupModal: false,
         getUser: null,
+        userLoading: 0,
         userId: '',
       }
     },
@@ -86,6 +87,7 @@
     apollo: {
       getUser: {
         query,
+        loadingKey: 'userLoading',
         fetchPolicy: 'network-only',
         variables () {
           return { id: this.profileUserId }

@@ -1,5 +1,4 @@
 import { startCase } from 'lodash/fp'
-
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 

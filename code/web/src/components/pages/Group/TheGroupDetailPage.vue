@@ -11,7 +11,7 @@
           :query="groupSoundsQuery"
           :defineQueryVariables="defineSoundListQueryVariables"></sound-list-component>
       </div>
-      <div v-if="!singleGroup">
+      <div v-if="!groupLoading && !singleGroup">
         <div class="i" v-text="$t('Group not found')"></div>
       </div>
     </div>
@@ -46,12 +46,14 @@
     data () {
       return {
         singleGroup: null,
+        groupLoading: 0,
         groupSoundsQuery,
       }
     },
     apollo: {
       singleGroup: {
         query,
+        loadingKey: 'groupLoading',
         fetchPolicy: 'network-only',
         variables () {
           return { id: this.$route.params.id }

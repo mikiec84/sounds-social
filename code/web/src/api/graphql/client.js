@@ -12,5 +12,5 @@ export const apolloClient = new ApolloClient({
   ]),
   cache: new InMemoryCache({
     dataIdFromObject: o => o.uuid
-  })
+  }),
 })

@@ -6,6 +6,7 @@ import { constant } from 'lodash'
 
 import { isAuthenticated } from './api/AuthApi'
 import store from './store'
+import { RouteNavigatorPlugin } from './plugins/RouteNavigatorPlugin'
 
 import HomePage from './components/pages/TheHomePage.vue'
 import DiscoverPage from './components/pages/sounds/TheDiscoverPage.vue'
@@ -20,6 +21,7 @@ import { authRoutes } from './routes/AuthRoutes'
 
 Vue.use(Router)
 Vue.use(Meta)
+Vue.use(RouteNavigatorPlugin)
 
 const closePlayerListIfVisible = () => {
   if (store.state.soundPlayer.playerPlayingNowVisible) {
