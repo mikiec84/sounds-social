@@ -1,56 +1,33 @@
 <template>
   <div class="mw6">
-    <label-input :label="$t('Name')">
+    <form-field :label="$t('Name')" :error="$v.formData.name">
       <pure-input
         name="name"
         @keyup="changeFormData('name', arguments[0])"
         :value="formData.name"></pure-input>
-    </label-input>
+    </form-field>
 
-    <!-- TODO: use form-field -->
-    <div v-if="$v.formData.name.$error" class="mt3">
-      <pure-error>
-        <div v-if="!$v.formData.name.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"></div>
-        <div v-if="!$v.formData.name.minLength" v-text="$t('{{thing}} must be longer', { thing: $t('Name') })"></div>
-        <div v-if="!$v.formData.name.maxLength" v-text="$t('{{thing}} must be shorter', { thing: $t('Name') })"></div>
-      </pure-error>
-    </div>
-
-    <label-input :label="$t('Type (Label, Group, Collective...)')">
+    <form-field :label="$t('Type (Label, Group, Collective...)')" :error="$v.formData.type">
       <pure-input
         name="type"
         @keyup="changeFormData('type', arguments[0])"
         :value="formData.type"></pure-input>
-    </label-input>
+    </form-field>
 
-    <div v-if="$v.formData.type.$error" class="mt3">
-      <pure-error>
-        <div v-if="!$v.formData.type.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Type') })"></div>
-        <div v-if="!$v.formData.type.minLength" v-text="$t('{{thing}} must be longer', { thing: $t('Type') })"></div>
-        <div v-if="!$v.formData.type.maxLength" v-text="$t('{{thing}} must be shorter', { thing: $t('Type') })"></div>
-      </pure-error>
-    </div>
-
-    <label-input :label="$t('Website Url')">
+    <form-field :label="$t('Website Url')" :error="$v.formData.websiteUrl">
       <pure-input
         name="websiteUrl"
         @keyup="changeFormData('websiteUrl', arguments[0])"
         :value="formData.websiteUrl"></pure-input>
-    </label-input>
+    </form-field>
 
-    <div v-if="$v.formData.websiteUrl.$error" class="mt3">
-      <pure-error v-if="!$v.formData.websiteUrl.url" v-text="$t('Not a valid URL')"></pure-error>
-      <pure-error v-if="!$v.formData.websiteUrl.maxLength"
-                  v-text="$t('{{thing}} must be shorter', { thing: $t('URL') })"></pure-error>
-    </div>
-
-    <label-input :label="$t('Description')">
+    <form-field :label="$t('Description')" :error="$v.formData.description">
       <textarea
         class="w-100"
         style="height: 180px"
         name="description"
         @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
-    </label-input>
+    </form-field>
 
     <div class="mt4">
       <upload-zone

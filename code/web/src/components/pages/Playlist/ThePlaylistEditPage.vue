@@ -7,38 +7,20 @@
       <div v-if="Object.keys(formData)" class="f3 mw7">
         <pure-title v-text="$t('Edit playlist')"></pure-title>
 
-        <div>
-          <label-input :label="$t('Name')">
-            <pure-input
-              name="name"
-              @keyup="changeFormData('name', arguments[0])"
-              :value="formData.name"></pure-input>
-          </label-input>
+        <form-field :label="$t('Name')" :error="$v.formData.name">
+          <pure-input
+            name="name"
+            @keyup="changeFormData('name', arguments[0])"
+            :value="formData.name"></pure-input>
+        </form-field>
 
-          <div v-if="$v.formData.name.$error" class="mt3">
-            <pure-error>
-              <div v-if="!$v.formData.name.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"></div>
-              <div v-if="!$v.formData.name.minLength" v-text="$t('{{thing}} must be longer', { thing: $t('Name') })"></div>
-              <div v-if="!$v.formData.name.maxLength" v-text="$t('{{thing}} must be shorter', { thing: $t('Name') })"></div>
-            </pure-error>
-          </div>
-        </div>
-        <div>
-          <label-input :label="$t('Description')">
+        <form-field :label="$t('Description')" :error="$v.formData.description">
             <textarea
               class="w-100"
               style="height: 180px"
               name="description"
               @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
-          </label-input>
-
-          <div v-if="$v.formData.description.$error" class="mt3">
-            <pure-error>
-              <div v-if="!$v.formData.description.maxLength"
-                   v-text="$t('{{thing}} must be shorter', { thing: $t('Description') })"></div>
-            </pure-error>
-          </div>
-        </div>
+        </form-field>
 
         <label-input :label="$t('Public')">
           <input type="checkbox"

@@ -12,6 +12,7 @@ export const GroupDetailedFieldsFragment = gql`
     isFollowedByCurrentUser
     canFollow
     isEditable
+    websiteUrl
     avatarFile {
       url
     }
