@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tc">
-      <pure-button v-if="canCreate" class="mb1 dib" @click="$emit('createGroup')">Create group</pure-button>
+      <pure-button v-if="canCreate" class="mb1 dib" @click="$emit('createGroup')" v-text="$t('Create group')"></pure-button>
     </div>
 
     <h2 v-if="groups && groups.length" class="mb3 f3" v-text="$t('Part of')"></h2>

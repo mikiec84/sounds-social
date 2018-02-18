@@ -7,7 +7,7 @@
         :value="formData.name"></pure-input>
     </form-field>
 
-    <form-field :label="$t('Type (Label, Group, Collective...)')" :error="$v.formData.type">
+    <form-field :label="`${$t('Type')} (${$t('Label, Group, Collective')}...)`" :error="$v.formData.type">
       <pure-input
         name="type"
         @keyup="changeFormData('type', arguments[0])"

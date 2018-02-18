@@ -4,10 +4,12 @@ import { getLanguage } from '../api/localStorage/LanguageStorage'
 
 const language = getLanguage()
 
-export const initI18N = () => i18next.init({
-  lng: language,
-  resources: messages,
-})
+export const initI18N = () => {
+  i18next.init({
+    lng: getLanguage(),
+    resources: messages,
+  })
+}
 
 initI18N()
 
