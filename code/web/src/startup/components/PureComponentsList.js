@@ -35,6 +35,8 @@ import LoaderSoundList from '../../components/pure/Loader/PureLoaderSoundList.vu
 import LoaderTransition from '../../components/pure/Loader/PureLoaderTransition.vue'
 import MemberList from '../../components/pure/Group/PureMemberList.vue'
 import GroupList from '../../components/pure/Group/PureGroupList.vue'
+import FormError from '../../components/pure/Form/PureFormError.vue'
+import FormField from '../../components/pure/Form/PureFormField.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -47,6 +49,8 @@ export const ComponentsList = [
   { id: 'pure-title', component: Title },
   { id: 'pure-identity-header', component: IdentityHeader },
   { id: 'label-input', component: LabelInput },
+  { id: 'form-error', component: FormError },
+  { id: 'form-field', component: FormField },
   { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
   { id: 'single-comment', component: SingleComment },

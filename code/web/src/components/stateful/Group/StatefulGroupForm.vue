@@ -1,6 +1,5 @@
 <template>
   <div class="mw6">
-    <!-- TODO: make code more reusable -->
     <label-input :label="$t('Name')">
       <pure-input
         name="name"
@@ -8,6 +7,7 @@
         :value="formData.name"></pure-input>
     </label-input>
 
+    <!-- TODO: use form-field -->
     <div v-if="$v.formData.name.$error" class="mt3">
       <pure-error>
         <div v-if="!$v.formData.name.required" v-text="$t('{{thing}} cannot be empty', { thing: $t('Name') })"></div>
