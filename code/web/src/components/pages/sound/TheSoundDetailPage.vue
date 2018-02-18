@@ -141,11 +141,7 @@
     },
     methods: {
       openProfile (creator) {
-        // fixme: reuse in sound list
-        this.$router.push({
-          name: creator.type === 'group' ? 'group-detail' : 'profile-detail',
-          params: { id: creator._id },
-        })
+        this.$routeNavigator.openProfile(creator._id, creator.type)
       },
       removeSound () {
         removeSound(this.getSound._id).then(() => {

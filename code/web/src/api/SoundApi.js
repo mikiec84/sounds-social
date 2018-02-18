@@ -19,6 +19,7 @@ const listSoundFragment = gql`
     }
     creator {
       _id
+      type
       username
     }
   }

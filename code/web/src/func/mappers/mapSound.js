@@ -5,15 +5,17 @@ export const mapGraphlDataToSound = graphqlData => createSound(
   graphqlData.name,
   graphqlData.creator.username,
   graphqlData.creator._id,
+  graphqlData.creator.type,
   getImage('coverFile.url')(graphqlData),
   graphqlData.file.url,
 )
 
-export const createSound = (id, title, by, byId, cover, soundUrl) => ({
+export const createSound = (id, title, by, byId, byType, cover, soundUrl) => ({
   id,
   title,
   by,
   byId,
+  byType,
   cover,
   soundUrl,
 })
