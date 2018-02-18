@@ -107,13 +107,15 @@
       }
     },
     apollo: {
-      groupFormData: {
-        // TODO: only run when groupId provided
-        query: groupFormDataQuery,
-        variables () {
-          return { id: this.groupId }
-        },
-        fetchPolicy: 'network-only',
+      groupFormData () {
+        return {
+          query: groupFormDataQuery,
+          variables () {
+            return { id: this.groupId }
+          },
+          skip: !this.groupId,
+          fetchPolicy: 'network-only',
+        }
       },
     },
     watch: {
