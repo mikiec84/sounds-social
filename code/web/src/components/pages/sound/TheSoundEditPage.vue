@@ -19,7 +19,6 @@
           >
             <div class="dib ml1" slot="additionalButtons">
               <pure-button color="gray"
-                           :disabled="isUploading"
                            @click="saveSound(false)"
                            v-if="soundToEdit.isPublic"
                            v-text="`${$t('Save')} (${$t('Private')})`"></pure-button>

@@ -3,7 +3,7 @@
     <div id="soundUploadBox">
       <sound-form-box
         :username="username"
-        :groups="groups"
+        :groups="groupOptionData"
         :hasFile="hasFile"
         :isUploading="isUploading"
         :name="name"
@@ -27,6 +27,7 @@
   import gql from 'graphql-tag'
   import { getUsername, getUserId } from '../../../api/AuthApi'
   import { addMusicFile } from '../../../api/StorageApi'
+  import { groupOptionDataQuery } from '../../../api/GroupApi'
 
   const createSoundMutation = gql`
     mutation ($name: String! $groupId: String $description: String $file: FileData! $creatorId: String! $isPublic: Boolean!) {
@@ -51,7 +52,7 @@
         name: '',
         description: '',
         file: {},
-        groups: [],
+        groupOptionData: [],
         uploader: 'user',
         userId: '',
         fileId: '',
@@ -62,15 +63,8 @@
       getUserId().then(id => { this.userId = id })
     },
     apollo: {
-      groups: {
-        query: gql`
-          query GroupOptionData {
-            groups: listGroupForUser {
-              _id
-              name
-            }
-          }
-        `,
+      groupOptionData: {
+        query: groupOptionDataQuery,
       }
     },
     methods: {

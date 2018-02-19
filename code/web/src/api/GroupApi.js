@@ -103,3 +103,12 @@ export const groupFormDataQuery = gql`
     }
   }
 `
+
+export const groupOptionDataQuery = gql`
+  query GroupOptionData {
+    groupOptionData: listGroupForUser {
+      _id
+      name
+    }
+  }
+`

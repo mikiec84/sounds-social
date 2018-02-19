@@ -1,6 +1,7 @@
 import { omit, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { Meteor } from 'meteor/meteor'
+import { check } from 'meteor/check'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
@@ -59,6 +60,12 @@ const getCreatorSoundsSelector = userId => ({
 
 class SoundCollection extends Mongo.Collection {
   addSound (doc, userId, groupId) {
+    const omitFile = omit(['file'])
+    doc.createdAt = new Date()
+    doc.fileId = 'fake'
+
+    check(omitFile(doc), soundSchema)
+
     doc.creatorId = userId
     doc.ownerType = 'user'
 
@@ -69,10 +76,6 @@ class SoundCollection extends Mongo.Collection {
 
     if (!doc.file) throw new Error('Need file to add sound')
     doc.fileId = fileCollection.insert({ ...doc.file })
-
-    doc.createdAt = new Date()
-
-    const omitFile = omit(['file'])
 
     const _id = this.insert(omitFile(doc))
 
