@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <div class="f7 i gray">Seeking is disabled temporarily</div>
-    <div class="mv3 pointer" id="waveform" ref="waveformDiv"></div>
+  <div ref="waveformDiv" class="pointer overflow-hidden">
+    <div v-if="waveformSize.x"
+         ref="progressOverlapGrayDiv"
+         class="bg-white absolute z-5 o-60"
+         :style="`width: ${waveformSize.x * seekOverZero}px; height: ${waveformSize.y}px`"></div>
+    <div class="mv3 z-1"
+         style="margin-left: -1px"
+         id="waveform"></div>
   </div>
 </template>
 <script>
@@ -26,7 +31,14 @@
     data () {
       return {
         canvasWidth: 760,
+        waveformSize: {},
+        seekOverZero: 0,
       }
+    },
+    watch: {
+      seek () {
+        if (this.seek > 0) this.seekOverZero = this.seek
+      },
     },
     mounted () {
       let recentlyStopped = false
@@ -53,9 +65,19 @@
         }
       })
 
-      this.$refs.waveformDiv.onclick = () => {
-        this.$emit('seekSound', 0)
-      }
+      wavesurfer.on('ready', () => {
+        this.waveformSize = {
+          x: this.$refs.waveformDiv.clientWidth,
+          y: this.$refs.waveformDiv.clientHeight,
+        }
+      })
+
+      this.$refs.waveformDiv.addEventListener('click', e => {
+        const waveformWidth = this.waveformSize.x
+        const clickPosition = e.offsetX
+
+        this.$emit('seekSound', clickPosition / waveformWidth)
+      })
     },
     destroyed () {
       wavesurfer.stop()
