@@ -2,8 +2,8 @@ import { get, flow } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { notificationCollection } from '../../data/collection/NotificationCollection'
 import { userCollection } from '../../data/collection/UserCollection'
-import { getNotificationReferenceTitle } from '../../data/Notification/getNotificationReferenceTitle'
-import { getNotificationImageUrl } from '../../data/Notification/getNotificationImageUrl'
+import { getNotificationReferenceTitle } from '../../data/notification/getNotificationReferenceTitle'
+import { getNotificationImageUrl } from '../../data/notification/getNotificationImageUrl'
 
 const typeDef = `
 type Notification {

@@ -55,13 +55,24 @@ class ProfileCollection extends Mongo.Collection
     return this.update(selector, { $set: omitAvatarFile(profileData) })
   }
   findOneUserProfile(referenceId) {
-    return this.findOne({
-      referenceId,
-      type: 'user',
-    })
+    return fields => this.createQuery({
+      ...fields,
+      $filters: {
+        referenceId,
+        type: 'user',
+      },
+    }).fetchOne()
   }
 }
 
 export const profileCollection = new ProfileCollection('profile')
+
+profileCollection.addLinks({
+  avatarFile: {
+    type: 'one',
+    collection: fileCollection,
+    field: 'avatarFileId',
+  }
+})
 
 profileCollection.attachSchema(profileSchema)

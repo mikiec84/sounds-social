@@ -1,79 +1,74 @@
+import transformAstIntoFieldSpecifiers from 'join-mongo'
 import { check } from 'meteor/check'
-import { createCollectionSchema } from 'meteor/easy:graphqlizer'
+import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
 import { profileCollection } from '../../data/collection/ProfileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 
-const collectionSchema = createCollectionSchema({
-  type: 'User',
-  collection: userCollection,
-  schema: new SimpleSchema({
-    username: {
-      type: String,
+export default {
+  resolvers: {
+    Query: {
+      getUser: resolver.get(userCollection),
+      listUser: resolver.list(userCollection),
+      currentUser: (root, args, context) => {
+        const { userId } = context
+
+        if (!userId) return null
+
+        return userCollection.findOne({ _id: userId })
+      },
     },
-  }),
-  fields: {
-    type: {
-      canFollow: {
-        type: 'Boolean',
-        resolve: (root, args, context) => context.userId && root._id !== context.userId,
+    Mutation: {
+      followUser: (root, args, context) => {
+        const { toFollowId } = args
+        check(toFollowId, String)
+
+        userCollection.follow(toFollowId, context.userId)
+        return userCollection.findOne({ _id: context.userId })
       },
-      isFollowedByCurrentUser: {
-        type: 'Boolean',
-        resolve: (root, args, context) => userCollection
-          .isFollowedByUser(root._id, context.userId),
+      unfollowUser: (root, args, context) => {
+        const { toUnfollowId } = args
+        check(toUnfollowId, String)
+
+        userCollection.unfollow(toUnfollowId, context.userId)
+        return userCollection.findOne({ _id: context.userId })
       },
-      profile: {
-        type: 'Profile',
-        resolve: (root, args, context) => (profileCollection.findOneUserProfile(root._id) || {}),
+    },
+    User: {
+      canFollow: (root, args, context) => context.userId && root._id !== context.userId,
+      isFollowedByCurrentUser: (root, args, context) => userCollection
+        .isFollowedByUser(root._id, context.userId),
+      profile: (root, args, context, ast) => {
+        return profileCollection
+          .findOneUserProfile(root._id)(transformAstIntoFieldSpecifiers(ast))
       },
-      groups: {
-        type: '[Group]',
-        resolve: (root) => groupCollection.findForUser(root._id).fetch(),
-      }
+      groups: (root) => groupCollection.findForUser(root._id).fetch(),
     },
   },
-  crud: {
-    create: false,
-    update: false,
-    delete: false,
-  },
-})
-
-collectionSchema.typeDefs.push(`
-extend type Query {
-  currentUser: User
+  typeDefs: [
+    typeDef.get('User'),
+    typeDef.list('User'),
+    `
+    type User {
+      _id: String!
+      username: String!
+      canFollow: Boolean
+      isFollowedByCurrentUser: Boolean
+      profile: Profile
+      groups: [Group]
+    }
+    
+    input UserInput {
+      username: String!
+    }
+    
+    extend type Query {
+      currentUser: User
+    }
+    extend type Mutation {
+      followUser(toFollowId: String!): User
+      unfollowUser(toUnfollowId: String!): User
+    }
+    `,
+  ],
 }
-extend type Mutation {
-  followUser(toFollowId: String!): User
-  unfollowUser(toUnfollowId: String!): User
-}
-`)
-
-collectionSchema.resolvers.Query.currentUser = (root, args, context) => {
-  const { userId } = context
-
-  if (!userId) return null
-
-  return userCollection.findOne({ _id: userId })
-}
-
-collectionSchema.resolvers.Mutation.followUser = (root, args, context) => {
-  const { toFollowId } = args
-  check(toFollowId, String)
-
-  userCollection.follow(toFollowId, context.userId)
-  return userCollection.findOne({ _id: context.userId })
-}
-
-collectionSchema.resolvers.Mutation.unfollowUser = (root, args, context) => {
-  const { toUnfollowId } = args
-  check(toUnfollowId, String)
-
-  userCollection.unfollow(toUnfollowId, context.userId)
-  return userCollection.findOne({ _id: context.userId })
-}
-
-export default collectionSchema
-
-

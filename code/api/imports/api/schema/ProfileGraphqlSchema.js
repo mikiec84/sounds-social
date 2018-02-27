@@ -1,6 +1,6 @@
 import { check } from 'meteor/check'
 import { profileCollection } from '../../data/collection/ProfileCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
+import transformAstIntoFieldSpecifiers from 'join-mongo'
 
 const typeDef = `
 input ProfileData {
@@ -28,15 +28,12 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Profile: {
-      avatarFile(root) {
-        return fileCollection.findOneById(root.avatarFileId)
-      },
       language(root) {
         return root.language || 'en'
       },
     },
     Mutation: {
-      updateUserProfile(root, args, context) {
+      updateUserProfile(root, args, context, ast) {
         check(context.userId, String)
 
         profileCollection.updateProfile(
@@ -45,7 +42,8 @@ export default {
           args.profileData,
         )
 
-        return profileCollection.findOneUserProfile(context.userId)
+        return profileCollection
+          .findOneUserProfile(context.userId)(transformAstIntoFieldSpecifiers(ast))
       },
     },
   },
