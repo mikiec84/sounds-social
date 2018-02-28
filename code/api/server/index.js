@@ -17,15 +17,19 @@ loadSchema(wrapTypeDefsAndResolvers({ typeDefs, resolvers }))
 
 const schema = makeExecutableSchema(getSchema())
 
-createApolloServer(req => ({
-  graphiql: true,
-  pretty: true,
-  schema,
-  context: userContext => ({
-    ...userContext,
-    userLanguage: defaultTo('en')(req.header('accept-language')),
-  }),
-}), {
+createApolloServer(req => {
+  return {
+    graphiql: true,
+    pretty: true,
+    schema,
+    context: userContext => {
+      return {
+        ...userContext,
+        userLanguage: defaultTo('en')(req.header('accept-language')),
+      }
+    },
+  }
+}, {
   configServer: graphQLServer => {
     graphQLServer.use(cors())
   },
