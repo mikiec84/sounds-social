@@ -6,6 +6,7 @@ import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { renderIntoElementById } from 'meteor/server-render'
 import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
+import mongoFieldsMiddleware from '../imports/middleware/MongoFieldsContextMiddleware'
 
 import '../imports/config'
 import '../imports/listener'
@@ -16,6 +17,8 @@ initAccounts()
 loadSchema(wrapTypeDefsAndResolvers({ typeDefs, resolvers }))
 
 const schema = makeExecutableSchema(getSchema())
+
+mongoFieldsMiddleware(schema)
 
 createApolloServer(req => {
   return {

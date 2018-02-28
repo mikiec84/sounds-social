@@ -24,7 +24,6 @@ export default {
 
         check(filters, Match.Maybe(Array))
 
-        console.log(filters, context)
         // TODO: based on filter call different method
         return soundCollection.findLegacy({}, filters, context).fetch()
       },
