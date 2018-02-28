@@ -100,12 +100,13 @@ class SoundCollection extends Mongo.Collection {
     return doc.creatorId === userId
   }
 
-  find (selector) {
-    if (this.graphqlFilters && this.graphqlFilters.length > 0) {
-      const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
-      const groupFilter = this.graphqlFilters.filter(({ key }) => key === 'group')[0]
-      const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
-      const { userId } = this.graphqlContext
+  findLegacy (selector, graphqlFilters, graphqlContext) {
+    // TODO: fix legacy and split it up into different methods?
+    if (graphqlFilters && graphqlFilters.length > 0) {
+      const userFilter = graphqlFilters.filter(({ key }) => key === 'user')[0]
+      const groupFilter = graphqlFilters.filter(({ key }) => key === 'group')[0]
+      const loggedInFeedFilter = graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
+      const { userId } = graphqlContext
       const getValue = get('value')
       const mainFilterValue = getValue(userFilter) || getValue(groupFilter)
 
@@ -153,27 +154,21 @@ class SoundCollection extends Mongo.Collection {
     })
   }
 
-  findOne (selector, ...more) {
-    if (this.graphqlContext && selector._id) {
-      selector.isPublic = true
+  findOneForUser (selector, userId) {
+    selector.isPublic = true
 
-      const { userId } = this.graphqlContext
-
-      return super.findOne({
-        $or: [
-          selector,
-          {
-            _id: selector._id,
-            creatorId: { $in: [
-              userId,
-              ...groupCollection.findForUser(userId).map(get('_id'))
-            ] },
-          },
-        ],
-      }, ...more)
-    }
-
-    return super.findOne(selector, ...more)
+    return super.findOne({
+      $or: [
+        selector,
+        {
+          _id: selector._id,
+          creatorId: { $in: [
+            userId,
+            ...groupCollection.findForUser(userId).map(get('_id'))
+          ] },
+        },
+      ],
+    })
   }
 
   findByIds (ids) {

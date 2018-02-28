@@ -2,40 +2,32 @@ import moment from 'moment'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
-import { soundCollection, soundSchema } from '../../data/collection/SoundCollection'
+import { soundCollection } from '../../data/collection/SoundCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 
 let soundsBeingPlayed = []
 
-const inputSoundSchema = new SimpleSchema({
-  name: {
-    type: String,
-  },
-  description: {
-    type: String,
-    optional: true,
-  },
-  isPublic: {
-    type: Boolean,
-    optional: true,
-  },
-  creatorId: {
-    type: String,
-  },
-  file: {
-    type: Object,
-    optional: true,
-  }
-})
-
-// TODO: fix graphqlFilters and graphqlContext inside collection
 export default {
   resolvers: {
     Query: {
-      getSound: resolver.get(soundCollection),
-      listSound: resolver.list(soundCollection),
+      getSound (root, args, context) {
+        const { _id } = args
+
+        check(_id, Match.Maybe(String))
+
+        return soundCollection.findOneForUser({ _id }, context.userId)
+      },
+      listSound (root, args, context) {
+        const { filters } = args
+
+        check(filters, Match.Maybe(Array))
+
+        console.log(filters, context)
+        // TODO: based on filter call different method
+        return soundCollection.findLegacy({}, filters, context).fetch()
+      },
       searchSound: (root, args, context, ast) => {
         const { query } = args
         check(query, String)
@@ -162,7 +154,6 @@ export default {
   },
   typeDefs: [
     typeDef.get('Sound'),
-    typeDef.list('Sound'),
     typeDef.update('Sound'),
     typeDef.delete('Sound'),
     `
@@ -207,6 +198,7 @@ export default {
     extend type Query {
       searchSound(query: String!): [Sound]
       listSoundForPlaylist(playlistId: String!): [Sound]
+      listSound(limit: Int, offset: Int, filters: [FilterInput]): [Sound]
     }
     `,
   ],
