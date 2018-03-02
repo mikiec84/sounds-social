@@ -38,9 +38,8 @@ export default {
       canFollow: (root, args, context) => context.userId && root._id !== context.userId,
       isFollowedByCurrentUser: (root, args, context) => userCollection
         .isFollowedByUser(root._id, context.userId),
-      profile: (root, args, context, ast) => {
-        return profileCollection
-          .findOneUserProfile(root._id)(transformAstIntoFieldSpecifiers(ast))
+      profile: (root) => {
+        return profileCollection.findOneUserProfile(root._id)
       },
       groups: (root) => groupCollection.findForUser(root._id).fetch(),
     },
