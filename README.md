@@ -2,7 +2,7 @@
 
 **The open and social music platform.**
 
-> A work in progress
+> Early work in progress
 
 This platform is here to form new connections with artists, creatives and passionate listeners. No matter if it's a tiny drum loop, professional podcast or an unfinished track, Sounds Social provides a way to **share your sound** usefully.
 

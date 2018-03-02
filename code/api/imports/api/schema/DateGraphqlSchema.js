@@ -1,5 +1,8 @@
 import moment from 'moment'
+import { registerType } from 'meteor/easy:graphqlizer'
 import { check, Match } from 'meteor/check'
+
+registerType(Date, 'Date')
 
 export default {
   typeDefs: [`

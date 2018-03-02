@@ -1,9 +1,9 @@
 import { Comments } from 'meteor/arkham:comments-ui'
 import { notificationCollection } from '../data/collection/NotificationCollection'
 import { soundCollection } from '../data/collection/SoundCollection'
-import { COMMENT_ADDED } from '../data/Type/NotificationTypes'
-import { SOUND } from '../data/Type/NotificationReferenceTypes'
-import { USER } from '../data/Type/UserReferenceTypes'
+import { COMMENT_ADDED } from '../data/type/NotificationTypes'
+import { SOUND } from '../data/type/NotificationReferenceTypes'
+import { USER } from '../data/type/UserReferenceTypes'
 
 Comments.config({
   onEvent: (name, action, payload) => {

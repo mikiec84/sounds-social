@@ -14,8 +14,5 @@ type File {
 
 export default {
   typeDefs: [typeDef],
-  resolvers: {
-    Query: {},
-    Mutation: {},
-  },
+  resolvers: {},
 }

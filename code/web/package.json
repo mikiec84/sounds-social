@@ -1,9 +1,9 @@
 {
   "name": "sounds-social-web",
   "version": "1.0.0",
-  "description": "Web UI for sounds social",
+  "description": "Web UI for Sounds Social",
+  "license": "MIT",
   "author": "Matteo De Micheli <matteodem@protonmail.com>",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "npm run dev",

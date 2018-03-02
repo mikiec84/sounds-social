@@ -14,7 +14,7 @@ ecmascript@0.9.0              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.0            # Server-side component of the `meteor shell` command
 jquery@1.11.10
 
-apollo
+apollo@2.0.0
 dynamic-import@0.2.0
 static-html
 server-render@0.2.0
@@ -22,7 +22,7 @@ random@1.0.10
 
 accounts-base@1.4.0
 accounts-password@1.5.0
-easy:graphqlizer
+easy:graphqlizer@0.2.0
 aldeed:simple-schema
 aldeed:collection2
 fourseven:scss

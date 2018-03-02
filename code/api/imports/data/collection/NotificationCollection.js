@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo'
-import { isValidNotificationType } from '../Type/NotificationTypes'
-import { isValidUserReferenceType } from '../Type/UserReferenceTypes'
-import { isValidNotificationReferenceType } from '../Type/NotificationReferenceTypes'
+import { isValidNotificationType } from '../type/NotificationTypes'
+import { isValidUserReferenceType } from '../type/UserReferenceTypes'
+import { isValidNotificationReferenceType } from '../type/NotificationReferenceTypes'
 import { createdAtAutoValue } from './autoValue/createdAtAutoValue'
 
 const notificationSchema = new SimpleSchema({
