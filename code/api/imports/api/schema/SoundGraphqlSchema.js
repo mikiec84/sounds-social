@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { get } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
@@ -21,11 +22,23 @@ export default {
       },
       listSound (root, args, context) {
         const { filters } = args
+        const { userId } = context
 
         check(filters, Match.Maybe(Array))
 
-        // TODO: based on filter call different method
-        return soundCollection.findLegacy({}, filters, context).fetch()
+        const getValue = get('value')
+        const compareKey = keyToCompare => ({ key }) => key === keyToCompare
+        const userFilterId = getValue(filters.filter(compareKey('user'))[0])
+        const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
+        const isFeed = 'true' === getValue(filters.filter(compareKey('loggedInFeed'))[0])
+
+        if (userFilterId) return soundCollection.findForUser(userFilterId, userId).fetch()
+
+        if (groupFilterId) return soundCollection.findForGroup(groupFilterId, userId).fetch()
+
+        if (isFeed) return soundCollection.findForFeed(userId).fetch()
+
+        return soundCollection.findForDiscover(userId).fetch()
       },
       searchSound: (root, args, context, ast) => {
         const { query } = args
