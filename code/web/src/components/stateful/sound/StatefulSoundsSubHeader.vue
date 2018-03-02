@@ -23,11 +23,6 @@
             route: { name: 'discover' },
             active: isActive('discover', this.current),
           },
-          {
-            label: this.$t('Communities'),
-            route: { name: 'discover' },
-            active: isActive('competitions', this.current),
-          },
         ]
       },
     },

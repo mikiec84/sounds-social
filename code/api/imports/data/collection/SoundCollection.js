@@ -100,80 +100,82 @@ class SoundCollection extends Mongo.Collection {
     return doc.creatorId === userId
   }
 
-  find (selector) {
-    if (this.graphqlFilters && this.graphqlFilters.length > 0) {
-      const userFilter = this.graphqlFilters.filter(({ key }) => key === 'user')[0]
-      const groupFilter = this.graphqlFilters.filter(({ key }) => key === 'group')[0]
-      const loggedInFeedFilter = this.graphqlFilters.filter(({ key }) => key === 'loggedInFeed')[0]
-      const { userId } = this.graphqlContext
-      const getValue = get('value')
-      const mainFilterValue = getValue(userFilter) || getValue(groupFilter)
-
-      // fixme: make this code simpler
-      if (mainFilterValue) {
-        selector.creatorId = mainFilterValue
-
-        if (groupFilter) {
-          selector.ownerType = 'group'
-
-          if (!groupCollection.isMemberOfGroup(userId, mainFilterValue)) {
-            selector.isPublic = true
-          }
-        } else {
-          selector.$or = [ { ownerType: { $exists: false } }, { ownerType: 'user' } ]
-
-          if (mainFilterValue !== userId) selector.isPublic = true
-        }
-      } else if (loggedInFeedFilter && loggedInFeedFilter.value === 'true') {
-        selector.$or = [
-          {
-            isPublic: true,
-            creatorId: { $in: [
-              ...userCollection.findFollowerIdsForUser(userId),
-              ...groupCollection.findFollowerIdsForUser(userId),
-            ] },
-          },
-        ]
-
-        selector.$or.push(getCreatorSoundsSelector(userId))
-      } else {
-        // discover
-        selector.$or = [
-          { isPublic: true },
-        ]
-
-        selector.$or.push(getCreatorSoundsSelector(userId))
-      }
+  findForUser (userId, currentUserId) {
+    const selector = {
+      creatorId: userId,
+      $or: [ { ownerType: { $exists: false } }, { ownerType: 'user' } ],
     }
 
-    return super.find(selector, {
-      sort: {
-        createdAt: -1,
-      },
+    if (currentUserId !== userId) selector.isPublic = true
+
+    return this.findByNewest(selector)
+  }
+
+  findForGroup (groupId, currentUserId) {
+    const selector = {
+      creatorId: groupId,
+      ownerType: 'group',
+    }
+
+    if (!groupCollection.isMemberOfGroup(currentUserId, groupId)) {
+      selector.isPublic = true
+    }
+
+    return this.findByNewest(selector)
+  }
+
+  findForFeed (currentUserId) {
+    const selector = {
+      $or: [
+        {
+          isPublic: true,
+          creatorId: { $in: [
+            ...userCollection.findFollowerIdsForUser(currentUserId),
+            ...groupCollection.findFollowerIdsForUser(currentUserId),
+          ] },
+        },
+      ],
+    }
+
+    selector.$or.push(getCreatorSoundsSelector(currentUserId))
+
+    return this.findByNewest(selector)
+  }
+
+  findForDiscover (currentUserId) {
+    const selector = {
+      $or: [
+        { isPublic: true },
+      ],
+    }
+
+    selector.$or.push(getCreatorSoundsSelector(currentUserId))
+
+    return this.findByNewest(selector)
+  }
+
+  findByNewest (selector, opts) {
+    return this.find(selector, {
+      ...opts,
+      sort: { createdAt: -1 },
     })
   }
 
-  findOne (selector, ...more) {
-    if (this.graphqlContext && selector._id) {
-      selector.isPublic = true
+  findOneForUser (selector, userId) {
+    selector.isPublic = true
 
-      const { userId } = this.graphqlContext
-
-      return super.findOne({
-        $or: [
-          selector,
-          {
-            _id: selector._id,
-            creatorId: { $in: [
-              userId,
-              ...groupCollection.findForUser(userId).map(get('_id'))
-            ] },
-          },
-        ],
-      }, ...more)
-    }
-
-    return super.findOne(selector, ...more)
+    return super.findOne({
+      $or: [
+        selector,
+        {
+          _id: selector._id,
+          creatorId: { $in: [
+            userId,
+            ...groupCollection.findForUser(userId).map(get('_id'))
+          ] },
+        },
+      ],
+    })
   }
 
   findByIds (ids) {

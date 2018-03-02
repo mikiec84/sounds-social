@@ -1,5 +1,5 @@
 import { soundCollection } from '../collection/SoundCollection'
-import { SOUND } from '../Type/NotificationReferenceTypes'
+import { SOUND } from '../type/NotificationReferenceTypes'
 
 export const getNotificationReferenceTitle = ({ referenceType, referenceId }) => {
   if (referenceType === SOUND) {

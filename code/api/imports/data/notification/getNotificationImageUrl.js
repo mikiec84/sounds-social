@@ -1,6 +1,6 @@
 import { soundCollection } from '../collection/SoundCollection'
 import { fileCollection } from '../collection/FileCollection'
-import { SOUND } from '../Type/NotificationReferenceTypes'
+import { SOUND } from '../type/NotificationReferenceTypes'
 
 export const getNotificationImageUrl = ({ referenceType, referenceId }) => {
   if (referenceType === SOUND) {

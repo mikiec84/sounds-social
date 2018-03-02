@@ -28,7 +28,7 @@
     <div slot="sidebar">
       <div v-if="playlistDetail">
         <pure-profile-box
-          :user="playlistDetail.creator"
+          :profile="playlistDetail.creator.profile"
         ></pure-profile-box>
 
         <div class="tc">
