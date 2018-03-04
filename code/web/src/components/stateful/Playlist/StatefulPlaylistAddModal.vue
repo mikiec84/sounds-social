@@ -88,13 +88,18 @@
         createPlaylist(this.newPlaylistName).then(({ data: { newPlaylist } }) => {
           this.newPlaylistName = ''
           this.$v.newPlaylistName.$reset()
+
+          this.addSound(newPlaylist._id)
         })
       },
       addSound (playlistId) {
         addSoundToPlaylist(playlistId, this.soundId).then(({ data: { playlist } }) => {
-          this.$router.push({ name: 'playlist-detail', params: { id: playlist._id } })
+          this.openPlaylistDetail(playlist._id)
         })
-      }
+      },
+      openPlaylistDetail (playlistId) {
+        this.$router.push({ name: 'playlist-detail', params: { id: playlistId } })
+      },
     },
   }
 </script>

@@ -79,7 +79,9 @@ export default {
         const { userId } = context
         check(userId, String)
 
-        return playlistCollection.create(name, userId, isPublic, description)
+        return {
+          _id: playlistCollection.create(name, userId, isPublic, description),
+        }
       },
       updatePlaylist(root, args, context) {
         const { playlistId, name, description, soundIds, isPublic } = args

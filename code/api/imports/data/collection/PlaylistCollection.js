@@ -40,7 +40,7 @@ const updateSoundIdsIfPermission = (collection, playlistId, userId, updateOperat
 
 class PlaylistCollection extends Mongo.Collection {
   create (name, creatorId, isPublic = false, description = '') {
-    this.insert({ name, creatorId, isPublic, description })
+    return this.insert({ name, creatorId, isPublic, description })
   }
 
   removeForUser (playlistId, userId) {
