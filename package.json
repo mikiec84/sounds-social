@@ -1,0 +1,22 @@
+{
+  "name": "sound-social",
+  "version": "2.0.0",
+  "description": "Sounds Social",
+  "main": "scripts/run.sh",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matteodem/sounds-social.git"
+  },
+  "author": "Matteo De Micheli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matteodem/sounds-social/issues"
+  },
+  "homepage": "https://github.com/matteodem/sounds-social#readme"
+}

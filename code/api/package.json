@@ -1,6 +1,9 @@
 {
-  "name": "api",
-  "private": true,
+  "name": "sounds-social-api",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Graphql API for Sounds Social",
+  "author": "Matteo De Micheli <matteodem@protonmail.com>",
   "scripts": {
     "dev": "meteor run",
     "prod": "meteor run --production",
