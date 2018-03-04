@@ -1,7 +1,7 @@
 import { get, constant } from 'lodash/fp'
 import { Meteor } from 'meteor/meteor'
 import { Index, MongoDBEngine } from 'meteor/easysearch:core'
-import { soundCollection } from '../collection/SoundCollection'
+import { isCreatorSoundsSelector, soundCollection } from '../collection/SoundCollection'
 import { groupCollection } from '../collection/GroupCollection'
 import { findRelatedFieldDocuments } from './findRelatedFieldDocuments'
 
@@ -32,22 +32,23 @@ export const soundSearchIndex = new Index({
       const defaultConfig = this.defaultConfiguration()
       const selector = defaultConfig.selector(...args)
 
-      const [queryObject] = args
+      const [queryObject, { search: { userId } }] = args
 
       return {
-        ...selector,
-        $or: [
-          ...selector.$or,
-          {
-            _id: {
-              $in: [
-                ...searchByUsername(defaultConfig, queryObject.name).map(get('_id')),
-                ...searchByGroupName(defaultConfig, queryObject.name).map(get('_id')),
-              ],
+        $and: [
+          { $or: [isCreatorSoundsSelector(userId), { isPublic: true }] },
+          { $or: [
+            ...selector.$or,
+            {
+              _id: {
+                $in: [
+                  ...searchByUsername(defaultConfig, queryObject.name).map(get('_id')),
+                  ...searchByGroupName(defaultConfig, queryObject.name).map(get('_id')),
+                ],
+              },
             },
-          },
+          ] },
         ],
-        isPublic: true,
       }
     }
   }),

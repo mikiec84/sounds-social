@@ -49,7 +49,7 @@ export const soundSchema = new SimpleSchema({
   },
 })
 
-const getCreatorSoundsSelector = userId => ({
+export const isCreatorSoundsSelector = userId => ({
   creatorId: {
     $in: [
       userId,
@@ -137,7 +137,7 @@ class SoundCollection extends Mongo.Collection {
       ],
     }
 
-    selector.$or.push(getCreatorSoundsSelector(currentUserId))
+    selector.$or.push(isCreatorSoundsSelector(currentUserId))
 
     return this.findByNewest(selector)
   }
@@ -149,7 +149,7 @@ class SoundCollection extends Mongo.Collection {
       ],
     }
 
-    selector.$or.push(getCreatorSoundsSelector(currentUserId))
+    selector.$or.push(isCreatorSoundsSelector(currentUserId))
 
     return this.findByNewest(selector)
   }
@@ -198,10 +198,16 @@ class SoundCollection extends Mongo.Collection {
     if (sound) return fileCollection.findOneById(sound.coverFileId)
   }
 
-  updateCover (soundId, coverFileData) {
-    const coverFileId = fileCollection.insert({ ...coverFileData })
+  updateCover (soundId, userId, coverFileData) {
+    const sound = soundCollection.findOne({ _id: soundId, ...isCreatorSoundsSelector(userId) })
 
-    this.update({ _id: soundId }, { $set: { coverFileId } })
+    if (sound) {
+      const coverFileId = fileCollection.insert({ ...coverFileData })
+
+      this.update({ _id: soundId }, { $set: { coverFileId } })
+
+      return sound
+    }
   }
 
   countPlay (_id) {

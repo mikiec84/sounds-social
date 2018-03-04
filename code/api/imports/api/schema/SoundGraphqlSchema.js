@@ -62,7 +62,16 @@ export default {
       },
     },
     Mutation: {
-      updateSound: resolver.update(soundCollection),
+      updateSound: (root, args) => {
+        const { _id } = args
+        const data = { ...args.data }
+
+        check(_id, String)
+
+        soundCollection.update({ _id }, { $set: data })
+
+        return soundCollection.findOne({ _id })
+      },
       deleteSound: resolver.delete(soundCollection),
       createSound: (root, args, context) => {
         const { userId } = context
@@ -132,11 +141,7 @@ export default {
           url: String,
         })
 
-        const sound = soundCollection.findOne({ _id: soundId, creatorId: context.userId })
-
-        if (sound) soundCollection.updateCover(soundId, fileData)
-
-        return sound
+        return soundCollection.updateCover(soundId, context.userId, fileData)
       },
     },
     Sound: {
