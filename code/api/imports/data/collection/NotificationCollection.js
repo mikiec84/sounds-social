@@ -1,3 +1,4 @@
+import SimpleSchema from 'simpl-schema'
 import { Mongo } from 'meteor/mongo'
 import { isValidNotificationType } from '../type/NotificationTypes'
 import { isValidUserReferenceType } from '../type/UserReferenceTypes'

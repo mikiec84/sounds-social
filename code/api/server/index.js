@@ -5,7 +5,6 @@ import { loadSchema, getSchema } from 'graphql-loader'
 import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { renderIntoElementById } from 'meteor/server-render'
-import { wrapTypeDefsAndResolvers } from 'meteor/komentify:comments-graphql'
 import mongoFieldsMiddleware from '../imports/middleware/MongoFieldsContextMiddleware'
 
 import '../imports/config'
@@ -14,7 +13,7 @@ import { typeDefs, resolvers } from '../imports/api/schema'
 
 initAccounts()
 
-loadSchema(wrapTypeDefsAndResolvers({ typeDefs, resolvers }))
+loadSchema({ typeDefs, resolvers })
 
 const schema = makeExecutableSchema(getSchema())
 

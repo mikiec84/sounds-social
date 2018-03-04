@@ -1,3 +1,4 @@
+import SimpleSchema from 'simpl-schema'
 import { omit, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { Meteor } from 'meteor/meteor'
