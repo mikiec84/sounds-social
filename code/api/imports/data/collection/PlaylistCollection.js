@@ -1,3 +1,4 @@
+import SimpleSchema from 'simpl-schema'
 import { findIndex, isEqual } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { createdAtAutoValue } from './autoValue/createdAtAutoValue'
@@ -25,8 +26,11 @@ const playlistSchema = new SimpleSchema({
     type: Boolean,
   },
   soundIds: {
-    type: [String],
+    type: Array,
     optional: true,
+  },
+  'soundIds.$': {
+    type: String,
   },
 })
 

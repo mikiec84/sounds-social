@@ -1,5 +1,6 @@
-import { Mongo } from 'meteor/mongo'
+import SimpleSchema from 'simpl-schema'
 import { omitBy, isNil, get } from 'lodash/fp'
+import { Mongo } from 'meteor/mongo'
 import { createdAtAutoValue } from './autoValue/createdAtAutoValue'
 import { fileCollection } from './FileCollection'
 import {
@@ -42,12 +43,18 @@ const groupSchema = new SimpleSchema({
     type: String,
   },
   memberIds: {
-    type: [String],
+    type: Array,
     optional: true,
   },
+  'memberIds.$': {
+    type: String,
+  },
   followerIds: {
-    type: [String],
+    type: Array,
     optional: true,
+  },
+  'followerIds.$': {
+    type: String,
   },
 })
 

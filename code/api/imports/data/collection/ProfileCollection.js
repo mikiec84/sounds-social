@@ -1,3 +1,4 @@
+import SimpleSchema from 'simpl-schema'
 import { Mongo } from 'meteor/mongo'
 import { fileCollection } from './FileCollection'
 import { omit } from 'lodash/fp'

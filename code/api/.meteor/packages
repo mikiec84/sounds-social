@@ -23,11 +23,7 @@ random@1.0.10
 accounts-base@1.4.0
 accounts-password@1.5.0
 easy:graphqlizer@0.2.0
-aldeed:simple-schema
-aldeed:collection2
 fourseven:scss
-arkham:comments-ui
-komentify:comments-graphql
 practicalmeteor:chai
 practicalmeteor:mocha
 dispatch:mocha
@@ -36,3 +32,5 @@ easysearch:core
 cfs:standard-packages
 cfs:filesystem
 nicolaslopezj:apollo-accounts
+aldeed:collection2@3.0.0
+aldeed:schema-index

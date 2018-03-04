@@ -30,6 +30,7 @@
     "lodash": "^4.17.3",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
-    "node-fetch": "^1.7.1"
+    "node-fetch": "^1.7.1",
+    "simpl-schema": "^1.4.2"
   }
 }
