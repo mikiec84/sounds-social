@@ -11,24 +11,6 @@
       </div>
     </div>
     <div class="dtc v-mid tr pa3-l pa1 white-70" style="width: 70%">
-      <div v-if="isLoggedIn" class="dib mr1 mr3-ns">
-        <pure-menu-dropdown
-          icon="bell"
-          dropdownKey="notifications"
-          ref="notificationMenuDropdownEl"
-        >
-          <div class="tl pa2">
-            <div class="tc pv2" v-if="$_.isEmpty(notifications)" v-text="$t('No notifications')"></div>
-            <div v-if="!$_.isEmpty(notifications)">
-              <pure-notification-list
-                @openAuthor="$emit('openAuthor', arguments[0])"
-                @openNotification="$emit('openNotification', arguments[0])"
-                :notifications="notifications"></pure-notification-list>
-              <div class="pointer black tc pv2 dim f7 b" @click="$emit('openNotificationPage')" v-text="$t('Open notification center')"></div>
-            </div>
-          </div>
-        </pure-menu-dropdown>
-      </div>
       <router-link
               v-for="item in menuItems"
               :key="item.id"
@@ -44,10 +26,7 @@
   </nav>
 </template>
 <script>
-  import {
-    collectionHasNotificationFields,
-    collectionHasMenuFields,
-  } from '../../func/collectionHasFields'
+  import { collectionHasMenuFields } from '../../func/collectionHasFields'
 
   export default {
     props: {
@@ -64,11 +43,6 @@
         required: false,
         default: '',
       },
-      notifications: {
-        type: Array,
-        required: false,
-        validator: collectionHasNotificationFields,
-      },
       menuItems: {
         type: Array,
         validator: collectionHasMenuFields,
@@ -77,9 +51,6 @@
     methods: {
       isActive (item) {
         return this.activeItemId === item.id
-      },
-      closeNotificationDropdown () {
-        this.$refs.notificationMenuDropdownEl.closePopover()
       },
     },
   }

@@ -53,8 +53,6 @@ export const messages = {
       'Click here to upload image': 'Hier klicken um Bild heraufzuladen',
       'this is you': 'das bist du',
       'New comment on your {{type}} "{{title}}"': 'Neuer Kommentar auf deinem {{type}} "{{title}}"',
-      'Open notification center': 'Notification Center öffnen',
-      'No notifications': 'Keine notifications',
       'Results for "{{query}}"': 'Resultate für "{{query}}"',
       'Add to playlist': 'Zu Playlist hinzufügen',
       'Playlist name': 'Playlist Name',

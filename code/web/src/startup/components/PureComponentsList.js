@@ -12,7 +12,6 @@ import Icon from '../../components/pure/PureIcon.vue'
 import SubHeader from '../../components/pure/PureSubHeader.vue'
 import ConfirmModal from '../../components/pure/PureConfirmModal.vue'
 import ConfirmModalButton from '../../components/pure/PureConfirmModalButton.vue'
-import SingleComment from '../../components/pure/Comment/PureSingleComment.vue'
 import Layout from '../../components/pure/layout/PureLayout.vue'
 import LayoutWithSidebar from '../../components/pure/layout/PureLayoutWithSidebar.vue'
 import ProfileImage from '../../components/pure/profile/PureProfileImage.vue'
@@ -26,7 +25,6 @@ import SoundPlayer from '../../components/pure/sound/PureSoundPlayer.vue'
 import SoundPlayerButton from '../../components/pure/sound/PureSoundPlayerButton.vue'
 import SoundPlayerList from '../../components/pure/sound/PureSoundPlayerList.vue'
 import SoundPlayerTimeline from '../../components/pure/sound/PureSoundPlayerTimeline.vue'
-import NotificationList from '../../components/pure/Notification/PureNotificationList.vue'
 import ProfileBox from '../../components/pure/profile/PureProfileBox.vue'
 import LoaderBlock from '../../components/pure/Loader/PureLoaderBlock.vue'
 import LoaderText from '../../components/pure/Loader/PureLoaderText.vue'
@@ -53,7 +51,6 @@ export const ComponentsList = [
   { id: 'form-field', component: FormField },
   { id: 'pure-menu-dropdown', component: PureMenuDropdown },
   { id: 'sub-header-component', component: SubHeader },
-  { id: 'single-comment', component: SingleComment },
   { id: 'layout-default', component: Layout },
   { id: 'layout-with-sidebar', component: LayoutWithSidebar },
   { id: 'profile-image', component: ProfileImage },
@@ -69,7 +66,6 @@ export const ComponentsList = [
   { id: 'pure-sound-player-button', component: SoundPlayerButton },
   { id: 'pure-sound-player-list', component: SoundPlayerList },
   { id: 'pure-sound-player-timeline', component: SoundPlayerTimeline },
-  { id: 'pure-notification-list', component: NotificationList },
   { id: 'pure-profile-box', component: ProfileBox },
   { id: 'pure-loader-block', component: LoaderBlock },
   { id: 'pure-loader-text', component: LoaderText },

@@ -10,10 +10,6 @@ export const collectionHasPlaylistFields = collectionHasFields(
   ['id', 'title', 'by', 'byId', 'cover', 'soundUrl'],
 )
 
-export const collectionHasNotificationFields = collectionHasFields(
-  ['id', 'content', 'imageUrl', 'authorId', 'authorName'],
-)
-
 export const collectionHasMenuFields = collectionHasFields(
   ['id', 'href', 'label'],
 )

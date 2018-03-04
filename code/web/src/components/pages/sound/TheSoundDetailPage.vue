@@ -66,9 +66,6 @@
                   :modalLabel="$t('Click here to upload image')"
                   @upload="uploadCover(arguments[0])"></file-upload-button>
               </div>
-
-              <h2 class="f3 mb3 mt5" v-text="$t('Comments')"></h2>
-              <comment-box :id="getSound._id"></comment-box>
             </div>
             <div v-if="playlistModalOpen">
               <stateful-playlist-add-modal
@@ -95,7 +92,6 @@
   import { addCoverFile } from '../../../api/StorageApi'
   import { detailSoundQuery, removeSound, publishSound } from '../../../api/SoundApi'
   import HeaderComponent from '../../stateful/StatefulHeader.vue'
-  import CommentBox from '../../stateful/Comment/StatefulCommentBox.vue'
   import StatefulPlaylistAddModal from '../../stateful/Playlist/StatefulPlaylistAddModal.vue'
   import { uploadCover } from '../../../api/Sound/SoundCoverApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
@@ -103,7 +99,6 @@
   export default {
     components: {
       HeaderComponent,
-      CommentBox,
       StatefulPlaylistAddModal,
     },
     metaInfo () {
