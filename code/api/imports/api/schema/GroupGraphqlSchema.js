@@ -1,8 +1,8 @@
-import { get, flow } from 'lodash/fp'
+import { get, map, flow } from 'lodash/fp'
 import { check } from 'meteor/check'
-import { Meteor } from 'meteor/meteor'
 import { groupCollection } from '../../data/collection/GroupCollection'
-import { fetchOneFileById } from '../../data/collection/fetch/File/fetchOneFileById';
+import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
+import { fetchOneUser } from '../../data/collection/methods/User/fetchOneUser'
 
 const typeDef = `
 type Group {
@@ -47,7 +47,7 @@ export default {
   resolvers: {
     Group: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      members: root => root.memberIds.map(_id => Meteor.users.findOne({ _id })),
+      members: flow(get('memberIds'), map(fetchOneUser)),
       canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {
         return root.creatorId === context.userId

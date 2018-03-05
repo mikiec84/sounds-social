@@ -1,11 +1,11 @@
 import { uniq, get } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
 
-const findFollowerIds = entityId => collection => {
+const findFollowerIds = collection => entityId => {
   return ((collection.findOneById(entityId) || {}).followerIds || [])
 }
 
-// TODO: use these methods directly
+// TODO: put collection as first argument
 export const findFollowerIdsForUser = userId => collection => {
   return collection.find({
     followerIds: userId
@@ -13,17 +13,17 @@ export const findFollowerIdsForUser = userId => collection => {
 }
 
 export const follow = toFollowId => followerId => collection => {
-  const followerIds = findFollowerIds(toFollowId)(collection)
+  const followerIds = findFollowerIds(collection)(toFollowId)
 
   updateFollowerIds(collection, toFollowId, uniq([...followerIds, followerId]))
 }
 
 export const unfollow = toUnfollowId => followerId => collection => {
-  const followerIds = findFollowerIds(toUnfollowId)(collection)
+  const followerIds = findFollowerIds(collection)(toUnfollowId)
 
   updateFollowerIds(collection, toUnfollowId, followerIds.filter(id => id !== followerId))
 }
 
 export const isFollowedBy = toFollowId => potentialFollowerId => collection => {
-  return findFollowerIds(toFollowId)(collection).includes(potentialFollowerId)
+  return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
 }
