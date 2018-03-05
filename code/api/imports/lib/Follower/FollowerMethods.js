@@ -5,6 +5,7 @@ const findFollowerIds = entityId => collection => {
   return ((collection.findOneById(entityId) || {}).followerIds || [])
 }
 
+// TODO: use these methods directly
 export const findFollowerIdsForUser = userId => collection => {
   return collection.find({
     followerIds: userId

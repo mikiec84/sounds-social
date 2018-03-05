@@ -6,7 +6,7 @@ import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
 import { groupCollection } from './GroupCollection'
-import { fetchOneFileById } from '../fetch/File/fetchOneFileById'
+import { fetchOneFileById } from './fetch/File/fetchOneFileById'
 
 export const isCreatorSoundsSelector = userId => ({
   creatorId: {

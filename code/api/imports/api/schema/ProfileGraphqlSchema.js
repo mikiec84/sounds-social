@@ -1,7 +1,7 @@
 import { get, flow } from 'lodash/fp'
 import { profileCollection } from '../../data/collection/ProfileCollection'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
-import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById'
+import { fetchOneFileById } from '../../data/collection/fetch/File/fetchOneFileById'
 
 const typeDef = `
 input ProfileData {

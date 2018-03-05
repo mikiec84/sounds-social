@@ -2,7 +2,7 @@ import { get, flow } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { Meteor } from 'meteor/meteor'
 import { groupCollection } from '../../data/collection/GroupCollection'
-import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById';
+import { fetchOneFileById } from '../../data/collection/fetch/File/fetchOneFileById';
 
 const typeDef = `
 type Group {

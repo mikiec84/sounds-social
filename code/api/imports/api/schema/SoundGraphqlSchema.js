@@ -7,7 +7,7 @@ import { soundCollection } from '../../data/collection/SoundCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
-import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById'
+import { fetchOneFileById } from '../../data/collection/fetch/File/fetchOneFileById'
 
 let soundsBeingPlayed = []
 
