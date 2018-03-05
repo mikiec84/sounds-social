@@ -12,7 +12,7 @@ export const findFollowerIdsForUser = userId => collection => {
   }, { fields: { _id: 1 } }).map(get('_id'))
 }
 
-export const follow = toFollowId => followerId => collection => {
+export const follow = collection => toFollowId => followerId => {
   const followerIds = findFollowerIds(collection)(toFollowId)
 
   updateFollowerIds(collection, toFollowId, uniq([...followerIds, followerId]))

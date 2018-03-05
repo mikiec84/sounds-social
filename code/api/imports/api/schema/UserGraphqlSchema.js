@@ -3,6 +3,8 @@ import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
 import { profileCollection } from '../../data/collection/ProfileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
+import { followUser } from '../../data/collection/methods/User/followUser'
+import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 
 export default {
   resolvers: {
@@ -22,8 +24,8 @@ export default {
         const { toFollowId } = args
         check(toFollowId, String)
 
-        userCollection.follow(toFollowId, context.userId)
-        return userCollection.findOne({ _id: context.userId })
+        followUser(toFollowId)(context.userId)
+        return fetchOneUserById(context.userId)
       },
       unfollowUser: (root, args, context) => {
         const { toUnfollowId } = args

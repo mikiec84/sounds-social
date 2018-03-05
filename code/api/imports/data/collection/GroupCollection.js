@@ -14,7 +14,7 @@ class GroupCollection extends Mongo.Collection {
   }
 
   follow (toFollowId, potentialFollowerId) {
-    return follow(toFollowId)(potentialFollowerId)(this)
+    return follow(this)(toFollowId)(potentialFollowerId)
   }
 
   unfollow (toUnfollowId, followerId) {

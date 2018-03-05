@@ -2,7 +2,8 @@ import { get, map, flow } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
-import { fetchOneUser } from '../../data/collection/methods/User/fetchOneUser'
+import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
+import { followGroup } from '../../data/collection/methods/Group/followGroup'
 
 const typeDef = `
 type Group {
@@ -47,7 +48,7 @@ export default {
   resolvers: {
     Group: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      members: flow(get('memberIds'), map(fetchOneUser)),
+      members: flow(get('memberIds'), map(fetchOneUserById)),
       canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {
         return root.creatorId === context.userId
@@ -98,7 +99,7 @@ export default {
         const { toFollowId } = args
         check(toFollowId, String)
 
-        groupCollection.follow(toFollowId, context.userId)
+        followGroup(toFollowId)(context.userId)
         return groupCollection.findOneById(toFollowId)
       },
       unfollowGroup (root, args, context) {

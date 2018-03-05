@@ -5,21 +5,16 @@ import {
   isFollowedBy,
   findFollowerIdsForUser,
 } from '../../lib/Follower/FollowerMethods'
+import { fetchOneUserById } from './methods/User/fetchOneUserById'
 
 export const userCollection = Meteor.users
 
-userCollection.findOneById = function (userId) {
-  return this.findOne({ _id: userId })
-}
+userCollection.findOneById = fetchOneUserById
 
 userCollection.findFollowerIdsForUser = userId => findFollowerIdsForUser(userId)(userCollection)
 
 userCollection.isFollowedByUser = function (toFollowId, potentialFollowerId) {
   return isFollowedBy(toFollowId)(potentialFollowerId)(userCollection)
-}
-
-userCollection.follow = function (toFollowId, followerId) {
-  return follow(toFollowId)(followerId)(userCollection)
 }
 
 userCollection.unfollow = function (toUnfollowId, followerId) {
