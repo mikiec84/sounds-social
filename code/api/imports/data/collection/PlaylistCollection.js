@@ -1,38 +1,7 @@
-import SimpleSchema from 'simpl-schema'
 import { findIndex, isEqual } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
-import { createdAtAutoValue } from './autoValue/createdAtAutoValue'
 import { soundCollection } from './SoundCollection'
-
-const playlistSchema = new SimpleSchema({
-  name: {
-    type: String,
-    min: 3,
-    max: 20,
-  },
-  description: {
-    type: String,
-    optional: true,
-    max: 280,
-  },
-  createdAt: {
-    type: Date,
-    autoValue: createdAtAutoValue,
-  },
-  creatorId: {
-    type: String,
-  },
-  isPublic: {
-    type: Boolean,
-  },
-  soundIds: {
-    type: Array,
-    optional: true,
-  },
-  'soundIds.$': {
-    type: String,
-  },
-})
+import { playlistSchema } from '../schema/PlaylistSchema'
 
 const updateSoundIdsIfPermission = (collection, playlistId, userId, updateOperator) => {
   const sound = collection.findOneForUser(playlistId, userId)

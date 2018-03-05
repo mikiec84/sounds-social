@@ -1,55 +1,12 @@
-import SimpleSchema from 'simpl-schema'
 import { omit, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
-import { Meteor } from 'meteor/meteor'
 import { check } from 'meteor/check'
+import { soundSchema } from '../schema/SoundSchema'
 import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
 import { groupCollection } from './GroupCollection'
 import { fetchOneFileById } from '../fetch/File/fetchOneFileById'
-
-export const soundSchema = new SimpleSchema({
-  name: {
-    type: String,
-  },
-  description: {
-    type: String,
-    optional: true,
-  },
-  createdAt: {
-    type: Date,
-  },
-  fileId: {
-    type: String,
-  },
-  creatorId: {
-    type: String,
-  },
-  ownerType: {
-    type: String,
-    optional: true,
-    allowedValues: ['group', 'user'], // if empty it's a user
-  },
-  coverFileId: {
-    type: String,
-    optional: true,
-  },
-  isPublic: {
-    type: Boolean,
-  },
-  playsCount: {
-    type: Number,
-    optional: true,
-    autoValue () {
-      if (this.isInsert) {
-        return 0
-      } else if (this.isUpsert) {
-        return { $setOnInsert: 0 }
-      }
-    }
-  },
-})
 
 export const isCreatorSoundsSelector = userId => ({
   creatorId: {
@@ -221,7 +178,7 @@ class SoundCollection extends Mongo.Collection {
   }
 
   check (_id) {
-    if (!this.findOneById(_id)) throw new Meteor.Error('Sound not found')
+    if (!this.findOneById(_id)) throw new Error('Sound not found')
   }
 }
 
