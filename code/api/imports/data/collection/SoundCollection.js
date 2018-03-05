@@ -7,6 +7,7 @@ import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
 import { groupCollection } from './GroupCollection'
+import { fetchOneFileById } from '../fetch/File/fetchOneFileById'
 
 export const soundSchema = new SimpleSchema({
   name: {
@@ -196,7 +197,7 @@ class SoundCollection extends Mongo.Collection {
   findCoverFile (soundId) {
     const sound = this.findOne(soundId)
 
-    if (sound) return fileCollection.findOneById(sound.coverFileId)
+    if (sound) return fetchOneFileById(sound.coverFileId)
   }
 
   updateCover (soundId, userId, coverFileData) {

@@ -1,6 +1,7 @@
+import { get, flow } from 'lodash/fp'
 import { profileCollection } from '../../data/collection/ProfileCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
+import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById'
 
 const typeDef = `
 input ProfileData {
@@ -28,9 +29,7 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Profile: {
-      avatarFile(root) {
-        return fileCollection.findOneById(root.avatarFileId)
-      },
+      avatarFile: flow(get('avatarFileId'), fetchOneFileById),
       language(root) {
         return root.language || 'en'
       },

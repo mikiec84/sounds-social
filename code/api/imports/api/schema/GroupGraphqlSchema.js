@@ -2,7 +2,7 @@ import { get, flow } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { Meteor } from 'meteor/meteor'
 import { groupCollection } from '../../data/collection/GroupCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
+import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById';
 
 const typeDef = `
 type Group {
@@ -46,7 +46,7 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Group: {
-      avatarFile: root => fileCollection.findOneById(root.avatarFileId),
+      avatarFile: flow(get('avatarFileId'), fetchOneFileById),
       members: root => root.memberIds.map(_id => Meteor.users.findOne({ _id })),
       canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {

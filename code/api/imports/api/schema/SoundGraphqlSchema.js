@@ -1,13 +1,13 @@
 import moment from 'moment'
-import { get } from 'lodash/fp'
+import { get, flow } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { soundCollection } from '../../data/collection/SoundCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
+import { fetchOneFileById } from '../../data/fetch/File/fetchOneFileById'
 
 let soundsBeingPlayed = []
 
@@ -142,9 +142,9 @@ export default {
       },
     },
     Sound: {
-      file: root => fileCollection.findOneById(root.fileId),
+      file: flow(get('fileId'), fetchOneFileById),
       playsCount: root => root.playsCount || 0,
-      coverFile: root => fileCollection.findOneById(root.coverFileId),
+      coverFile: flow(get('coverFileId'), fetchOneFileById),
       creator: root => {
         if (!root.ownerType || root.ownerType === 'user') {
           return {
