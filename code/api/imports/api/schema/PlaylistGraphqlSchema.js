@@ -3,6 +3,7 @@ import { some, defaultTo } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { playlistCollection } from '../../data/collection/PlaylistCollection'
 import { soundCollection } from '../../data/collection/SoundCollection'
+import { checkUserIdRequired } from '../../lib/check/checkUserData'
 
 const typeDef = `
 type Playlist {
@@ -58,13 +59,11 @@ export default {
     Query: {
       listPlaylist(root, args, context) {
         const userId = defaultTo(context.userId)(args.userId)
-        check(userId, Match.Maybe(String))
 
         return playlistCollection.findPublic(userId, context.userId).fetch()
       },
       getPlaylist(root, args, context) {
         check(args.playlistId, String)
-        check(context.userId, Match.Maybe(String))
 
         return playlistCollection.findOnePublic(args.playlistId, context.userId)
       },
@@ -77,7 +76,7 @@ export default {
         check(isPublic, Match.Optional(Boolean))
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         return {
           _id: playlistCollection.create(name, userId, isPublic, description),
@@ -92,7 +91,7 @@ export default {
         soundIds.forEach(soundId => soundCollection.check(soundId, String))
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         playlistCollection.updateInfos(
           { playlistId, name, userId, isPublic, description, soundIds },
@@ -105,7 +104,7 @@ export default {
         check(playlistId, String)
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         return playlistCollection.removeForUser(playlistId, userId)
       },
@@ -115,7 +114,7 @@ export default {
         check(soundId, String)
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         return playlistCollection.addSound(playlistId, userId, soundId)
       },
@@ -125,7 +124,7 @@ export default {
         check(soundId, String)
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         return playlistCollection.removeSound(playlistId, userId, soundId)
       },
@@ -136,7 +135,7 @@ export default {
         check(soundToMoveId, String)
 
         const { userId } = context
-        check(userId, String)
+        checkUserIdRequired(userId)
 
         return playlistCollection.moveSounds(
           playlistId,

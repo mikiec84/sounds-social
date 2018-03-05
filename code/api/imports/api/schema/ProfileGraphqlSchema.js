@@ -1,6 +1,6 @@
-import { check } from 'meteor/check'
 import { profileCollection } from '../../data/collection/ProfileCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
+import { checkUserIdRequired } from '../../lib/check/checkUserData'
 
 const typeDef = `
 input ProfileData {
@@ -37,7 +37,7 @@ export default {
     },
     Mutation: {
       updateUserProfile(root, args, context) {
-        check(context.userId, String)
+        checkUserIdRequired(context.userId)
 
         profileCollection.updateProfile(
           context.userId,

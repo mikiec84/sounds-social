@@ -1,5 +1,5 @@
 import { get, flow } from 'lodash/fp'
-import { check, Match } from 'meteor/check'
+import { check } from 'meteor/check'
 import { Meteor } from 'meteor/meteor'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
@@ -50,26 +50,19 @@ export default {
       members: root => root.memberIds.map(_id => Meteor.users.findOne({ _id })),
       canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {
-        check(context.userId, Match.Maybe(String))
-
         return root.creatorId === context.userId
       },
       isFollowedByCurrentUser: (root, args, context) => {
-        check(context.userId, Match.Maybe(String))
-
         return groupCollection.isFollowedBy(root._id, context.userId)
       },
     },
     Query: {
       listGroupForUser (root, args, context) {
         const userId = args.userId || context.userId
-        check(userId, Match.Maybe(String))
-
         return groupCollection.findForUser(userId).fetch()
       },
       getGroup (root, args, context) {
         check(args._id, String)
-
         return groupCollection.findOneById(args._id)
       },
     },

@@ -5,6 +5,7 @@ import { loadSchema, getSchema } from 'graphql-loader'
 import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { renderIntoElementById } from 'meteor/server-render'
+import { checkUserDataMaybe, checkUserIdMaybe } from '../imports/lib/check/checkUserData'
 import mongoFieldsMiddleware from '../imports/middleware/MongoFieldsContextMiddleware'
 
 import '../imports/config'
@@ -25,6 +26,9 @@ createApolloServer(req => {
     pretty: true,
     schema,
     context: userContext => {
+      checkUserIdMaybe(userContext.userId)
+      checkUserDataMaybe(userContext.user)
+
       return {
         ...userContext,
         userLanguage: defaultTo('en')(req.header('accept-language')),

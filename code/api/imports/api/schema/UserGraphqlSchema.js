@@ -1,4 +1,3 @@
-import transformAstIntoFieldSpecifiers from 'join-mongo'
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'

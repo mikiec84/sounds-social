@@ -7,6 +7,7 @@ import { soundCollection } from '../../data/collection/SoundCollection'
 import { fileCollection } from '../../data/collection/FileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
+import { checkUserIdRequired } from '../../lib/check/checkUserData'
 
 let soundsBeingPlayed = []
 
@@ -45,7 +46,6 @@ export default {
         check(query, String)
 
         let { userId } = context
-        check(userId, Match.Optional(String))
 
         if (!userId) userId = null
 
@@ -56,7 +56,6 @@ export default {
         check(playlistId, String)
 
         const { userId } = context
-        check(userId, Match.Optional(String))
 
         return soundCollection.fetchForPlaylist(playlistId, userId)
       },
@@ -76,7 +75,7 @@ export default {
       createSound: (root, args, context) => {
         const { userId } = context
         const { groupId } = args
-        check(userId, String)
+        checkUserIdRequired(userId)
         check(groupId, Match.Maybe(String))
 
         return soundCollection.addSound(args.data, userId, groupId)
@@ -85,7 +84,7 @@ export default {
         const { userId } = context
         const { soundId } = args
 
-        check(userId, String)
+        checkUserIdRequired(userId)
         check(soundId, String)
 
         return soundCollection.publishSound(soundId, userId)
@@ -94,7 +93,6 @@ export default {
         const { userId } = context
         const { soundId } = args
 
-        check(userId, Match.Optional(String))
         check(soundId, String)
 
         const soundPlayingId = Random.id()
@@ -110,7 +108,6 @@ export default {
       },
       countPlayingSound: (root, args, context) => {
         const { userId } = context
-        check(userId, Match.Optional(String))
 
         const { soundPlayingId, soundId } = args
         check(soundPlayingId, String)
