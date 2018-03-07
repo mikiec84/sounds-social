@@ -4,6 +4,8 @@ import { groupCollection } from '../../data/collection/GroupCollection'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { followGroup } from '../../data/collection/methods/Group/followGroup'
+import { unfollowGroup } from '../../data/collection/methods/Group/unfollowGroup'
+import { isFollowedByGroup } from '../../data/collection/methods/Group/isFollowedByGroup'
 
 const typeDef = `
 type Group {
@@ -54,7 +56,7 @@ export default {
         return root.creatorId === context.userId
       },
       isFollowedByCurrentUser: (root, args, context) => {
-        return groupCollection.isFollowedBy(root._id, context.userId)
+        return isFollowedByGroup(root._id)(context.userId)
       },
     },
     Query: {
@@ -108,7 +110,7 @@ export default {
         const { toUnfollowId } = args
         check(toUnfollowId, String)
 
-        groupCollection.unfollow(toUnfollowId, context.userId)
+        unfollowGroup(toUnfollowId)(context.userId)
         return groupCollection.findOneById(toUnfollowId)
       },
     },

@@ -5,6 +5,8 @@ import { profileCollection } from '../../data/collection/ProfileCollection'
 import { groupCollection } from '../../data/collection/GroupCollection'
 import { followUser } from '../../data/collection/methods/User/followUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
+import { unfollowUser } from '../../data/collection/methods/User/unfollowUser'
+import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedByUser'
 
 export default {
   resolvers: {
@@ -31,14 +33,13 @@ export default {
         const { toUnfollowId } = args
         check(toUnfollowId, String)
 
-        userCollection.unfollow(toUnfollowId, context.userId)
+        unfollowUser(toUnfollowId)(context.userId)
         return userCollection.findOne({ _id: context.userId })
       },
     },
     User: {
       canFollow: (root, args, context) => context.userId && root._id !== context.userId,
-      isFollowedByCurrentUser: (root, args, context) => userCollection
-        .isFollowedByUser(root._id, context.userId),
+      isFollowedByCurrentUser: (root, args, context) => isFollowedByUser(root._id)(context.userId),
       profile: (root) => {
         return profileCollection.findOneUserProfile(root._id)
       },

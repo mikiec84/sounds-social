@@ -5,8 +5,7 @@ const findFollowerIds = collection => entityId => {
   return ((collection.findOneById(entityId) || {}).followerIds || [])
 }
 
-// TODO: put collection as first argument
-export const findFollowerIdsForUser = userId => collection => {
+export const findFollowerIdsForUser = collection => userId => {
   return collection.find({
     followerIds: userId
   }, { fields: { _id: 1 } }).map(get('_id'))
@@ -18,12 +17,12 @@ export const follow = collection => toFollowId => followerId => {
   updateFollowerIds(collection, toFollowId, uniq([...followerIds, followerId]))
 }
 
-export const unfollow = toUnfollowId => followerId => collection => {
+export const unfollow = collection => toUnfollowId => followerId => {
   const followerIds = findFollowerIds(collection)(toUnfollowId)
 
   updateFollowerIds(collection, toUnfollowId, followerIds.filter(id => id !== followerId))
 }
 
-export const isFollowedBy = toFollowId => potentialFollowerId => collection => {
+export const isFollowedBy = collection => toFollowId => potentialFollowerId => {
   return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
 }

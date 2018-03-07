@@ -2,11 +2,12 @@ import { omit, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { check } from 'meteor/check'
 import { soundSchema } from '../schema/SoundSchema'
-import { userCollection } from './UserCollection'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
 import { groupCollection } from './GroupCollection'
 import { fetchOneFileById } from './methods/File/fetchOneFileById'
+import { fetchUserFollowerIdsForUser } from './methods/User/fetchUserFollowerIdsForUser'
+import { fetchGroupFollowerIdsForUser } from './methods/Group/fetchGroupFollowerIdsForUser'
 
 export const isCreatorSoundsSelector = userId => ({
   creatorId: {
@@ -89,8 +90,8 @@ class SoundCollection extends Mongo.Collection {
         {
           isPublic: true,
           creatorId: { $in: [
-            ...userCollection.findFollowerIdsForUser(currentUserId),
-            ...groupCollection.findFollowerIdsForUser(currentUserId),
+            ...fetchUserFollowerIdsForUser(currentUserId),
+            ...fetchGroupFollowerIdsForUser(currentUserId),
           ] },
         },
       ],
