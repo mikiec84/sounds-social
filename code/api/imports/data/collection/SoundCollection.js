@@ -3,12 +3,12 @@ import { Mongo } from 'meteor/mongo'
 import { check, Match } from 'meteor/check'
 import { soundSchema } from '../schema/SoundSchema'
 import { fileCollection } from './FileCollection'
-import { playlistCollection } from './PlaylistCollection'
 import { fetchOneFileById } from './methods/File/fetchOneFileById'
 import { fetchUserFollowerIdsForUser } from './methods/User/fetchUserFollowerIdsForUser'
 import { fetchGroupFollowerIdsForUser } from './methods/Group/fetchGroupFollowerIdsForUser'
 import { isMemberOfGroup } from './methods/Group/isMemberOfGroup'
 import { fetchGroupIdsForUser } from './methods/Group/fetchGroupIdsForUser'
+import { fetchOnePublicPlaylist } from './methods/Playlist/fetchOnePublicPlaylist'
 
 export const isCreatorSoundsSelector = userId => ({
   creatorId: {
@@ -155,11 +155,12 @@ class SoundCollection extends Mongo.Collection {
   }
 
   fetchForPlaylist (playlistId, userId) {
-    const playlist = playlistCollection.findOnePublic(playlistId, userId)
+    const playlist = fetchOnePublicPlaylist(userId)(playlistId)
 
     if (playlist) {
       const { soundIds } = playlist
 
+      // FIXME check if public sound!
       return soundIds.map(soundId => this.findOneById(soundId))
     }
   }
