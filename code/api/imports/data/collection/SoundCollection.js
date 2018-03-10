@@ -1,19 +1,20 @@
-import { omit, get } from 'lodash/fp'
+import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
-import { check } from 'meteor/check'
+import { check, Match } from 'meteor/check'
 import { soundSchema } from '../schema/SoundSchema'
 import { fileCollection } from './FileCollection'
 import { playlistCollection } from './PlaylistCollection'
-import { groupCollection } from './GroupCollection'
 import { fetchOneFileById } from './methods/File/fetchOneFileById'
 import { fetchUserFollowerIdsForUser } from './methods/User/fetchUserFollowerIdsForUser'
 import { fetchGroupFollowerIdsForUser } from './methods/Group/fetchGroupFollowerIdsForUser'
+import { isMemberOfGroup } from './methods/Group/isMemberOfGroup'
+import { fetchGroupIdsForUser } from './methods/Group/fetchGroupIdsForUser'
 
 export const isCreatorSoundsSelector = userId => ({
   creatorId: {
     $in: [
       userId,
-      ...groupCollection.findForUser(userId).map(get('_id'))
+      ...fetchGroupIdsForUser(userId)
     ]
   },
 })
@@ -22,14 +23,24 @@ class SoundCollection extends Mongo.Collection {
   addSound (doc, userId, groupId) {
     const omitFile = omit(['file'])
     doc.createdAt = new Date()
-    doc.fileId = 'fake'
 
-    check(omitFile(doc), soundSchema)
+    check(doc, {
+      name: String,
+      description: Match.Maybe(String),
+      createdAt: Date,
+      creatorId: String,
+      isPublic: Boolean,
+      file: {
+        _id: String,
+        secret: String,
+        url: String,
+      },
+    })
 
     doc.creatorId = userId
     doc.ownerType = 'user'
 
-    if (groupId && groupCollection.isMemberOfGroup(userId, groupId)) {
+    if (groupId && isMemberOfGroup(userId)(groupId)) {
       doc.creatorId = groupId
       doc.ownerType = 'group'
     }
@@ -37,6 +48,7 @@ class SoundCollection extends Mongo.Collection {
     if (!doc.file) throw new Error('Need file to add sound')
     doc.fileId = fileCollection.insert({ ...doc.file })
 
+    console.log(doc)
     const _id = this.insert(omitFile(doc))
 
     return this.findOne({ _id })
@@ -54,7 +66,7 @@ class SoundCollection extends Mongo.Collection {
     const doc = this.findOneById(docId)
 
     if (doc.ownerType === 'group') {
-      return groupCollection.isMemberOfGroup(userId, doc.creatorId)
+      return isMemberOfGroup(userId)(doc.creatorId)
     }
 
     return doc.creatorId === userId
@@ -77,7 +89,7 @@ class SoundCollection extends Mongo.Collection {
       ownerType: 'group',
     }
 
-    if (!groupCollection.isMemberOfGroup(currentUserId, groupId)) {
+    if (!isMemberOfGroup(currentUserId)(groupId)) {
       selector.isPublic = true
     }
 
@@ -131,7 +143,7 @@ class SoundCollection extends Mongo.Collection {
           _id: selector._id,
           creatorId: { $in: [
             userId,
-            ...groupCollection.findForUser(userId).map(get('_id'))
+            ...fetchGroupIdsForUser(userId),
           ] },
         },
       ],

@@ -30,13 +30,13 @@ export const soundSchema = new SimpleSchema({
     type: Boolean,
   },
   playsCount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     autoValue () {
-      if (this.isInsert) {
+      if (this.isSet) {
+        return this. value
+      } else {
         return 0
-      } else if (this.isUpsert) {
-        return { $setOnInsert: 0 }
       }
     }
   },

@@ -1,11 +1,15 @@
 import { get, map, flow } from 'lodash/fp'
 import { check } from 'meteor/check'
-import { groupCollection } from '../../data/collection/GroupCollection'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { followGroup } from '../../data/collection/methods/Group/followGroup'
 import { unfollowGroup } from '../../data/collection/methods/Group/unfollowGroup'
 import { isFollowedByGroup } from '../../data/collection/methods/Group/isFollowedByGroup'
+import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneGroupById'
+import { deleteGroup } from '../../data/collection/methods/Group/deleteGroup'
+import { updateGroup } from '../../data/collection/methods/Group/updateGroup'
+import { createGroup } from '../../data/collection/methods/Group/createGroup'
+import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
 
 const typeDef = `
 type Group {
@@ -62,36 +66,36 @@ export default {
     Query: {
       listGroupForUser (root, args, context) {
         const userId = args.userId || context.userId
-        return groupCollection.findForUser(userId).fetch()
+        return fetchGroupsForUser(userId)(context.grapherFields).fetch()
       },
       getGroup (root, args, context) {
         check(args._id, String)
-        return groupCollection.findOneById(args._id)
+        return fetchOneGroupById(args._id)
       },
     },
     Mutation: {
       createGroup (root, args, context) {
         if (!context.userId) return null
 
-        const id = groupCollection.createGroup(context.userId, args.data)
+        const id = createGroup(context.userId, args.data)
 
-        return groupCollection.findOneById(id)
+        return fetchOneGroupById(id)
       },
       updateGroup (root, args, context) {
         if (!context.userId) return null
         check(args._id, String)
 
-        groupCollection.updateGroup(context.userId, args._id, args.data)
+        updateGroup(context.userId)(args._id)(args.data)
 
-        return groupCollection.findOneById(args._id)
+        return fetchOneGroupById(args._id)
       },
       removeGroup (root, args, context) {
         if (!context.userId) return null
         check(args._id, String)
 
-        const group = groupCollection.findOneById(args._id)
+        const group = fetchOneGroupById(args._id)
 
-        groupCollection.removeGroup(context.userId, args._id)
+        deleteGroup(context.userId)(args._id)
 
         return group
       },
@@ -102,7 +106,7 @@ export default {
         check(toFollowId, String)
 
         followGroup(toFollowId)(context.userId)
-        return groupCollection.findOneById(toFollowId)
+        return fetchOneGroupById(toFollowId)
       },
       unfollowGroup (root, args, context) {
         if (!context.userId) return null
@@ -111,7 +115,7 @@ export default {
         check(toUnfollowId, String)
 
         unfollowGroup(toUnfollowId)(context.userId)
-        return groupCollection.findOneById(toUnfollowId)
+        return fetchOneGroupById(toUnfollowId)
       },
     },
   },

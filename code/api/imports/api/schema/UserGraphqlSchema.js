@@ -2,11 +2,11 @@ import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
 import { profileCollection } from '../../data/collection/ProfileCollection'
-import { groupCollection } from '../../data/collection/GroupCollection'
 import { followUser } from '../../data/collection/methods/User/followUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { unfollowUser } from '../../data/collection/methods/User/unfollowUser'
 import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedByUser'
+import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
 
 export default {
   resolvers: {
@@ -43,7 +43,7 @@ export default {
       profile: (root) => {
         return profileCollection.findOneUserProfile(root._id)
       },
-      groups: (root) => groupCollection.findForUser(root._id).fetch(),
+      groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields).fetch(),
     },
   },
   typeDefs: [

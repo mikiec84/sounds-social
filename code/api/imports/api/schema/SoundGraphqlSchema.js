@@ -4,10 +4,11 @@ import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { soundCollection } from '../../data/collection/SoundCollection'
-import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
+import { isMemberOfGroup } from '../../data/collection/methods/Group/isMemberOfGroup'
+import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneGroupById'
 
 let soundsBeingPlayed = []
 
@@ -153,7 +154,7 @@ export default {
           }
         }
 
-        const group = groupCollection.findOneById(root.creatorId)
+        const group = fetchOneGroupById(root.creatorId)
 
         if (group) return { ...group, username: group.name, type: 'group' }
       },
@@ -162,7 +163,7 @@ export default {
           return root.creatorId === context.userId
         }
 
-        return !!groupCollection.isMemberOfGroup(context.userId, root.creatorId)
+        return isMemberOfGroup(context.userId, root.creatorId)
       },
     },
   },

@@ -1,14 +1,14 @@
 import { get, constant } from 'lodash/fp'
-import { Meteor } from 'meteor/meteor'
 import { Index, MongoDBEngine } from 'meteor/easysearch:core'
-import { isCreatorSoundsSelector, soundCollection } from '../collection/SoundCollection'
-import { groupCollection } from '../collection/GroupCollection'
 import { findRelatedFieldDocuments } from './findRelatedFieldDocuments'
+import { isCreatorSoundsSelector, soundCollection } from '../collection/SoundCollection'
+import { groupCollectionName } from '../collection/GroupCollection'
+import { userCollectionName } from '../collection/UserCollection'
 
 const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
   collection: soundCollection,
   selector: config.selectorPerField('aggregatedAuthor.username', query),
-  from: Meteor.users.rawCollection().collectionName,
+  from: userCollectionName,
   localField: 'creatorId',
   foreignField: '_id',
   as: 'aggregatedAuthor',
@@ -17,7 +17,7 @@ const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
 const searchByGroupName = (config, query, cb) => findRelatedFieldDocuments({
   collection: soundCollection,
   selector: config.selectorPerField('aggregatedGroupAuthor.name', query),
-  from: groupCollection.rawCollection().collectionName,
+  from: groupCollectionName,
   localField: 'creatorId',
   foreignField: '_id',
   as: 'aggregatedGroupAuthor',

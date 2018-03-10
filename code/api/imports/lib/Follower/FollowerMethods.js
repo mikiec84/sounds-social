@@ -1,8 +1,9 @@
 import { uniq, get } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
+import { fetchOneById } from '../../data/collection/methods/general/fetchOneById'
 
 const findFollowerIds = collection => entityId => {
-  return ((collection.findOneById(entityId) || {}).followerIds || [])
+  return ((fetchOneById(collection)(entityId) || {}).followerIds || [])
 }
 
 export const findFollowerIdsForUser = collection => userId => {
