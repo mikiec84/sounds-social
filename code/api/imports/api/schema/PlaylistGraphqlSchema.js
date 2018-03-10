@@ -1,17 +1,17 @@
 import { Meteor } from 'meteor/meteor'
-import { defaultTo, some } from 'lodash/fp'
+import { defaultTo, some, reduce, flow, get } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
-import { soundCollection } from '../../data/collection/SoundCollection'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { createPlaylist } from '../../data/collection/methods/Playlist/createPlaylist'
 import { updatePlaylist } from '../../data/collection/methods/Playlist/updatePlaylist'
 import { fetchOnePlaylistForUser } from '../../data/collection/methods/Playlist/fetchOnePlaylistForUser'
 import { deletePlaylist } from '../../data/collection/methods/Playlist/deletePlaylist'
-import { removeSoundFromPlaylist } from '../../data/collection/methods/Playlist/removeSoundFromPlaylist'
-import { moveSoundsInPlaylist } from '../../data/collection/methods/Playlist/moveSoundsInPlaylist'
 import { fetchOnePublicPlaylist } from '../../data/collection/methods/Playlist/fetchOnePublicPlaylist'
 import { fetchPublicPlaylistsForUser } from '../../data/collection/methods/Playlist/fetchPublicPlaylists'
 import { addSoundToPlaylist } from '../../data/collection/methods/Playlist/addSoundToPlaylist'
+import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
+import { fetchOneSoundCoverFile } from '../../data/collection/methods/File/fetchOneSoundCoverFile'
+import { checkSound } from '../../lib/check/checkSound'
 
 const typeDef = `
 type Playlist {
@@ -37,8 +37,6 @@ extend type Mutation {
   updatePlaylist(playlistId: String! name: String! description: String isPublic: Boolean soundIds: [String]): Playlist
   removePlaylist(playlistId: String!): Playlist
   addSoundToPlaylist(playlistId: String! soundId: String!): Playlist
-  removeSoundFromPlaylist(playlistId: String! soundId: String!): Playlist
-  moveSoundsInPlaylist(playlistId: String! soundToMoveId: String! soundToBeMovedId: String!): Playlist
 }
 `
 
@@ -48,18 +46,20 @@ export default {
   typeDefs: [typeDef],
   resolvers: {
     Playlist: {
-      image: (root) => {
-        return defaultTo([])(root.soundIds).reduce((acc, soundId) => {
+      image: flow(
+        get('soundIds'),
+        defaultTo([]),
+        reduce((acc, soundId) => {
           if (acc) return acc
 
-          return soundCollection.findCoverFile(soundId)
-        }, null)
-      },
+          return fetchOneSoundCoverFile(soundId)
+        }, null),
+      ),
       creator: (root) => {
         return Meteor.users.findOne({ _id: root.creatorId })
       },
       sounds: (root, args, context) => {
-        return soundCollection.fetchForPlaylist(root._id, context.userId)
+        return fetchSoundsForPlaylist(context.userId)(root._id)
       },
       isEditable: isCreatorResolver,
       isRemovable: isCreatorResolver,
@@ -101,7 +101,7 @@ export default {
         check(name, Match.Maybe(String))
         check(description, Match.Maybe(String))
         check(isPublic, Match.Maybe(Boolean))
-        soundIds.forEach(soundId => soundCollection.check(soundId, String))
+        soundIds.forEach(soundId => checkSound(soundId, String))
 
         const { userId } = context
         checkUserIdRequired(userId)
@@ -134,27 +134,6 @@ export default {
         checkUserIdRequired(userId)
 
         return addSoundToPlaylist(soundId)(userId)(playlistId)
-      },
-      removeSoundFromPlaylist (root, args, context) {
-        const { playlistId, soundId } = args
-        check(playlistId, String)
-        check(soundId, String)
-
-        const { userId } = context
-        checkUserIdRequired(userId)
-
-        return removeSoundFromPlaylist(soundId)(userId)(playlistId)
-      },
-      moveSoundsInPlaylist (root, args, context) {
-        const { playlistId, soundToBeMovedId, soundToMoveId } = args
-        check(playlistId, String)
-        check(soundToBeMovedId, String)
-        check(soundToMoveId, String)
-
-        const { userId } = context
-        checkUserIdRequired(userId)
-
-        return moveSoundsInPlaylist(soundToMoveId)(soundToBeMovedId)(userId)(playlistId)
       },
     },
   },

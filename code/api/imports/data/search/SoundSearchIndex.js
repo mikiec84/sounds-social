@@ -1,9 +1,11 @@
-import { get, constant } from 'lodash/fp'
+import { constant, get } from 'lodash/fp'
 import { Index, MongoDBEngine } from 'meteor/easysearch:core'
 import { findRelatedFieldDocuments } from './findRelatedFieldDocuments'
-import { isCreatorSoundsSelector, soundCollection } from '../collection/SoundCollection'
+import { soundCollection } from '../collection/SoundCollection'
 import { groupCollectionName } from '../collection/GroupCollection'
 import { userCollectionName } from '../collection/UserCollection'
+import { selectUserIsCreator } from '../collection/methods/Sound/selectUserIsCreator'
+import { selectIsPublic } from '../collection/methods/general/selectIsPublic'
 
 const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
   collection: soundCollection,
@@ -36,7 +38,7 @@ export const soundSearchIndex = new Index({
 
       return {
         $and: [
-          { $or: [isCreatorSoundsSelector(userId), { isPublic: true }] },
+          { $or: [selectUserIsCreator(userId), selectIsPublic()] },
           { $or: [
             ...selector.$or,
             {

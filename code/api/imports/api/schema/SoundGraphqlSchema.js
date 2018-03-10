@@ -12,11 +12,15 @@ import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneG
 import { fetchOneSoundForUser } from '../../data/collection/methods/Sound/fetchOneSoundForUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { createSound } from '../../data/collection/methods/Sound/createSound'
-import { fetchOneSoundById } from '../../data/collection/methods/Sound/fetchOneSoundById'
 import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
 import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
 import { fetchFeedSoundsForPublic } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForPublic'
 import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
+import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
+import { publishSound } from '../../data/collection/methods/Sound/publishSound'
+import { countSoundPlay } from '../../data/collection/methods/Sound/countSoundPlay'
+import { updateSoundCover } from '../../data/collection/methods/Sound/updateSoundCover'
+import { updateSound } from '../../data/collection/methods/Sound/updateSound'
 
 let soundsBeingPlayed = []
 
@@ -58,7 +62,7 @@ export default {
 
         if (!userId) userId = null
 
-        return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
+        return soundSearchIndex.search(query, { limit: 50, userId }).fetch()
       },
       listSoundForPlaylist: (root, args, context, ast) => {
         const { playlistId } = args
@@ -66,20 +70,19 @@ export default {
 
         const { userId } = context
 
-        return soundCollection.fetchForPlaylist(playlistId, userId)
+        return fetchSoundsForPlaylist(userId)(playlistId)
       },
     },
     Mutation: {
-      updateSound: (root, args) => {
+      updateSound: (root, args, context) => {
         const { _id } = args
         const data = { ...args.data }
+        const { userId } = context
 
+        checkUserIdRequired(userId)
         check(_id, String)
 
-        soundCollection.update({ _id }, { $set: data })
-
-        // FIXME permissions
-        return fetchOneSoundById(_id)
+        return updateSound(userId)(_id)(data)
       },
       deleteSound: resolver.delete(soundCollection),
       createSound: (root, args, context) => {
@@ -97,7 +100,7 @@ export default {
         checkUserIdRequired(userId)
         check(soundId, String)
 
-        return soundCollection.publishSound(soundId, userId)
+        return publishSound(userId)(soundId)
       },
       startPlayingSound: (root, args, context) => {
         const { userId } = context
@@ -133,7 +136,7 @@ export default {
             return sameIds && startedFiveSecondsAgo
           })
 
-        if (shouldCountPlay) soundCollection.countPlay(soundId)
+        if (shouldCountPlay) countSoundPlay(soundId)
 
         soundsBeingPlayed = soundsBeingPlayed.filter(play => play.userId !== userId)
 
@@ -148,7 +151,7 @@ export default {
           url: String,
         })
 
-        return soundCollection.updateCover(soundId, context.userId, fileData)
+        return updateSoundCover(context.userId)(soundId)(fileData)
       },
     },
     Sound: {

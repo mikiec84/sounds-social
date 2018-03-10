@@ -1,10 +1,10 @@
 import { fetchUserFollowerIdsForUser } from '../User/fetchUserFollowerIdsForUser'
 import { fetchGroupFollowerIdsForUser } from '../Group/fetchGroupFollowerIdsForUser'
-import { selectPublic } from '../general/selectPublic'
+import { selectIsPublic } from '../general/selectIsPublic'
 
 export const selectFollowedByUser = userId => {
   return {
-    ...selectPublic(),
+    ...selectIsPublic(),
     creatorId: {
       $in: [
         ...fetchUserFollowerIdsForUser(userId),

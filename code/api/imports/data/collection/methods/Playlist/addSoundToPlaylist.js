@@ -1,10 +1,10 @@
-import { soundCollection } from '../../SoundCollection'
 import { playlistCollection } from '../../PlaylistCollection'
-import { updateSoundIdsIfPermission } from '../../../../lib/Playlist/updateSoundIdesIfPermission'
+import { updateSoundIdsIfPermission } from '../../../../lib/Playlist/updateSoundIdsIfPermission'
 import { removeSoundFromPlaylist } from './removeSoundFromPlaylist'
+import { checkSound } from '../../../../lib/check/checkSound'
 
 export const addSoundToPlaylist = soundId => userId => playlistId => {
-  soundCollection.check(soundId)
+  checkSound(soundId)
 
   removeSoundFromPlaylist(soundId)(userId)(playlistId)
 
