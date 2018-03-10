@@ -14,13 +14,7 @@ export default {
     Query: {
       getUser: resolver.get(userCollection),
       listUser: resolver.list(userCollection),
-      currentUser: (root, args, context) => {
-        const { userId } = context
-
-        if (!userId) return null
-
-        return userCollection.findOne({ _id: userId })
-      },
+      currentUser: (root, args, context) => flow(get('userId'), fetchOneUserById)(context),
     },
     Mutation: {
       followUser: (root, args, context) => {
@@ -35,7 +29,7 @@ export default {
         check(toUnfollowId, String)
 
         unfollowUser(toUnfollowId)(context.userId)
-        return userCollection.findOne({ _id: context.userId })
+        return fetchOneUserById(context.userId)
       },
     },
     User: {

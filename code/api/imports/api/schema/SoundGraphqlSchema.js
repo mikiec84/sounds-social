@@ -9,6 +9,14 @@ import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { isMemberOfGroup } from '../../data/collection/methods/Group/isMemberOfGroup'
 import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneGroupById'
+import { fetchOneSoundForUser } from '../../data/collection/methods/Sound/fetchOneSoundForUser'
+import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
+import { createSound } from '../../data/collection/methods/Sound/createSound'
+import { fetchOneSoundById } from '../../data/collection/methods/Sound/fetchOneSoundById'
+import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
+import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
+import { fetchFeedSoundsForPublic } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForPublic'
+import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
 
 let soundsBeingPlayed = []
 
@@ -20,7 +28,7 @@ export default {
 
         check(_id, Match.Maybe(String))
 
-        return soundCollection.findOneForUser({ _id }, context.userId)
+        return fetchOneSoundForUser(context.userId)(_id)
       },
       listSound (root, args, context) {
         const { filters } = args
@@ -34,13 +42,13 @@ export default {
         const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
         const isFeed = 'true' === getValue(filters.filter(compareKey('loggedInFeed'))[0])
 
-        if (userFilterId) return soundCollection.findForUser(userFilterId, userId).fetch()
+        if (userFilterId) return fetchFeedSoundsForUser(userId)(userFilterId)
 
-        if (groupFilterId) return soundCollection.findForGroup(groupFilterId, userId).fetch()
+        if (groupFilterId) return fetchFeedSoundsForGroup(userId)(groupFilterId)
 
-        if (isFeed) return soundCollection.findForFeed(userId).fetch()
+        if (isFeed) return fetchFeedSoundsForPublic(userId)
 
-        return soundCollection.findForDiscover(userId).fetch()
+        return fetchFeedSoundsForDiscover(userId)
       },
       searchSound: (root, args, context, ast) => {
         const { query } = args
@@ -70,7 +78,8 @@ export default {
 
         soundCollection.update({ _id }, { $set: data })
 
-        return soundCollection.findOne({ _id })
+        // FIXME permissions
+        return fetchOneSoundById(_id)
       },
       deleteSound: resolver.delete(soundCollection),
       createSound: (root, args, context) => {
@@ -79,7 +88,7 @@ export default {
         checkUserIdRequired(userId)
         check(groupId, Match.Maybe(String))
 
-        return soundCollection.addSound(args.data, userId, groupId)
+        return createSound(userId)(args.data)(groupId)
       },
       publishSound: (root, args, context) => {
         const { userId } = context
@@ -149,7 +158,7 @@ export default {
       creator: root => {
         if (!root.ownerType || root.ownerType === 'user') {
           return {
-            ...Meteor.users.findOne({ _id: root.creatorId }),
+            ...fetchOneUserById(root.creatorId),
             type: 'user',
           }
         }

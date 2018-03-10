@@ -1,6 +1,5 @@
 import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
-import { check, Match } from 'meteor/check'
 import { soundSchema } from '../schema/SoundSchema'
 import { fileCollection } from './FileCollection'
 import { fetchOneFileById } from './methods/File/fetchOneFileById'
@@ -20,40 +19,6 @@ export const isCreatorSoundsSelector = userId => ({
 })
 
 class SoundCollection extends Mongo.Collection {
-  addSound (doc, userId, groupId) {
-    const omitFile = omit(['file'])
-    doc.createdAt = new Date()
-
-    check(doc, {
-      name: String,
-      description: Match.Maybe(String),
-      createdAt: Date,
-      creatorId: String,
-      isPublic: Boolean,
-      file: {
-        _id: String,
-        secret: String,
-        url: String,
-      },
-    })
-
-    doc.creatorId = userId
-    doc.ownerType = 'user'
-
-    if (groupId && isMemberOfGroup(userId)(groupId)) {
-      doc.creatorId = groupId
-      doc.ownerType = 'group'
-    }
-
-    if (!doc.file) throw new Error('Need file to add sound')
-    doc.fileId = fileCollection.insert({ ...doc.file })
-
-    console.log(doc)
-    const _id = this.insert(omitFile(doc))
-
-    return this.findOne({ _id })
-  }
-
   publishSound (_id, userId) {
     if (!this.isPermittedToChange(userId, _id)) throw new Error('Not permitted')
 
@@ -70,88 +35,6 @@ class SoundCollection extends Mongo.Collection {
     }
 
     return doc.creatorId === userId
-  }
-
-  findForUser (userId, currentUserId) {
-    const selector = {
-      creatorId: userId,
-      $or: [ { ownerType: { $exists: false } }, { ownerType: 'user' } ],
-    }
-
-    if (currentUserId !== userId) selector.isPublic = true
-
-    return this.findByNewest(selector)
-  }
-
-  findForGroup (groupId, currentUserId) {
-    const selector = {
-      creatorId: groupId,
-      ownerType: 'group',
-    }
-
-    if (!isMemberOfGroup(currentUserId)(groupId)) {
-      selector.isPublic = true
-    }
-
-    return this.findByNewest(selector)
-  }
-
-  findForFeed (currentUserId) {
-    const selector = {
-      $or: [
-        {
-          isPublic: true,
-          creatorId: { $in: [
-            ...fetchUserFollowerIdsForUser(currentUserId),
-            ...fetchGroupFollowerIdsForUser(currentUserId),
-          ] },
-        },
-      ],
-    }
-
-    selector.$or.push(isCreatorSoundsSelector(currentUserId))
-
-    return this.findByNewest(selector)
-  }
-
-  findForDiscover (currentUserId) {
-    const selector = {
-      $or: [
-        { isPublic: true },
-      ],
-    }
-
-    selector.$or.push(isCreatorSoundsSelector(currentUserId))
-
-    return this.findByNewest(selector)
-  }
-
-  findByNewest (selector, opts) {
-    return this.find(selector, {
-      ...opts,
-      sort: { createdAt: -1 },
-    })
-  }
-
-  findOneForUser (selector, userId) {
-    selector.isPublic = true
-
-    return super.findOne({
-      $or: [
-        selector,
-        {
-          _id: selector._id,
-          creatorId: { $in: [
-            userId,
-            ...fetchGroupIdsForUser(userId),
-          ] },
-        },
-      ],
-    })
-  }
-
-  findByIds (ids) {
-    return this.find({ _id: { $in: ids } })
   }
 
   fetchForPlaylist (playlistId, userId) {
