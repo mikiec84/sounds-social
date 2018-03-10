@@ -1,7 +1,8 @@
-import { get, flow } from 'lodash/fp'
-import { profileCollection } from '../../data/collection/ProfileCollection'
+import { flow, get } from 'lodash/fp'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
+import { updateProfile } from '../../data/collection/methods/Profile/updateProfile'
+import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
 
 const typeDef = `
 input ProfileData {
@@ -30,21 +31,17 @@ export default {
   resolvers: {
     Profile: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      language(root) {
+      language (root) {
         return root.language || 'en'
       },
     },
     Mutation: {
-      updateUserProfile(root, args, context) {
+      updateUserProfile (root, args, context) {
         checkUserIdRequired(context.userId)
 
-        profileCollection.updateProfile(
-          context.userId,
-          'user',
-          args.profileData,
-        )
+        updateProfile(context.userId)(args.profileData)
 
-        return profileCollection.findOneUserProfile(context.userId)
+        return fetchOneProfile(context.userId)
       },
     },
   },

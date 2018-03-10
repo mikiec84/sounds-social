@@ -1,12 +1,13 @@
+import { flow, get } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
-import { profileCollection } from '../../data/collection/ProfileCollection'
 import { followUser } from '../../data/collection/methods/User/followUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { unfollowUser } from '../../data/collection/methods/User/unfollowUser'
 import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedByUser'
 import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
+import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
 
 export default {
   resolvers: {
@@ -40,9 +41,7 @@ export default {
     User: {
       canFollow: (root, args, context) => context.userId && root._id !== context.userId,
       isFollowedByCurrentUser: (root, args, context) => isFollowedByUser(root._id)(context.userId),
-      profile: (root) => {
-        return profileCollection.findOneUserProfile(root._id)
-      },
+      profile: flow(get('_id'), fetchOneProfile),
       groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields).fetch(),
     },
   },
