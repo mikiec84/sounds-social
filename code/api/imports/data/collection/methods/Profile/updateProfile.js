@@ -21,7 +21,7 @@ export const updateProfile = referenceId => profileData => {
     return profileCollection.insert({
       ...omitAvatarFile(profileData),
       referenceId,
-      type,
+      type: 'user',
     })
   }
 

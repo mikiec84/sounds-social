@@ -10,7 +10,9 @@
     "setup": "sh scripts/install.sh",
     "start": "sh scripts/run.sh",
     "lint": "cd code/web && npm run lint && cd ../api && npm run lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "cd code/web && npm run precommit && cd ../api/ && npm run precommit",
+    "prepush": "npm run lint",
+    "precommit": "npm run format"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd code/web && npm run precommit && cd ../api/ && npm run precommit"
+      "pre-push": "npm run prepush",
+      "pre-commit": "npm run precommit"
     }
   }
 }

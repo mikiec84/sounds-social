@@ -7,6 +7,6 @@ export default function(schema) {
       context.mongoFields = transformAstToFieldSpecifiers(info)
     } catch (e) {}
 
-    return await next()
+    return next()
   })
 }

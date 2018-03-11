@@ -1,4 +1,3 @@
-import { omitBy, isNil, get } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { groupSchema } from '../schema/GroupSchema'
 

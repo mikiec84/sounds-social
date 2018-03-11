@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { AccountsServer } from 'meteor/accounts-base'
-import { every } from 'lodash/fp'
+import { Accounts } from 'meteor/accounts-base'
 
 Accounts.validateNewUser(user => {
   if (Meteor.users.find().count() > 500) {

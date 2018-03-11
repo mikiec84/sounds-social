@@ -1,4 +1,3 @@
-import { omit } from 'lodash/fp'
 import { Mongo } from 'meteor/mongo'
 import { soundSchema } from '../schema/SoundSchema'
 

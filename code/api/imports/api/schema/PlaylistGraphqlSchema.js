@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { defaultTo, some, reduce, flow, get } from 'lodash/fp'
+import { defaultTo, reduce, flow, get } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { createPlaylist } from '../../data/collection/methods/Playlist/createPlaylist'
