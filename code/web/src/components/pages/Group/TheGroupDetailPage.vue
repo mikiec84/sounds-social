@@ -43,6 +43,15 @@
       SoundListComponent,
       StatefulProfileBox,
     },
+    metaInfo () {
+      if (this.singleGroup) {
+        return {
+          title: this.singleGroup.name,
+        }
+      }
+
+      return {}
+    },
     data () {
       return {
         singleGroup: null,

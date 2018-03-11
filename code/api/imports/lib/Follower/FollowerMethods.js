@@ -1,28 +1,29 @@
 import { uniq, get } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
+import { fetchOneById } from '../../data/collection/methods/general/fetchOneById'
 
-const findFollowerIds = entityId => collection => {
-  return ((collection.findOneById(entityId) || {}).followerIds || [])
+const findFollowerIds = collection => entityId => {
+  return ((fetchOneById(collection)(entityId) || {}).followerIds || [])
 }
 
-export const findFollowerIdsForUser = userId => collection => {
+export const findFollowerIdsForUser = collection => userId => {
   return collection.find({
     followerIds: userId
   }, { fields: { _id: 1 } }).map(get('_id'))
 }
 
-export const follow = toFollowId => followerId => collection => {
-  const followerIds = findFollowerIds(toFollowId)(collection)
+export const follow = collection => toFollowId => followerId => {
+  const followerIds = findFollowerIds(collection)(toFollowId)
 
   updateFollowerIds(collection, toFollowId, uniq([...followerIds, followerId]))
 }
 
-export const unfollow = toUnfollowId => followerId => collection => {
-  const followerIds = findFollowerIds(toUnfollowId)(collection)
+export const unfollow = collection => toUnfollowId => followerId => {
+  const followerIds = findFollowerIds(collection)(toUnfollowId)
 
   updateFollowerIds(collection, toUnfollowId, followerIds.filter(id => id !== followerId))
 }
 
-export const isFollowedBy = toFollowId => potentialFollowerId => collection => {
-  return findFollowerIds(toFollowId)(collection).includes(potentialFollowerId)
+export const isFollowedBy = collection => toFollowId => potentialFollowerId => {
+  return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
 }

@@ -1,4 +1,3 @@
-import { chai } from 'meteor/practicalmeteor:chai'
 import { resolvePromiseForCallback } from './resolvePromiseForCallback'
 
 describe('resolvePromiseForCallback', function () {

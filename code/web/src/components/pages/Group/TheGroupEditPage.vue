@@ -21,5 +21,10 @@
       HeaderComponent,
       StatefulGroupForm,
     },
+    metaInfo () {
+      return {
+        title: this.$t('Edit group'),
+      }
+    },
   }
 </script>

@@ -1,13 +1,26 @@
 import moment from 'moment'
-import { get } from 'lodash/fp'
+import { get, flow } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { soundCollection } from '../../data/collection/SoundCollection'
-import { fileCollection } from '../../data/collection/FileCollection'
-import { groupCollection } from '../../data/collection/GroupCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
+import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
+import { isMemberOfGroup } from '../../data/collection/methods/Group/isMemberOfGroup'
+import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneGroupById'
+import { fetchOneSoundForUser } from '../../data/collection/methods/Sound/fetchOneSoundForUser'
+import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
+import { createSound } from '../../data/collection/methods/Sound/createSound'
+import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
+import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
+import { fetchFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForFeed'
+import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
+import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
+import { publishSound } from '../../data/collection/methods/Sound/publishSound'
+import { countSoundPlay } from '../../data/collection/methods/Sound/countSoundPlay'
+import { updateSoundCover } from '../../data/collection/methods/Sound/updateSoundCover'
+import { updateSound } from '../../data/collection/methods/Sound/updateSound'
 
 let soundsBeingPlayed = []
 
@@ -19,7 +32,7 @@ export default {
 
         check(_id, Match.Maybe(String))
 
-        return soundCollection.findOneForUser({ _id }, context.userId)
+        return fetchOneSoundForUser(context.userId)(_id)
       },
       listSound (root, args, context) {
         const { filters } = args
@@ -33,13 +46,13 @@ export default {
         const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
         const isFeed = 'true' === getValue(filters.filter(compareKey('loggedInFeed'))[0])
 
-        if (userFilterId) return soundCollection.findForUser(userFilterId, userId).fetch()
+        if (userFilterId) return fetchFeedSoundsForUser(userId)(userFilterId)
 
-        if (groupFilterId) return soundCollection.findForGroup(groupFilterId, userId).fetch()
+        if (groupFilterId) return fetchFeedSoundsForGroup(userId)(groupFilterId)
 
-        if (isFeed) return soundCollection.findForFeed(userId).fetch()
+        if (isFeed) return fetchFeedSoundsForFeed(userId)
 
-        return soundCollection.findForDiscover(userId).fetch()
+        return fetchFeedSoundsForDiscover(userId)
       },
       searchSound: (root, args, context, ast) => {
         const { query } = args
@@ -49,7 +62,7 @@ export default {
 
         if (!userId) userId = null
 
-        return soundSearchIndex.search(query, { limit: 100, userId }).fetch()
+        return soundSearchIndex.search(query, { limit: 50, userId }).fetch()
       },
       listSoundForPlaylist: (root, args, context, ast) => {
         const { playlistId } = args
@@ -57,19 +70,19 @@ export default {
 
         const { userId } = context
 
-        return soundCollection.fetchForPlaylist(playlistId, userId)
+        return fetchSoundsForPlaylist(userId)(playlistId)
       },
     },
     Mutation: {
-      updateSound: (root, args) => {
+      updateSound: (root, args, context) => {
         const { _id } = args
         const data = { ...args.data }
+        const { userId } = context
 
+        checkUserIdRequired(userId)
         check(_id, String)
 
-        soundCollection.update({ _id }, { $set: data })
-
-        return soundCollection.findOne({ _id })
+        return updateSound(userId)(_id)(data)
       },
       deleteSound: resolver.delete(soundCollection),
       createSound: (root, args, context) => {
@@ -78,7 +91,7 @@ export default {
         checkUserIdRequired(userId)
         check(groupId, Match.Maybe(String))
 
-        return soundCollection.addSound(args.data, userId, groupId)
+        return createSound(userId)(args.data)(groupId)
       },
       publishSound: (root, args, context) => {
         const { userId } = context
@@ -87,7 +100,7 @@ export default {
         checkUserIdRequired(userId)
         check(soundId, String)
 
-        return soundCollection.publishSound(soundId, userId)
+        return publishSound(userId)(soundId)
       },
       startPlayingSound: (root, args, context) => {
         const { userId } = context
@@ -123,7 +136,7 @@ export default {
             return sameIds && startedFiveSecondsAgo
           })
 
-        if (shouldCountPlay) soundCollection.countPlay(soundId)
+        if (shouldCountPlay) countSoundPlay(soundId)
 
         soundsBeingPlayed = soundsBeingPlayed.filter(play => play.userId !== userId)
 
@@ -138,22 +151,22 @@ export default {
           url: String,
         })
 
-        return soundCollection.updateCover(soundId, context.userId, fileData)
+        return updateSoundCover(context.userId)(soundId)(fileData)
       },
     },
     Sound: {
-      file: root => fileCollection.findOneById(root.fileId),
+      file: flow(get('fileId'), fetchOneFileById),
       playsCount: root => root.playsCount || 0,
-      coverFile: root => fileCollection.findOneById(root.coverFileId),
+      coverFile: flow(get('coverFileId'), fetchOneFileById),
       creator: root => {
         if (!root.ownerType || root.ownerType === 'user') {
           return {
-            ...Meteor.users.findOne({ _id: root.creatorId }),
+            ...fetchOneUserById(root.creatorId),
             type: 'user',
           }
         }
 
-        const group = groupCollection.findOneById(root.creatorId)
+        const group = fetchOneGroupById(root.creatorId)
 
         if (group) return { ...group, username: group.name, type: 'group' }
       },
@@ -162,7 +175,7 @@ export default {
           return root.creatorId === context.userId
         }
 
-        return !!groupCollection.isMemberOfGroup(context.userId, root.creatorId)
+        return isMemberOfGroup(context.userId, root.creatorId)
       },
     },
   },

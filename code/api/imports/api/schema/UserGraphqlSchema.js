@@ -1,46 +1,42 @@
+import { flow, get } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
-import { profileCollection } from '../../data/collection/ProfileCollection'
-import { groupCollection } from '../../data/collection/GroupCollection'
+import { followUser } from '../../data/collection/methods/User/followUser'
+import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
+import { unfollowUser } from '../../data/collection/methods/User/unfollowUser'
+import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedByUser'
+import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
+import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
 
 export default {
   resolvers: {
     Query: {
       getUser: resolver.get(userCollection),
       listUser: resolver.list(userCollection),
-      currentUser: (root, args, context) => {
-        const { userId } = context
-
-        if (!userId) return null
-
-        return userCollection.findOne({ _id: userId })
-      },
+      currentUser: (root, args, context) => flow(get('userId'), fetchOneUserById)(context),
     },
     Mutation: {
       followUser: (root, args, context) => {
         const { toFollowId } = args
         check(toFollowId, String)
 
-        userCollection.follow(toFollowId, context.userId)
-        return userCollection.findOne({ _id: context.userId })
+        followUser(toFollowId)(context.userId)
+        return fetchOneUserById(context.userId)
       },
       unfollowUser: (root, args, context) => {
         const { toUnfollowId } = args
         check(toUnfollowId, String)
 
-        userCollection.unfollow(toUnfollowId, context.userId)
-        return userCollection.findOne({ _id: context.userId })
+        unfollowUser(toUnfollowId)(context.userId)
+        return fetchOneUserById(context.userId)
       },
     },
     User: {
       canFollow: (root, args, context) => context.userId && root._id !== context.userId,
-      isFollowedByCurrentUser: (root, args, context) => userCollection
-        .isFollowedByUser(root._id, context.userId),
-      profile: (root) => {
-        return profileCollection.findOneUserProfile(root._id)
-      },
-      groups: (root) => groupCollection.findForUser(root._id).fetch(),
+      isFollowedByCurrentUser: (root, args, context) => isFollowedByUser(root._id)(context.userId),
+      profile: flow(get('_id'), fetchOneProfile),
+      groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields),
     },
   },
   typeDefs: [
