@@ -12,7 +12,9 @@
     "lint": "cd code/web && npm run lint && cd ../api && npm run lint",
     "format": "cd code/web && npm run precommit && cd ../api/ && npm run precommit",
     "prepush": "npm run lint",
-    "precommit": "npm run format"
+    "precommit": "npm run format",
+    "test": "cd code/web && npm run unit && cd ../api/ && npm run test",
+    "cli": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
