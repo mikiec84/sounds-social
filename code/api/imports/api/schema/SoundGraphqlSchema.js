@@ -14,7 +14,7 @@ import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUse
 import { createSound } from '../../data/collection/methods/Sound/createSound'
 import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
 import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
-import { fetchFeedSoundsForPublic } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForPublic'
+import { fetchFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForFeed'
 import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
 import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
 import { publishSound } from '../../data/collection/methods/Sound/publishSound'
@@ -50,7 +50,7 @@ export default {
 
         if (groupFilterId) return fetchFeedSoundsForGroup(userId)(groupFilterId)
 
-        if (isFeed) return fetchFeedSoundsForPublic(userId)
+        if (isFeed) return fetchFeedSoundsForFeed(userId)
 
         return fetchFeedSoundsForDiscover(userId)
       },

@@ -4,7 +4,7 @@ import { sortByNewest } from '../../general/sortByNewest'
 import { selectUserIsCreator } from '../selectUserIsCreator'
 import { selectFollowedByUser } from '../selectFollowedByUser'
 
-export const fetchFeedSoundsForPublic = currentUserId => {
+export const fetchFeedSoundsForFeed = currentUserId => {
   const selector = {
     $or: [
       selectFollowedByUser(currentUserId),
