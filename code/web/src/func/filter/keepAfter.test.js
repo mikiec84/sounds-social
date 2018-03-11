@@ -6,7 +6,7 @@ test('keepAfter', () => {
     { id: 3, label: 'woop test' },
     { id: 6, label: 'woop test 2' },
     { id: 4, label: 'test 1' },
-    { id: 2, label: 'test 0' },
+    { id: 2, label: 'test 0' }
   ]
 
   const itemsAfter = keepAfter(item => item.id === 4)(items)

@@ -1,8 +1,4 @@
-import {
-  logOut,
-  doLogin,
-  createUser,
-} from '../api/AuthApi'
+import { logOut, doLogin, createUser } from '../api/AuthApi'
 
 export default {
   methods: {
@@ -15,6 +11,6 @@ export default {
     authLogOut () {
       this.$router.push({ name: 'home' })
       logOut().then(() => window.location.reload())
-    },
-  },
+    }
+  }
 }

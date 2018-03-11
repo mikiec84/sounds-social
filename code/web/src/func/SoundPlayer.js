@@ -20,7 +20,7 @@ export const playSound = url => {
   soundPlayer = new Howl({
     src: [url],
     preload: true,
-    html5: true,
+    html5: true
   })
 
   setTimeout(() => {
@@ -39,7 +39,7 @@ export const playSound = url => {
   if (isMuted) muteSound()
 }
 
-export const onPlayerEvent = (emit) => {
+export const onPlayerEvent = emit => {
   setInterval(() => {
     const { seek, duration, isPlaying } = currentSoundData
 

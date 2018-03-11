@@ -1,1 +1,1 @@
-export const isValidMail = mail => (/(.+)@(.+){2,}\.(.+){2,}/.test(mail))
+export const isValidMail = mail => /(.+)@(.+){2,}\.(.+){2,}/.test(mail)

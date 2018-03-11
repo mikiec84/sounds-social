@@ -19,11 +19,7 @@ const app = new Vue({
   router,
   store,
   apolloProvider,
-  ...App,
+  ...App
 })
 
-export {
-  router,
-  store,
-  app,
-}
+export { router, store, app }

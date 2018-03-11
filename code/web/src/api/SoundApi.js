@@ -68,67 +68,72 @@ export const editSoundFormQuery = gql`
   }
 `
 
-export const updateSound = (id, data) => apolloClient.mutate({
-  mutation: gql`
-    mutation EditSound($id: String! $data: SoundInput!) {
-      updateSound(_id: $id data: $data) {
-        _id
+export const updateSound = (id, data) =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation EditSound($id: String!, $data: SoundInput!) {
+        updateSound(_id: $id, data: $data) {
+          _id
+        }
       }
-    }
-  `,
-  variables: {
-    id,
-    data,
-  },
-  fetchPolicy: 'network-only',
-})
+    `,
+    variables: {
+      id,
+      data
+    },
+    fetchPolicy: 'network-only'
+  })
 
-export const removeSound = id => apolloClient.mutate({
-  mutation: gql`
-    mutation RemoveSound($id: String!) {
-      deleteSound(_id: $id) {
-        _id
+export const removeSound = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation RemoveSound($id: String!) {
+        deleteSound(_id: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['DetailSound'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['DetailSound']
+  })
 
-export const publishSound = id => apolloClient.mutate({
-  mutation: gql`
-    mutation PublishSound($id: String!) {
-      publishSound(soundId: $id) {
-        _id
+export const publishSound = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation PublishSound($id: String!) {
+        publishSound(soundId: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['DetailSound'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['DetailSound']
+  })
 
-export const startPlayingSound = id => apolloClient.mutate({
-  mutation: gql`
-    mutation StartPlayingSound($id: String!) {
-      startPlayingSound(soundId: $id) {
-        soundPlayingId
+export const startPlayingSound = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation StartPlayingSound($id: String!) {
+        startPlayingSound(soundId: $id) {
+          soundPlayingId
+        }
       }
-    }
-  `,
-  variables: { id },
-})
+    `,
+    variables: { id }
+  })
 
-export const countPlayingSound = (id, soundPlayingId) => apolloClient.mutate({
-  mutation: gql`
-    mutation StartPlayingSound($id: String! $soundPlayingId: String!) {
-      countPlayingSound(soundPlayingId: $soundPlayingId soundId: $id) {
-        soundPlayingId
+export const countPlayingSound = (id, soundPlayingId) =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation StartPlayingSound($id: String!, $soundPlayingId: String!) {
+        countPlayingSound(soundPlayingId: $soundPlayingId, soundId: $id) {
+          soundPlayingId
+        }
       }
-    }
-  `,
-  variables: { id, soundPlayingId },
-  refetchQueries: ['DetailSound'],
-})
+    `,
+    variables: { id, soundPlayingId },
+    refetchQueries: ['DetailSound']
+  })
 
 export const listSoundDefaultQuery = gql`
   query SoundListQuery($userId: String!, $loggedInFeed: String!) {
@@ -141,7 +146,13 @@ export const listSoundDefaultQuery = gql`
 
 export const exploreCoversQuery = gql`
   query SoundListQuery {
-    exploreCovers: listSound(limit: 8, filters: [{ key: "user", value: "" }, { key: "loggedInFeed", value: "false" }]) {
+    exploreCovers: listSound(
+      limit: 8
+      filters: [
+        { key: "user", value: "" }
+        { key: "loggedInFeed", value: "false" }
+      ]
+    ) {
       _id
       coverFile {
         url

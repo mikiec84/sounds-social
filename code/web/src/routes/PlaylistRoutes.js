@@ -8,12 +8,12 @@ export const playlistRoutes = [
     name: 'playlist-detail',
     path: '/playlist/:id',
     component: PlaylistDetailPage,
-    meta: { needsAuth: constant(false) },
+    meta: { needsAuth: constant(false) }
   },
   {
     name: 'playlist-edit',
     path: '/playlist/:id/edit',
     component: PlaylistEditPage,
-    meta: { needsAuth: constant(true) },
-  },
+    meta: { needsAuth: constant(true) }
+  }
 ]

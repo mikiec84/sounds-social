@@ -5,5 +5,5 @@ export const LodashPlugin = {
   install (Vue) {
     Vue.prototype.$_ = _
     Vue.prototype.$_fp = _fp
-  },
+  }
 }

@@ -24,42 +24,45 @@ export const ProfileBoxFieldsFragment = gql`
   }
 `
 
-export const updateProfile = profileData => apolloClient.mutate({
-  mutation: gql`
-    mutation ProfileUpdateMutation($profileData: ProfileData!) {
-      updateUserProfile(profileData: $profileData) {
-        description
-        language
+export const updateProfile = profileData =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation ProfileUpdateMutation($profileData: ProfileData!) {
+        updateUserProfile(profileData: $profileData) {
+          description
+          language
+        }
       }
-    }
-  `,
-  variables: { profileData },
-  fetchPolicy: 'network-only',
-})
+    `,
+    variables: { profileData },
+    fetchPolicy: 'network-only'
+  })
 
-export const follow = id => apolloClient.mutate({
-  mutation: gql`
-    mutation FollowMutation($id: String!) {
-      followUser(toFollowId: $id) {
-        _id
+export const follow = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation FollowMutation($id: String!) {
+        followUser(toFollowId: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['ProfilePage', 'SoundListQuery'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['ProfilePage', 'SoundListQuery']
+  })
 
-export const unfollow = id => apolloClient.mutate({
-  mutation: gql`
-    mutation UnfollowMutation($id: String!) {
-      unfollowUser(toUnfollowId: $id) {
-        _id
+export const unfollow = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation UnfollowMutation($id: String!) {
+        unfollowUser(toUnfollowId: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['ProfilePage', 'SoundListQuery'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['ProfilePage', 'SoundListQuery']
+  })
 
 export const profilePageQuery = gql`
   query ProfilePage($id: String!) {

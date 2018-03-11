@@ -9,8 +9,8 @@ test('registering components helper', () => {
     methods: {
       thisWorks () {
         return 'awesome stuff!'
-      },
-    },
+      }
+    }
   })
 
   registerComponent('my-registered-button', component)

@@ -8,12 +8,12 @@ export const groupRoutes = [
     name: 'group-detail',
     path: '/group/:id',
     component: GroupDetailPage,
-    meta: { needsAuth: constant(false) },
+    meta: { needsAuth: constant(false) }
   },
   {
     name: 'group-edit',
     path: '/group/:id/edit',
     component: GroupEditPage,
-    meta: { needsAuth: constant(true) },
-  },
+    meta: { needsAuth: constant(true) }
+  }
 ]

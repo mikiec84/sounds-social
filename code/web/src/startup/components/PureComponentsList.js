@@ -73,5 +73,5 @@ export const ComponentsList = [
   { id: 'pure-loader-sound-list', component: LoaderSoundList },
   { id: 'pure-loader-transition', component: LoaderTransition },
   { id: 'member-list', component: MemberList },
-  { id: 'group-list', component: GroupList },
+  { id: 'group-list', component: GroupList }
 ]

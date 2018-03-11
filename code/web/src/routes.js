@@ -39,32 +39,32 @@ const router = new Router({
       name: 'home',
       path: '/',
       component: HomePage,
-      meta: { needsAuth: constant(false) },
+      meta: { needsAuth: constant(false) }
     },
     {
       name: 'discover',
       path: '/discover',
       component: DiscoverPage,
-      meta: { needsAuth: constant(false) },
+      meta: { needsAuth: constant(false) }
     },
     {
       name: 'upload',
       path: '/upload',
       component: UploadPage,
-      meta: { needsAuth: constant(true) },
+      meta: { needsAuth: constant(true) }
     },
     {
       name: 'search',
       path: '/search',
       component: SearchPage,
-      meta: { needsAuth: constant(false) },
+      meta: { needsAuth: constant(false) }
     },
     ...soundRoutes,
     ...profileRoutes,
     ...playlistRoutes,
     ...groupRoutes,
-    ...authRoutes,
-  ],
+    ...authRoutes
+  ]
 })
 
 router.beforeEach(async (to, from, next) => {

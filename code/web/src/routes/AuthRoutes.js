@@ -7,6 +7,6 @@ export const authRoutes = [
     name: 'reset-password',
     path: '/reset-password/:token',
     component: ResetPasswordPage,
-    meta: { needsAuth: constant(false) },
-  },
+    meta: { needsAuth: constant(false) }
+  }
 ]

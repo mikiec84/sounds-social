@@ -4,7 +4,7 @@ import PureButton from './PureButton.vue'
 test('Components - Pure Button - Simple', done => {
   const button = mount(PureButton, {
     slots: {
-      default: '<div>Click me!</div>',
+      default: '<div>Click me!</div>'
     }
   })
 

@@ -15,7 +15,9 @@
     "lint": "eslint --ext .js,.vue src",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-dev": "npm run build && cd dist && mv index.html 200.html && surge --domain sounds-social-dev.surge.sh ."
+    "deploy-dev": "npm run build && cd dist && mv index.html 200.html && surge --domain sounds-social-dev.surge.sh .",
+    "format": "prettier-eslint --write 'src/**/*.js'",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.1",
@@ -104,7 +106,23 @@
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.18.2",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "husky": "^0.15.0-rc.8",
+    "lint-staged": "^7.0.0",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "src/**/*.js": [
+        "prettier-eslint --write",
+        "git add"
+      ]
+    }
   },
   "engines": {
     "node": ">= 4.0.0",

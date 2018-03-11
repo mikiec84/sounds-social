@@ -5,7 +5,7 @@ export const langMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      'accept-language': getLanguage(),
+      'accept-language': getLanguage()
     }
   }))
 

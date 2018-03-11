@@ -8,12 +8,12 @@ export const soundRoutes = [
     name: 'sound-detail',
     path: '/sounds/:id',
     component: SoundDetailPage,
-    meta: { needsAuth: constant(false) },
+    meta: { needsAuth: constant(false) }
   },
   {
     name: 'sound-edit',
     path: '/sounds/:id/edit',
     component: SoundEditPage,
-    meta: { needsAuth: constant(false) },
-  },
+    meta: { needsAuth: constant(false) }
+  }
 ]

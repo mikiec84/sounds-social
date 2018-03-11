@@ -27,7 +27,14 @@ export const GroupDetailedFieldsFragment = gql`
   }
 `
 
-export const saveGroup = (id, name, type, websiteUrl, avatarFile, description = '') => {
+export const saveGroup = (
+  id,
+  name,
+  type,
+  websiteUrl,
+  avatarFile,
+  description = ''
+) => {
   const action = id ? 'update' : 'create'
 
   return apolloClient.mutate({
@@ -40,49 +47,54 @@ export const saveGroup = (id, name, type, websiteUrl, avatarFile, description = 
           $avatarFile: FileData 
           $description: String
       ) {
-        group: ${action}Group(${id ? '_id: $id' : ''} data: { name: $name type: $type websiteUrl: $websiteUrl avatarFile: $avatarFile description: $description }) {
+        group: ${action}Group(${
+      id ? '_id: $id' : ''
+    } data: { name: $name type: $type websiteUrl: $websiteUrl avatarFile: $avatarFile description: $description }) {
           _id
         }
       }
     `,
-    variables: { id, name, type, websiteUrl, avatarFile, description },
+    variables: { id, name, type, websiteUrl, avatarFile, description }
   })
 }
 
-export const removeGroup = id => apolloClient.mutate({
-  mutation: gql`
-    mutation RemoveGroup($id: String!) {
-      group: removeGroup(_id: $id) {
-        _id
+export const removeGroup = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation RemoveGroup($id: String!) {
+        group: removeGroup(_id: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-})
+    `,
+    variables: { id }
+  })
 
-export const follow = id => apolloClient.mutate({
-  mutation: gql`
-    mutation FollowGroupMutation($id: String!) {
-      followGroup(toFollowId: $id) {
-        _id
+export const follow = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation FollowGroupMutation($id: String!) {
+        followGroup(toFollowId: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['GroupPage'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['GroupPage']
+  })
 
-export const unfollow = id => apolloClient.mutate({
-  mutation: gql`
-    mutation UnfollowGroupMutation($id: String!) {
-      unfollowGroup(toUnfollowId: $id) {
-        _id
+export const unfollow = id =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation UnfollowGroupMutation($id: String!) {
+        unfollowGroup(toUnfollowId: $id) {
+          _id
+        }
       }
-    }
-  `,
-  variables: { id },
-  refetchQueries: ['GroupPage'],
-})
+    `,
+    variables: { id },
+    refetchQueries: ['GroupPage']
+  })
 
 export const groupPageQuery = gql`
   query GroupPage($id: String!) {

@@ -8,12 +8,12 @@ export const profileRoutes = [
     name: 'profile-detail',
     path: '/profile/:id',
     component: ProfilePage,
-    meta: { needsAuth: ({ params }) => params.id === 'me' },
+    meta: { needsAuth: ({ params }) => params.id === 'me' }
   },
   {
     name: 'profile-edit',
     path: '/profile/:id/edit',
     component: ProfileEditPage,
-    meta: { needsAuth: constant(true) },
-  },
+    meta: { needsAuth: constant(true) }
+  }
 ]

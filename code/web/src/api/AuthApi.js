@@ -6,7 +6,7 @@ import {
   createUser as apolloCreateUser,
   userId,
   forgotPassword,
-  resetPassword as apolloResetPassword,
+  resetPassword as apolloResetPassword
 } from 'meteor-apollo-accounts'
 import { apolloClient } from './graphql/client'
 import { isValidMail } from '../func/isValidMail'
@@ -21,8 +21,8 @@ export const getUsername = async () => {
       }
     `,
     variables: {
-      id: await getUserId(),
-    },
+      id: await getUserId()
+    }
   })
 
   return get('data.getUser.username')(userData)
@@ -30,30 +30,28 @@ export const getUsername = async () => {
 
 export const getUserId = () => userId()
 
-export const isAuthenticated = async () => !!(await userId())
+export const isAuthenticated = async () => !!await userId()
 
-export const doLogin = (username, password) => loginWithPassword(
-  { username, password },
-  apolloClient,
-)
+export const doLogin = (username, password) =>
+  loginWithPassword({ username, password }, apolloClient)
 
 export const hasInvalidPassword = password => password.length < 6
 
 export const hasInvalidUserCredentials = (username, password, email) =>
-  (username.length < 3 || (!isUndefined(email) && !isValidMail(email)) || hasInvalidPassword(password))
+  username.length < 3 ||
+  (!isUndefined(email) && !isValidMail(email)) ||
+  hasInvalidPassword(password)
 
 export const createUser = async (username, email, password) => {
   if (hasInvalidUserCredentials(username, password, email)) {
     throw new Error('length requirements wrong')
   }
 
-  return apolloCreateUser(
-    { username, email, password },
-    apolloClient,
-  )
+  return apolloCreateUser({ username, email, password }, apolloClient)
 }
 
-export const sendForgotPasswordMail = (email) => forgotPassword({ email }, apolloClient)
+export const sendForgotPasswordMail = email =>
+  forgotPassword({ email }, apolloClient)
 
 export const resetPassword = (newPassword, token) =>
   apolloResetPassword({ newPassword, token }, apolloClient)

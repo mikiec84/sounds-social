@@ -7,8 +7,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    soundPlayer: soundPlayerModule,
-  },
+    soundPlayer: soundPlayerModule
+  }
 })
 
 export default store
