@@ -19,7 +19,8 @@
               class="w-100"
               style="height: 180px"
               name="description"
-              @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
+              @change="changeFormData('description', $event.target.value)"
+              v-text="formData.description"></textarea>
         </form-field>
 
         <label-input :label="$t('Public')">

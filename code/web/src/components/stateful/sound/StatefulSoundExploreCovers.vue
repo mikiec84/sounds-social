@@ -2,6 +2,7 @@
   <div>
     <div class="cf mw6 center bg-black-05">
       <div v-for="sound in exploreCovers"
+           :key="sound._id"
            class="fl w-25 pointer"
            @click="$router.push({ name: 'sound-detail', params: { id: sound._id } })">
         <div class="w-100 cover bg-center" :style="`height: 25vw; max-height: 128px; background-image: url('${coverUrlImage(sound)}')`"></div>

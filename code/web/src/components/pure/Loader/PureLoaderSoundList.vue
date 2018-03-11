@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(i, index) in [0, 1, 2]" :class="{ 'mt3': index !== 0  }">
+    <div :key="i" v-for="(i, index) in [0, 1, 2]" :class="{ 'mt3': index !== 0  }">
       <pure-loader-sound></pure-loader-sound>
     </div>
 

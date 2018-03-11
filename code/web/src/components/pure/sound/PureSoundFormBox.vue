@@ -22,7 +22,7 @@
       <div class="description username f5 gray">
         <span v-text="$t('by')"></span>
         <select class="dim pointer bg-transparent b--black-20 gray dib v-mid" @change="$emit('changeUploader', $event.target.value)">
-          <option v-for="option in uploaderOptions" :value="option.value" v-text="option.label"></option>
+          <option :key="option.value" v-for="option in uploaderOptions" :value="option.value" v-text="option.label"></option>
         </select></div>
 
       <textarea
@@ -30,7 +30,8 @@
               type="text"
               @change="$emit('changeDescription', $event.target.value)"
               style="min-height: 150px"
-              :placeholder="`${$t('Sound description')}...`">{{description}}</textarea>
+              v-text="description"
+              :placeholder="`${$t('Sound description')}...`"></textarea>
 
       <div class="pv3">
         <pure-button :disabled="isUploading" @click="$emit('publish')">{{buttonLabel}}</pure-button>

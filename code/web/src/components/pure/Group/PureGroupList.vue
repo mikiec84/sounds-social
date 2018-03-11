@@ -7,7 +7,7 @@
     <h2 v-if="groups && groups.length" class="mb3 f3" v-text="$t('Part of')"></h2>
 
     <div class="overflow-y-auto cf custom-max-height-group-list-l">
-      <div v-for="group in groups" class="fl w-third-m w-50 w-100-l pr2 pr0-l">
+      <div :key="index" v-for="(group, index) in groups" class="fl w-third-m w-50 w-100-l pr2 pr0-l">
         <div class="pa2 ba bw1 b--light-gray mb2 pointer" @click="$emit('openGroup', group)">
           <div class="dib v-mid cover"
                :style="`width: 50px; height: 50px; background-image: url(${getGroupImage(group)})`"></div>

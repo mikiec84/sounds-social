@@ -26,7 +26,8 @@
         class="w-100"
         style="height: 180px"
         name="description"
-        @change="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
+        v-text="formData.description"
+        @change="changeFormData('description', $event.target.value)"></textarea>
     </form-field>
 
     <div class="mt4">

@@ -21,7 +21,8 @@
             class="w-100"
             style="height: 130px"
             name="description"
-            @keyup="changeFormData('description', $event.target.value)">{{formData.description}}</textarea>
+            v-text="formData.description"
+            @keyup="changeFormData('description', $event.target.value)"></textarea>
         </form-field>
 
         <form-field :label="$t('Website Url')" :error="$v.formData.websiteUrl">
