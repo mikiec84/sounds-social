@@ -4,6 +4,8 @@ node_js:
 cache:
     directories:
         - node_modules
+        - code/web/node_modules
+        - code/api/node_modules
         - $HOME/.meteor/
 
 before_install:
