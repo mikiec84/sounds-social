@@ -41,4 +41,7 @@ Jest is used to do unit testing.
 
 ### Linting
 
-By running `npm run lint` the source code can be linted against deviations from the coding style.
+By running `npm run lint` the source code can be linted against deviations from the coding style (eslint).
+
+Prettier is used to provide a `format` command that automatically formats the code. There are git hooks on
+pre commit to make the process automatic.
