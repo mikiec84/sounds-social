@@ -13,7 +13,7 @@ describe('flowMerge', function() {
           () => ({ duper: 'nice2' })
         )
       )
-      .to.equal({
+      .to.deep.equal({
         sort: 1,
         fields: ['name', '_id'],
         duper: 'nice2',
