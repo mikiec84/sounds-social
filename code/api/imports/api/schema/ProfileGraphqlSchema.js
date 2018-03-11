@@ -16,7 +16,6 @@ type Profile {
   type: String
   description: String
   websiteUrl: String
-  description: String
   avatarFile: File
   language: String
 }
