@@ -1,5 +1,7 @@
 # [![Sounds Social](docs/sound_social_logo.png)]()
 
+[![CI Build Status](https://travis-ci.org/matteodem/sounds-social.svg?branch=master)](https://travis-ci.org/matteodem/sounds-social)
+
 **The open and social music platform.**
 
 > Early work in progress
