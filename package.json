@@ -14,7 +14,7 @@
     "prepush": "npm run lint",
     "precommit": "npm run format",
     "test": "cd code/web && npm run unit && cd ../api/ && npm run test",
-    "cli": "npm run lint && npm run test"
+    "cli": "cd code/web && npm run cli && cd ../api/ && npm run cli"
   },
   "repository": {
     "type": "git",
