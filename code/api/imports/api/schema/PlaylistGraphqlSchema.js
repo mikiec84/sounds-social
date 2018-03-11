@@ -4,10 +4,9 @@ import { check, Match } from 'meteor/check'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { createPlaylist } from '../../data/collection/methods/Playlist/createPlaylist'
 import { updatePlaylist } from '../../data/collection/methods/Playlist/updatePlaylist'
-import { fetchOnePlaylistForUser } from '../../data/collection/methods/Playlist/fetchOnePlaylistForUser'
 import { deletePlaylist } from '../../data/collection/methods/Playlist/deletePlaylist'
-import { fetchOnePublicPlaylist } from '../../data/collection/methods/Playlist/fetchOnePublicPlaylist'
-import { fetchPublicPlaylistsForUser } from '../../data/collection/methods/Playlist/fetchPublicPlaylists'
+import { fetchOnePlaylistForUser } from '../../data/collection/methods/Playlist/fetchOnePlaylistForUser'
+import { fetchPlaylistsForUser } from '../../data/collection/methods/Playlist/fetchPlaylistsForUser'
 import { addSoundToPlaylist } from '../../data/collection/methods/Playlist/addSoundToPlaylist'
 import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
 import { fetchOneSoundCoverFile } from '../../data/collection/methods/File/fetchOneSoundCoverFile'
@@ -68,12 +67,12 @@ export default {
       listPlaylist (root, args, context) {
         const userId = defaultTo(context.userId)(args.userId)
 
-        return fetchPublicPlaylistsForUser(context.userId)(userId).fetch()
+        return fetchPlaylistsForUser(context.userId)(userId)
       },
       getPlaylist (root, args, context) {
         check(args.playlistId, String)
 
-        return fetchOnePublicPlaylist(context.userId)(args.playlistId)
+        return fetchOnePlaylistForUser(context.userId)(args.playlistId)
       },
     },
     Mutation: {

@@ -66,7 +66,7 @@ export default {
     Query: {
       listGroupForUser (root, args, context) {
         const userId = args.userId || context.userId
-        return fetchGroupsForUser(userId)(context.grapherFields).fetch()
+        return fetchGroupsForUser(userId)(context.grapherFields)
       },
       getGroup (root, args, context) {
         check(args._id, String)

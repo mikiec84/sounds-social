@@ -1,4 +1,8 @@
 import { playlistCollection } from '../../PlaylistCollection'
-import { fetchOneForCreator } from '../general/fetchOneForCreator'
 
-export const fetchOnePlaylistForUser = fetchOneForCreator(playlistCollection)
+export const fetchOnePlaylistForUser = currentUserId => playlistId => playlistCollection.findOne({
+  $or: [
+    { _id: playlistId, isPublic: true },
+    { _id: playlistId, creatorId: currentUserId },
+  ]
+})

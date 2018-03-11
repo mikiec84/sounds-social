@@ -36,7 +36,7 @@ export default {
       canFollow: (root, args, context) => context.userId && root._id !== context.userId,
       isFollowedByCurrentUser: (root, args, context) => isFollowedByUser(root._id)(context.userId),
       profile: flow(get('_id'), fetchOneProfile),
-      groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields).fetch(),
+      groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields),
     },
   },
   typeDefs: [

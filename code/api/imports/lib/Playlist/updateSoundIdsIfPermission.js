@@ -1,9 +1,11 @@
-import { fetchOnePlaylistForUser } from '../../data/collection/methods/Playlist/fetchOnePlaylistForUser'
+import {
+  fetchOnePlaylistForCreator,
+} from '../../data/collection/methods/Playlist/fetchOnePlaylistForCreator'
 
 export const updateSoundIdsIfPermission = collection => playlistId => userId => updateOperator => {
-  const sound = fetchOnePlaylistForUser(userId)(playlistId)
+  const sound = fetchOnePlaylistForCreator(userId)(playlistId)
 
   if (sound) collection.update({ _id: playlistId }, updateOperator)
 
-  return fetchOnePlaylistForUser(userId)(playlistId)
+  return fetchOnePlaylistForCreator(userId)(playlistId)
 }
