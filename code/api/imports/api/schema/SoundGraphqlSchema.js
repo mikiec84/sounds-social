@@ -27,14 +27,14 @@ let soundsBeingPlayed = []
 export default {
   resolvers: {
     Query: {
-      getSound (root, args, context) {
+      getSound(root, args, context) {
         const { _id } = args
 
         check(_id, Match.Maybe(String))
 
         return fetchOneSoundForUser(context.userId)(_id)
       },
-      listSound (root, args, context) {
+      listSound(root, args, context) {
         const { filters } = args
         const { userId } = context
 
@@ -44,7 +44,8 @@ export default {
         const compareKey = keyToCompare => ({ key }) => key === keyToCompare
         const userFilterId = getValue(filters.filter(compareKey('user'))[0])
         const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
-        const isFeed = 'true' === getValue(filters.filter(compareKey('loggedInFeed'))[0])
+        const isFeed =
+          getValue(filters.filter(compareKey('loggedInFeed'))[0]) === 'true'
 
         if (userFilterId) return fetchFeedSoundsForUser(userId)(userFilterId)
 
@@ -129,16 +130,21 @@ export default {
         const shouldCountPlay = soundsBeingPlayed
           .filter(play => play.userId === userId)
           .every(play => {
-            const sameIds = play.soundPlayingId === soundPlayingId && play.soundId === soundId
-            const startedFiveSecondsAgo = moment
-              .duration(moment(new Date()).diff(play.startedAt)).seconds() > 5
+            const sameIds =
+              play.soundPlayingId === soundPlayingId && play.soundId === soundId
+            const startedFiveSecondsAgo =
+              moment
+                .duration(moment(new Date()).diff(play.startedAt))
+                .seconds() > 5
 
             return sameIds && startedFiveSecondsAgo
           })
 
         if (shouldCountPlay) countSoundPlay(soundId)
 
-        soundsBeingPlayed = soundsBeingPlayed.filter(play => play.userId !== userId)
+        soundsBeingPlayed = soundsBeingPlayed.filter(
+          play => play.userId !== userId
+        )
 
         return { soundPlayingId, soundId }
       },

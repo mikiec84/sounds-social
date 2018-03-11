@@ -10,7 +10,9 @@
     "test": "meteor test --once --port=4333 --driver-package=dispatch:mocha",
     "deploy-dev": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy sounds-social-dev --settings prod-settings.json",
     "cli": "meteor npm run test",
-    "lint": "eslint --ignore-pattern '*.test.js' 'server/*.js' 'imports/**/*.js'"
+    "lint": "eslint --ignore-pattern '*.test.js' 'server/*.js' 'imports/**/*.js'",
+    "format": "prettier-eslint --write 'server/*.js' 'imports/**/*.js'",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "apollo-client": "^2.2.6",
@@ -41,6 +43,26 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.15.0-rc.8",
+    "lint-staged": "^7.0.0",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "imports/**/*.js": [
+        "prettier-eslint --write",
+        "git add"
+      ],
+      "server/**/*.js": [
+        "prettier-eslint --write",
+        "git add"
+      ]
+    }
   }
 }

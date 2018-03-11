@@ -10,10 +10,9 @@ export const fetchOneSoundForUser = userId => _id => {
       selector,
       {
         _id,
-        creatorId: { $in: [
-          userId,
-          ...fetchGroupIdsForUser(userId),
-        ] },
+        creatorId: {
+          $in: [userId, ...fetchGroupIdsForUser(userId)],
+        },
       },
     ],
   })

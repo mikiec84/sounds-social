@@ -2,7 +2,13 @@ import { groupCollection } from '../../GroupCollection'
 import { fileCollection } from '../../FileCollection'
 import { omitBy, isNil } from 'lodash/fp'
 
-export const updateGroup = userId => _id => ({ name, type, description, websiteUrl, avatarFile }) => {
+export const updateGroup = userId => _id => ({
+  name,
+  type,
+  description,
+  websiteUrl,
+  avatarFile,
+}) => {
   const groupData = {
     name,
     type,
@@ -14,5 +20,8 @@ export const updateGroup = userId => _id => ({ name, type, description, websiteU
     groupData.avatarFileId = fileCollection.insert({ ...avatarFile })
   }
 
-  return groupCollection.update({ _id, memberIds: userId }, { $set: omitBy(isNil)(groupData) })
+  return groupCollection.update(
+    { _id, memberIds: userId },
+    { $set: omitBy(isNil)(groupData) }
+  )
 }

@@ -1,7 +1,7 @@
 import { resolvePromiseForCallback } from './resolvePromiseForCallback'
 
-describe('resolvePromiseForCallback', function () {
-  it('validly resolves', function (done) {
+describe('resolvePromiseForCallback', function() {
+  it('validly resolves', function(done) {
     const resolve = () => {
       done()
     }
@@ -12,7 +12,7 @@ describe('resolvePromiseForCallback', function () {
     resolvePromiseForCallback(resolve, reject)(null, true)
   })
 
-  it('validly rejects', function (done) {
+  it('validly rejects', function(done) {
     const resolve = () => {
       throw new Error('should not be called')
     }

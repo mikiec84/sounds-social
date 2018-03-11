@@ -32,12 +32,12 @@ export const soundSchema = new SimpleSchema({
   playsCount: {
     type: SimpleSchema.Integer,
     optional: true,
-    autoValue () {
+    autoValue() {
       if (this.isSet) {
-        return this. value
+        return this.value
       } else {
         return 0
       }
-    }
+    },
   },
 })

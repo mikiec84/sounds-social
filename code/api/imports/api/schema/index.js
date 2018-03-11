@@ -22,7 +22,4 @@ const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
   ],
 })
 
-export {
-  typeDefs,
-  resolvers,
-}
+export { typeDefs, resolvers }

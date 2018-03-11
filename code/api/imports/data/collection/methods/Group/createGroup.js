@@ -1,7 +1,13 @@
 import { groupCollection } from '../../GroupCollection'
 import { fileCollection } from '../../FileCollection'
 
-export const createGroup = userId => ({ name, type, description, websiteUrl, avatarFile }) => {
+export const createGroup = userId => ({
+  name,
+  type,
+  description,
+  websiteUrl,
+  avatarFile,
+}) => {
   const groupData = {
     creatorId: userId,
     memberIds: [userId],

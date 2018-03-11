@@ -5,12 +5,14 @@ import { check, Match } from 'meteor/check'
 registerType(Date, 'Date')
 
 export default {
-  typeDefs: [`
+  typeDefs: [
+    `
 type Date {
   fromNow: String
   formatted(format: String): String
 }
-  `],
+  `,
+  ],
   resolvers: {
     Date: {
       fromNow: (root, args, context) => {

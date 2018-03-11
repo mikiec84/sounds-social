@@ -33,7 +33,5 @@ export const createSound = currentUserId => data => optionalGroupId => {
   if (!data.file) throw new Error('Need file to add sound')
   data.fileId = fileCollection.insert({ ...data.file })
 
-  return fetchOneSoundById(
-    soundCollection.insert(omitFile(data)),
-  )
+  return fetchOneSoundById(soundCollection.insert(omitFile(data)))
 }

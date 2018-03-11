@@ -16,6 +16,8 @@ Accounts.emailTemplates.resetPassword = {
     resetUrl.pathname = resetUrl.hash.replace('#', '')
     resetUrl.hash = ''
 
-    return `Hey ${user.username}! Change your password by following this link: ${resetUrl.toString()}`
-  }
+    return `Hey ${
+      user.username
+    }! Change your password by following this link: ${resetUrl.toString()}`
+  },
 }

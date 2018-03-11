@@ -25,5 +25,5 @@ export const profileSchema = new SimpleSchema({
   language: {
     type: String,
     optional: true,
-  }
+  },
 })

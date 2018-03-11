@@ -39,7 +39,8 @@ extend type Mutation {
 }
 `
 
-const isCreatorResolver = (root, args, context) => root.creatorId === context.userId
+const isCreatorResolver = (root, args, context) =>
+  root.creatorId === context.userId
 
 export default {
   typeDefs: [typeDef],
@@ -52,9 +53,9 @@ export default {
           if (acc) return acc
 
           return fetchOneSoundCoverFile(soundId)
-        }, null),
+        }, null)
       ),
-      creator: (root) => {
+      creator: root => {
         return Meteor.users.findOne({ _id: root.creatorId })
       },
       sounds: (root, args, context) => {
@@ -64,19 +65,19 @@ export default {
       isRemovable: isCreatorResolver,
     },
     Query: {
-      listPlaylist (root, args, context) {
+      listPlaylist(root, args, context) {
         const userId = defaultTo(context.userId)(args.userId)
 
         return fetchPlaylistsForUser(context.userId)(userId)
       },
-      getPlaylist (root, args, context) {
+      getPlaylist(root, args, context) {
         check(args.playlistId, String)
 
         return fetchOnePlaylistForUser(context.userId)(args.playlistId)
       },
     },
     Mutation: {
-      createPlaylist (root, args, context) {
+      createPlaylist(root, args, context) {
         const { name, description, isPublic } = args
         check(name, String)
         check(description, Match.Optional(String))
@@ -94,7 +95,7 @@ export default {
           }),
         }
       },
-      updatePlaylist (root, args, context) {
+      updatePlaylist(root, args, context) {
         const { playlistId, name, description, soundIds, isPublic } = args
         check(playlistId, String)
         check(name, Match.Maybe(String))
@@ -105,13 +106,18 @@ export default {
         const { userId } = context
         checkUserIdRequired(userId)
 
-        updatePlaylist(
-          { playlistId, name, userId, isPublic, description, soundIds },
-        )
+        updatePlaylist({
+          playlistId,
+          name,
+          userId,
+          isPublic,
+          description,
+          soundIds,
+        })
 
         return fetchOnePlaylistForUser(userId)(playlistId)
       },
-      removePlaylist (root, args, context) {
+      removePlaylist(root, args, context) {
         const { playlistId } = args
         check(playlistId, String)
 
@@ -124,7 +130,7 @@ export default {
 
         return playlist
       },
-      addSoundToPlaylist (root, args, context) {
+      addSoundToPlaylist(root, args, context) {
         const { playlistId, soundId } = args
         check(playlistId, String)
         check(soundId, String)

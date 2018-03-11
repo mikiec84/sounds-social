@@ -55,7 +55,8 @@ export default {
     Group: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
       members: flow(get('memberIds'), map(fetchOneUserById)),
-      canFollow: (root, args, context) => context.userId && !root.memberIds.includes(context.userId),
+      canFollow: (root, args, context) =>
+        context.userId && !root.memberIds.includes(context.userId),
       isEditable: (root, args, context) => {
         return root.creatorId === context.userId
       },
@@ -64,24 +65,24 @@ export default {
       },
     },
     Query: {
-      listGroupForUser (root, args, context) {
+      listGroupForUser(root, args, context) {
         const userId = args.userId || context.userId
         return fetchGroupsForUser(userId)(context.grapherFields)
       },
-      getGroup (root, args, context) {
+      getGroup(root, args, context) {
         check(args._id, String)
         return fetchOneGroupById(args._id)
       },
     },
     Mutation: {
-      createGroup (root, args, context) {
+      createGroup(root, args, context) {
         if (!context.userId) return null
 
         const id = createGroup(context.userId, args.data)
 
         return fetchOneGroupById(id)
       },
-      updateGroup (root, args, context) {
+      updateGroup(root, args, context) {
         if (!context.userId) return null
         check(args._id, String)
 
@@ -89,7 +90,7 @@ export default {
 
         return fetchOneGroupById(args._id)
       },
-      removeGroup (root, args, context) {
+      removeGroup(root, args, context) {
         if (!context.userId) return null
         check(args._id, String)
 
@@ -99,7 +100,7 @@ export default {
 
         return group
       },
-      followGroup (root, args, context) {
+      followGroup(root, args, context) {
         if (!context.userId) return null
 
         const { toFollowId } = args
@@ -108,7 +109,7 @@ export default {
         followGroup(toFollowId)(context.userId)
         return fetchOneGroupById(toFollowId)
       },
-      unfollowGroup (root, args, context) {
+      unfollowGroup(root, args, context) {
         if (!context.userId) return null
 
         const { toUnfollowId } = args

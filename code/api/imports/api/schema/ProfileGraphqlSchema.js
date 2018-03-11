@@ -30,12 +30,12 @@ export default {
   resolvers: {
     Profile: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      language (root) {
+      language(root) {
         return root.language || 'en'
       },
     },
     Mutation: {
-      updateUserProfile (root, args, context) {
+      updateUserProfile(root, args, context) {
         checkUserIdRequired(context.userId)
 
         updateProfile(context.userId)(args.profileData)

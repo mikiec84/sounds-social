@@ -17,7 +17,6 @@ jquery@1.11.10
 apollo@2.0.0
 dynamic-import@0.2.0
 static-html
-server-render@0.2.0
 random@1.0.10
 
 accounts-base@1.4.0

@@ -5,5 +5,7 @@ export const fetchPlaylistsForUser = currentUserId => userId => {
 
   if (userId !== currentUserId) findPublicSelector.isPublic = true
 
-  return playlistCollection.find(findPublicSelector, { sort: { createdAt: -1 } }).fetch()
+  return playlistCollection
+    .find(findPublicSelector, { sort: { createdAt: -1 } })
+    .fetch()
 }

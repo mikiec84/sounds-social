@@ -7,8 +7,8 @@ module.exports = {
   ],
   "rules": {
     "space-before-function-paren": "off",
-    "comma-dangle": "off",
+    "comma-dangle": [2, "always-multiline"],
     "spaced-comment": "off",
-    "no-new": "off"
+    "no-new": "off",
   }
 };

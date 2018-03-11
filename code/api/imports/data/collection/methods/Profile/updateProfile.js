@@ -25,5 +25,7 @@ export const updateProfile = referenceId => profileData => {
     })
   }
 
-  return profileCollection.update(selector, { $set: omitAvatarFile(profileData) })
+  return profileCollection.update(selector, {
+    $set: omitAvatarFile(profileData),
+  })
 }

@@ -7,30 +7,32 @@ import { userCollectionName } from '../collection/UserCollection'
 import { selectUserIsCreator } from '../collection/methods/Sound/selectUserIsCreator'
 import { selectIsPublic } from '../collection/methods/general/selectIsPublic'
 
-const searchByUsername = (config, query, cb) => findRelatedFieldDocuments({
-  collection: soundCollection,
-  selector: config.selectorPerField('aggregatedAuthor.username', query),
-  from: userCollectionName,
-  localField: 'creatorId',
-  foreignField: '_id',
-  as: 'aggregatedAuthor',
-})
+const searchByUsername = (config, query, cb) =>
+  findRelatedFieldDocuments({
+    collection: soundCollection,
+    selector: config.selectorPerField('aggregatedAuthor.username', query),
+    from: userCollectionName,
+    localField: 'creatorId',
+    foreignField: '_id',
+    as: 'aggregatedAuthor',
+  })
 
-const searchByGroupName = (config, query, cb) => findRelatedFieldDocuments({
-  collection: soundCollection,
-  selector: config.selectorPerField('aggregatedGroupAuthor.name', query),
-  from: groupCollectionName,
-  localField: 'creatorId',
-  foreignField: '_id',
-  as: 'aggregatedGroupAuthor',
-})
+const searchByGroupName = (config, query, cb) =>
+  findRelatedFieldDocuments({
+    collection: soundCollection,
+    selector: config.selectorPerField('aggregatedGroupAuthor.name', query),
+    from: groupCollectionName,
+    localField: 'creatorId',
+    foreignField: '_id',
+    as: 'aggregatedGroupAuthor',
+  })
 
 export const soundSearchIndex = new Index({
   collection: soundCollection,
   fields: ['name', 'description'],
   permission: constant(true),
   engine: new MongoDBEngine({
-    selector: function (...args) {
+    selector: function(...args) {
       const defaultConfig = this.defaultConfiguration()
       const selector = defaultConfig.selector(...args)
 
@@ -39,19 +41,25 @@ export const soundSearchIndex = new Index({
       return {
         $and: [
           { $or: [selectUserIsCreator(userId), selectIsPublic()] },
-          { $or: [
-            ...selector.$or,
-            {
-              _id: {
-                $in: [
-                  ...searchByUsername(defaultConfig, queryObject.name).map(get('_id')),
-                  ...searchByGroupName(defaultConfig, queryObject.name).map(get('_id')),
-                ],
+          {
+            $or: [
+              ...selector.$or,
+              {
+                _id: {
+                  $in: [
+                    ...searchByUsername(defaultConfig, queryObject.name).map(
+                      get('_id')
+                    ),
+                    ...searchByGroupName(defaultConfig, queryObject.name).map(
+                      get('_id')
+                    ),
+                  ],
+                },
               },
-            },
-          ] },
+            ],
+          },
         ],
       }
-    }
+    },
   }),
 })

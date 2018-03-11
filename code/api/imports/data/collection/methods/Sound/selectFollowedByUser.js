@@ -9,7 +9,7 @@ export const selectFollowedByUser = userId => {
       $in: [
         ...fetchUserFollowerIdsForUser(userId),
         ...fetchGroupFollowerIdsForUser(userId),
-      ]
+      ],
     },
   }
 }

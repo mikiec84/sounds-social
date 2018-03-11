@@ -14,7 +14,8 @@ export default {
     Query: {
       getUser: resolver.get(userCollection),
       listUser: resolver.list(userCollection),
-      currentUser: (root, args, context) => flow(get('userId'), fetchOneUserById)(context),
+      currentUser: (root, args, context) =>
+        flow(get('userId'), fetchOneUserById)(context),
     },
     Mutation: {
       followUser: (root, args, context) => {
@@ -33,10 +34,13 @@ export default {
       },
     },
     User: {
-      canFollow: (root, args, context) => context.userId && root._id !== context.userId,
-      isFollowedByCurrentUser: (root, args, context) => isFollowedByUser(root._id)(context.userId),
+      canFollow: (root, args, context) =>
+        context.userId && root._id !== context.userId,
+      isFollowedByCurrentUser: (root, args, context) =>
+        isFollowedByUser(root._id)(context.userId),
       profile: flow(get('_id'), fetchOneProfile),
-      groups: (root, args, context) => fetchGroupsForUser(root._id)(context.grapherFields),
+      groups: (root, args, context) =>
+        fetchGroupsForUser(root._id)(context.grapherFields),
     },
   },
   typeDefs: [

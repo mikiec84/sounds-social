@@ -1,13 +1,13 @@
 import { playlistCollection } from '../../PlaylistCollection'
 
 export const updatePlaylist = ({
-                                 playlistId,
-                                 name,
-                                 userId,
-                                 isPublic,
-                                 description,
-                                 soundIds
-                               }) => {
+  playlistId,
+  name,
+  userId,
+  isPublic,
+  description,
+  soundIds,
+}) => {
   const fieldsToUpdate = { $set: {} }
 
   fieldsToUpdate.$set.name = name
@@ -17,6 +17,6 @@ export const updatePlaylist = ({
 
   playlistCollection.update(
     { _id: playlistId, creatorId: userId },
-    fieldsToUpdate,
+    fieldsToUpdate
   )
 }

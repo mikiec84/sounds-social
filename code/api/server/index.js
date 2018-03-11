@@ -4,8 +4,10 @@ import { makeExecutableSchema } from 'graphql-tools'
 import { loadSchema, getSchema } from 'graphql-loader'
 import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
-import { renderIntoElementById } from 'meteor/server-render'
-import { checkUserDataMaybe, checkUserIdMaybe } from '../imports/lib/check/checkUserData'
+import {
+  checkUserDataMaybe,
+  checkUserIdMaybe,
+} from '../imports/lib/check/checkUserData'
 import mongoFieldsMiddleware from '../imports/middleware/MongoFieldsContextMiddleware'
 
 import '../imports/config'
@@ -20,23 +22,26 @@ const schema = makeExecutableSchema(getSchema())
 
 mongoFieldsMiddleware(schema)
 
-createApolloServer(req => {
-  return {
-    graphiql: true,
-    pretty: true,
-    schema,
-    context: userContext => {
-      checkUserIdMaybe(userContext.userId)
-      checkUserDataMaybe(userContext.user)
+createApolloServer(
+  req => {
+    return {
+      graphiql: true,
+      pretty: true,
+      schema,
+      context: userContext => {
+        checkUserIdMaybe(userContext.userId)
+        checkUserDataMaybe(userContext.user)
 
-      return {
-        ...userContext,
-        userLanguage: defaultTo('en')(req.header('accept-language')),
-      }
+        return {
+          ...userContext,
+          userLanguage: defaultTo('en')(req.header('accept-language')),
+        }
+      },
+    }
+  },
+  {
+    configServer: graphQLServer => {
+      graphQLServer.use(cors())
     },
   }
-}, {
-  configServer: graphQLServer => {
-    graphQLServer.use(cors())
-  },
-})
+)
