@@ -35,6 +35,7 @@ import MemberList from '../../components/pure/Group/PureMemberList.vue'
 import GroupList from '../../components/pure/Group/PureGroupList.vue'
 import FormError from '../../components/pure/Form/PureFormError.vue'
 import FormField from '../../components/pure/Form/PureFormField.vue'
+import NumberCount from '../../components/pure/User/PureNumberCount.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -73,5 +74,6 @@ export const ComponentsList = [
   { id: 'pure-loader-sound-list', component: LoaderSoundList },
   { id: 'pure-loader-transition', component: LoaderTransition },
   { id: 'member-list', component: MemberList },
-  { id: 'group-list', component: GroupList }
+  { id: 'group-list', component: GroupList },
+  { id: 'number-count', component: NumberCount }
 ]

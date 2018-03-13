@@ -20,6 +20,7 @@ import { soundStories } from './SoundStory'
 import { soundFormBoxStories } from './SoundFormBoxStory'
 import { iconStories } from './IconStory'
 import { loaderStories } from './LoaderStory'
+import { numberCountStories } from './NumberCountStory'
 
 buttonStories(module)
 titleStories(module)
@@ -35,3 +36,4 @@ soundStories(module)
 soundFormBoxStories(module)
 soundPlayerStories(module)
 loaderStories(module)
+numberCountStories(module)

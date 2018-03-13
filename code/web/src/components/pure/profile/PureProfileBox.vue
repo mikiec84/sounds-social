@@ -6,7 +6,14 @@
       </div>
     </div>
 
-    <div v-if="profile.description" v-text="profile.description" class="mt3 pl4 f5 lh-copy"></div>
+    <div class="pl4">
+      <div class="mv3">
+        <!-- TODO: display actual number -->
+        <number-count :number="101020" :label="$t('followers')"></number-count>
+      </div>
+
+      <div v-if="profile.description" v-text="profile.description" class="mt3 f5 lh-copy"></div>
+    </div>
 
     <div v-if="profile.websiteUrl" class="mt3 pl4">
       <span class="b"><span v-text="$t('Website')"></span>: </span>
