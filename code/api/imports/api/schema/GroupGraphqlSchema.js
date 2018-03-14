@@ -1,4 +1,4 @@
-import { get, map, flow } from 'lodash/fp'
+import { flow, get, map } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
@@ -10,6 +10,7 @@ import { deleteGroup } from '../../data/collection/methods/Group/deleteGroup'
 import { updateGroup } from '../../data/collection/methods/Group/updateGroup'
 import { createGroup } from '../../data/collection/methods/Group/createGroup'
 import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
+import { fetchGroupFollowerCount } from '../../data/collection/methods/Group/fetchGroupFollowerCount'
 
 const typeDef = `
 type Group {
@@ -25,6 +26,7 @@ type Group {
   isFollowedByCurrentUser: Boolean
   canFollow: Boolean
   isEditable: Boolean
+  followerCount: Int
 }
 
 input GroupData {
@@ -63,6 +65,7 @@ export default {
       isFollowedByCurrentUser: (root, args, context) => {
         return isFollowedByGroup(root._id)(context.userId)
       },
+      followerCount: flow(get('_id'), fetchGroupFollowerCount),
     },
     Query: {
       listGroupForUser(root, args, context) {

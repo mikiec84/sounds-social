@@ -82,6 +82,10 @@
     mounted () {
       getUserId().then(id => {
         this.userId = id
+
+        if (this.$route.params.id === 'me') {
+          this.$router.push({ name: 'profile-detail', params: { id } })
+        }
       })
     },
     apollo: {

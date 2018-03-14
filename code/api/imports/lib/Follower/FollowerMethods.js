@@ -1,4 +1,4 @@
-import { uniq, get } from 'lodash/fp'
+import { uniq, get, getOr } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
 import { fetchOneById } from '../../data/collection/methods/general/fetchOneById'
 
@@ -35,4 +35,8 @@ export const unfollow = collection => toUnfollowId => followerId => {
 
 export const isFollowedBy = collection => toFollowId => potentialFollowerId => {
   return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
+}
+
+export const fetchFollowerCount = collection => referenceId => {
+  return getOr(0)('followerIds.length')(fetchOneById(collection)(referenceId))
 }

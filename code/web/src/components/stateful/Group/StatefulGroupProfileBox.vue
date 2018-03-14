@@ -3,6 +3,7 @@
   <pure-profile-box
     :profile="group"
     :canFollow="group.canFollow"
+    :followerCount="group.followerCount"
     :isFollowedByCurrentUser="group.isFollowedByCurrentUser"
     @follow="follow"
     @unfollow="unfollow"

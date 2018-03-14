@@ -14,6 +14,7 @@ export const ProfileBoxFieldsFragment = gql`
         url
       }
     }
+    followerCount
     groups {
       _id
       name

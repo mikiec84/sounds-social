@@ -6,7 +6,13 @@
       </div>
     </div>
 
-    <div v-if="profile.description" v-text="profile.description" class="mt3 pl4 f5 lh-copy"></div>
+    <div class="pl4">
+      <div class="mv3">
+        <number-count :number="followerCount" :label="$t('followers')"></number-count>
+      </div>
+
+      <div v-if="profile.description" v-text="profile.description" class="mt3 f5 lh-copy"></div>
+    </div>
 
     <div v-if="profile.websiteUrl" class="mt3 pl4">
       <span class="b"><span v-text="$t('Website')"></span>: </span>
@@ -42,11 +48,15 @@
         type: Boolean,
         required: false,
       },
+      followerCount: {
+        type: Number,
+        default: 0,
+      },
     },
     computed: {
       profileAvatarImage () {
         return getImage('avatarFile.url')(this.profile)
-      },
+      }
     }
   }
 </script>
