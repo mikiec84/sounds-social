@@ -1,18 +1,15 @@
 import cors from 'cors'
 import { defaultTo } from 'lodash/fp'
 import { makeExecutableSchema } from 'graphql-tools'
-import { loadSchema, getSchema } from 'graphql-loader'
+import { getSchema, loadSchema } from 'graphql-loader'
 import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
-import {
-  checkUserDataMaybe,
-  checkUserIdMaybe,
-} from '../imports/lib/check/checkUserData'
+import { checkUserIdMaybe } from '../imports/lib/check/checkUserData'
 import mongoFieldsMiddleware from '../imports/middleware/MongoFieldsContextMiddleware'
 
 import '../imports/config'
 import '../imports/listener'
-import { typeDefs, resolvers } from '../imports/api/schema'
+import { resolvers, typeDefs } from '../imports/api/schema'
 
 initAccounts()
 
