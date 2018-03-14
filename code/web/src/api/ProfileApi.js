@@ -13,6 +13,7 @@ export const ProfileBoxFieldsFragment = gql`
       avatarFile {
         url
       }
+      followerCount
     }
     groups {
       _id

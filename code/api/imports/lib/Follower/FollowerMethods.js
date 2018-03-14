@@ -36,3 +36,8 @@ export const unfollow = collection => toUnfollowId => followerId => {
 export const isFollowedBy = collection => toFollowId => potentialFollowerId => {
   return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
 }
+
+// TODO: fix errors as new user!!
+export const fetchFollowerCount = collection => referenceId => {
+  return fetchOneById(collection)(referenceId).followerIds.length
+}
