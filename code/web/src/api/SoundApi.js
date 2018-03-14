@@ -138,7 +138,9 @@ export const countPlayingSound = (id, soundPlayingId) =>
 export const listSoundDefaultQuery = gql`
   query SoundListQuery($userId: String!, $loggedInFeed: String!) {
     listSound(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
-      ...ListSoundFields
+      items {
+        ...ListSoundFields
+      }
     }
   }
   ${listSoundFragment}
@@ -153,9 +155,11 @@ export const exploreCoversQuery = gql`
         { key: "loggedInFeed", value: "false" }
       ]
     ) {
-      _id
-      coverFile {
-        url
+      items {
+        _id
+        coverFile {
+          url
+        }
       }
     }
   }
@@ -164,7 +168,9 @@ export const exploreCoversQuery = gql`
 export const searchSoundQuery = gql`  
   query SearchSoundsQuery($query: String!) {
     listSound: searchSound(query: $query) {
-      ...ListSoundFields
+      items {
+        ...ListSoundFields
+      }
     }
   }
   ${listSoundFragment}
@@ -173,7 +179,9 @@ export const searchSoundQuery = gql`
 export const playlistSoundsQuery = gql`  
   query PlaylistSoundsQuery($playlistId: String!) {
     listSound: listSoundForPlaylist(playlistId: $playlistId) {
-      ...ListSoundFields
+      items {
+        ...ListSoundFields
+      }
     }
   }
   ${listSoundFragment}
@@ -182,7 +190,9 @@ export const playlistSoundsQuery = gql`
 export const groupSoundsQuery = gql`  
   query GroupSoundsQuery($groupId: String!) {
     listSound(filters: [{ key: "group", value: $groupId }]) {
-      ...ListSoundFields
+      items {
+        ...ListSoundFields
+      }
     }
   }
   ${listSoundFragment}

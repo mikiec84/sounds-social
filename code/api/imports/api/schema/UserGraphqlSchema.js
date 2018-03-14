@@ -54,7 +54,7 @@ export default {
       username: String!
       canFollow: Boolean
       isFollowedByCurrentUser: Boolean
-      profile: Profile
+      profile: Profile!
       groups: [Group]
       followerCount: Int
     }

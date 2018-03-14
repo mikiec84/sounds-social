@@ -9,9 +9,9 @@
           @play-sound="playSound"
           @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
           @open-profile="$routeNavigator.openProfile(arguments[0].creatorUserId, arguments[0].ownerType)"
-          :sounds="mapSounds(listSound)"></sound-list>
+          :sounds="mapSounds(listSound.items)"></sound-list>
 
-        <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')"></div>
+        <div v-if="!listSound.items || !listSound.items.length" v-text="$t('No sounds found')"></div>
       </div>
     </pure-loader-transition>
   </div>
@@ -71,7 +71,7 @@
     },
     methods: {
       playSound (data) {
-        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listSound)
+        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listSound.items)
 
         this.$store.dispatch('playFeedWithReset', {
           sounds: soundsToPlay.map(s => mapGraphlDataToSound(s)),

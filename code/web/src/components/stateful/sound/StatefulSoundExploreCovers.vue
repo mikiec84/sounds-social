@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="cf mw6 center bg-black-05">
-      <div v-for="sound in exploreCovers"
+    <div class="cf mw6 center bg-black-05" v-if="exploreCovers">
+      <div v-for="sound in exploreCovers.items"
            :key="sound._id"
            class="fl w-25 pointer"
            @click="$router.push({ name: 'sound-detail', params: { id: sound._id } })">

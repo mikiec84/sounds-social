@@ -184,6 +184,13 @@ export default {
         return isMemberOfGroup(context.userId, root.creatorId)
       },
     },
+    // TODO: generic way... maybe have a makePaginatable wrapper func? for typeDefs and resolvers
+    PaginatableSoundResult: {
+      items: root => root,
+      paginationInfo: () => ({
+        hasMore: false,
+      }),
+    },
   },
   typeDefs: [
     typeDef.get('Sound'),
@@ -220,6 +227,11 @@ export default {
       soundId: String
     }
     
+    type PaginatableSoundResult {
+      items: [Sound]!
+      paginationInfo: PaginationInfo!
+    }
+    
     extend type Mutation {
       createSound(data: SoundInput! groupId: String): Sound
       publishSound(soundId: String!): Sound
@@ -229,9 +241,20 @@ export default {
     }
     
     extend type Query {
-      searchSound(query: String!): [Sound]
-      listSoundForPlaylist(playlistId: String!): [Sound]
-      listSound(limit: Int, offset: Int, filters: [FilterInput]): [Sound]
+      searchSound(
+        query: String!
+        pagination: PaginationInput
+      ): PaginatableSoundResult
+      listSoundForPlaylist(
+        playlistId: String!
+        pagination: PaginationInput
+      ): PaginatableSoundResult
+      listSound(
+        limit: Int
+        offset: Int 
+        filters: [FilterInput] 
+        pagination: PaginationInput
+      ): PaginatableSoundResult
     }
     `,
   ],
