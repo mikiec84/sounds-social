@@ -1,4 +1,4 @@
-import { uniq, get } from 'lodash/fp'
+import { uniq, get, getOr } from 'lodash/fp'
 import { updateFollowerIds } from './updateFollowerIds'
 import { fetchOneById } from '../../data/collection/methods/general/fetchOneById'
 
@@ -37,7 +37,6 @@ export const isFollowedBy = collection => toFollowId => potentialFollowerId => {
   return findFollowerIds(collection)(toFollowId).includes(potentialFollowerId)
 }
 
-// TODO: fix errors as new user!!
 export const fetchFollowerCount = collection => referenceId => {
-  return fetchOneById(collection)(referenceId).followerIds.length
+  return getOr(0)('followerIds.length')(fetchOneById(collection)(referenceId))
 }

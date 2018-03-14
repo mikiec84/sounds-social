@@ -30,7 +30,6 @@ createApolloServer(
       schema,
       context: userContext => {
         checkUserIdMaybe(userContext.userId)
-        checkUserDataMaybe(userContext.user)
 
         return {
           ...userContext,

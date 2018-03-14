@@ -8,7 +8,7 @@
 
     <div class="pl4">
       <div class="mv3">
-        <number-count v-if="'number' === typeof profile.followerCount" :number="profile.followerCount" :label="$t('followers')"></number-count>
+        <number-count :number="followerCount" :label="$t('followers')"></number-count>
       </div>
 
       <div v-if="profile.description" v-text="profile.description" class="mt3 f5 lh-copy"></div>
@@ -47,6 +47,10 @@
       isFollowedByCurrentUser: {
         type: Boolean,
         required: false,
+      },
+      followerCount: {
+        type: Number,
+        default: 0,
       },
     },
     computed: {

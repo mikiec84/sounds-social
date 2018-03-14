@@ -3,7 +3,6 @@ import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { updateProfile } from '../../data/collection/methods/Profile/updateProfile'
 import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
-import { fetchUserFollowerCount } from '../../data/collection/methods/User/fetchUserFollowerCount'
 
 const typeDef = `
 input ProfileData {
@@ -19,7 +18,6 @@ type Profile {
   websiteUrl: String
   avatarFile: File
   language: String
-  followerCount: Int
 }
 
 extend type Mutation {
@@ -32,7 +30,6 @@ export default {
   resolvers: {
     Profile: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      followerCount: flow(get('referenceId'), fetchUserFollowerCount),
       language(root) {
         return root.language || 'en'
       },

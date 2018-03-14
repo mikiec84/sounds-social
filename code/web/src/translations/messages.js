@@ -3,6 +3,7 @@ export const messages = {
     translation: {
       by: 'von',
       Follow: 'Folgen',
+      followers: 'Folgende',
       Unfollow: 'Entfolgen',
       Login: 'Login',
       Logout: 'Ausloggen',

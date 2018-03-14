@@ -1,4 +1,4 @@
-import { flow, get } from 'lodash/fp'
+import { flow, get, defaultTo } from 'lodash/fp'
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
@@ -8,6 +8,7 @@ import { unfollowUser } from '../../data/collection/methods/User/unfollowUser'
 import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedByUser'
 import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
 import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
+import { fetchUserFollowerCount } from '../../data/collection/methods/User/fetchUserFollowerCount'
 
 export default {
   resolvers: {
@@ -38,7 +39,8 @@ export default {
         context.userId && root._id !== context.userId,
       isFollowedByCurrentUser: (root, args, context) =>
         isFollowedByUser(root._id)(context.userId),
-      profile: flow(get('_id'), fetchOneProfile),
+      profile: flow(get('_id'), fetchOneProfile, defaultTo({})),
+      followerCount: flow(get('_id'), fetchUserFollowerCount),
       groups: (root, args, context) =>
         fetchGroupsForUser(root._id)(context.grapherFields),
     },
@@ -54,6 +56,7 @@ export default {
       isFollowedByCurrentUser: Boolean
       profile: Profile
       groups: [Group]
+      followerCount: Int
     }
     
     input UserInput {
