@@ -3,6 +3,10 @@ import { get, flow } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
+import {
+  addPaginationTypeDef,
+  makePaginatableResolver,
+} from '../helpers/PaginationMethods'
 import { soundCollection } from '../../data/collection/SoundCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
@@ -21,6 +25,8 @@ import { publishSound } from '../../data/collection/methods/Sound/publishSound'
 import { countSoundPlay } from '../../data/collection/methods/Sound/countSoundPlay'
 import { updateSoundCover } from '../../data/collection/methods/Sound/updateSoundCover'
 import { updateSound } from '../../data/collection/methods/Sound/updateSound'
+
+const SOUND_DEFAULT_LIMIT = 10
 
 let soundsBeingPlayed = []
 
@@ -55,16 +61,28 @@ export default {
 
         return fetchFeedSoundsForDiscover(userId)
       },
-      searchSound: (root, args, context, ast) => {
-        const { query } = args
-        check(query, String)
+      searchSound: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { query } = args
+          check(query, String)
 
-        let { userId } = context
+          let { userId } = context
 
-        if (!userId) userId = null
+          if (!userId) userId = null
 
-        return soundSearchIndex.search(query, { limit: 50, userId }).fetch()
-      },
+          const searchQuery = soundSearchIndex.search(query, {
+            limit: args.limit,
+            skip: args.skip,
+            userId,
+          })
+
+          return {
+            items: searchQuery.fetch(),
+            totalCount: searchQuery.count(),
+          }
+        },
+      }),
       listSoundForPlaylist: (root, args, context, ast) => {
         const { playlistId } = args
         check(playlistId, String)
@@ -184,18 +202,12 @@ export default {
         return isMemberOfGroup(context.userId, root.creatorId)
       },
     },
-    // TODO: generic way... maybe have a makePaginatable wrapper func? for typeDefs and resolvers
-    PaginatableSoundResult: {
-      items: root => root,
-      paginationInfo: () => ({
-        hasMore: false,
-      }),
-    },
   },
   typeDefs: [
     typeDef.get('Sound'),
     typeDef.update('Sound'),
     typeDef.delete('Sound'),
+    addPaginationTypeDef('Sound'),
     `
     type Sound {
       _id: String!
@@ -226,12 +238,7 @@ export default {
       soundPlayingId: String
       soundId: String
     }
-    
-    type PaginatableSoundResult {
-      items: [Sound]!
-      paginationInfo: PaginationInfo!
-    }
-    
+
     extend type Mutation {
       createSound(data: SoundInput! groupId: String): Sound
       publishSound(soundId: String!): Sound
