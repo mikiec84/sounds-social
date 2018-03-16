@@ -1,6 +1,8 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
+export const DEFAULT_SOUND_LIMIT = 2
+
 const listSoundFragment = gql`
   fragment ListSoundFields on Sound {
     _id
@@ -23,6 +25,20 @@ const listSoundFragment = gql`
       username
     }
   }
+`
+
+const listSoundWithPaginationFragment = gql`
+  fragment ListSoundWithPagination on PaginatableSoundResult {
+    items {
+      ...ListSoundFields
+    }
+    paginationInfo {
+      pagesCount
+      currentPage
+    }
+  }
+
+  ${listSoundFragment}
 `
 
 export const detailSoundQuery = gql`
@@ -166,34 +182,37 @@ export const exploreCoversQuery = gql`
 `
 
 export const searchSoundQuery = gql`  
-  query SearchSoundsQuery($query: String!) {
-    listSound: searchSound(query: $query) {
-      items {
-        ...ListSoundFields
-      }
+  query SearchSoundsQuery($query: String! $skip: Int!) {
+    listSound: searchSound(
+      query: $query
+      pagination: { limit: ${DEFAULT_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
 `
 
 export const playlistSoundsQuery = gql`  
-  query PlaylistSoundsQuery($playlistId: String!) {
-    listSound: listSoundForPlaylist(playlistId: $playlistId) {
-      items {
-        ...ListSoundFields
-      }
+  query PlaylistSoundsQuery($playlistId: String! $skip: Int!) {
+    listSound: listSoundForPlaylist(
+      playlistId: $playlistId
+      pagination: { limit: ${DEFAULT_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
 `
 
 export const groupSoundsQuery = gql`  
-  query GroupSoundsQuery($groupId: String!) {
-    listSound(filters: [{ key: "group", value: $groupId }]) {
-      items {
-        ...ListSoundFields
-      }
+  query GroupSoundsQuery($groupId: String! $skip: Int!) {
+    listSound(
+      filters: [{ key: "group", value: $groupId }] 
+      pagination: { limit: ${DEFAULT_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
 `

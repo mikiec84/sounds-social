@@ -34,3 +34,10 @@ type Paginatable${type}Result {
   paginationInfo: PaginationInfo
 }
 `
+
+export const resolveFindQuery = ({ limit, skip }) => findMethod => {
+  return {
+    totalCount: findMethod().count(),
+    items: findMethod({ limit, skip }).fetch(),
+  }
+}

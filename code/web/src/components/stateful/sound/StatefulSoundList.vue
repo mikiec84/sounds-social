@@ -11,13 +11,22 @@
           @open-profile="$routeNavigator.openProfile(arguments[0].creatorUserId, arguments[0].ownerType)"
           :sounds="mapSounds(listSound.items)"></sound-list>
 
+        <div v-if="$_.isObject(listSound.paginationInfo) && listSound.paginationInfo.pagesCount > 1" class="mv3">
+          <pagination-buttons
+            :pages="listSound.paginationInfo.pagesCount"
+            :currentPage="listSound.paginationInfo.currentPage"
+            @changePage="changePage"
+          ></pagination-buttons>
+        </div>
+
         <div v-if="!listSound.items || !listSound.items.length" v-text="$t('No sounds found')"></div>
       </div>
     </pure-loader-transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { listSoundDefaultQuery as soundsQuery } from '../../../api/SoundApi'
+  import { merge } from 'lodash/fp'
+  import { listSoundDefaultQuery as soundsQuery, DEFAULT_SOUND_LIMIT } from '../../../api/SoundApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
 
@@ -65,7 +74,12 @@
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
         variables () {
-          return this.defineQueryVariables(this)
+          const { page } = this.$router.currentRoute.query
+
+          return {
+            ...this.defineQueryVariables(this),
+            skip: (page ? (page - 1) * DEFAULT_SOUND_LIMIT : 0),
+          }
         }
       },
     },
@@ -75,6 +89,11 @@
 
         this.$store.dispatch('playFeedWithReset', {
           sounds: soundsToPlay.map(s => mapGraphlDataToSound(s)),
+        })
+      },
+      changePage (page) {
+        this.$router.replace({
+          query: merge(this.$router.currentRoute.query)({ page }),
         })
       },
       mapSounds (sounds) {

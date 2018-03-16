@@ -6,6 +6,7 @@ import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import {
   addPaginationTypeDef,
   makePaginatableResolver,
+  resolveFindQuery,
 } from '../helpers/PaginationMethods'
 import { soundCollection } from '../../data/collection/SoundCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
@@ -16,11 +17,11 @@ import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneG
 import { fetchOneSoundForUser } from '../../data/collection/methods/Sound/fetchOneSoundForUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { createSound } from '../../data/collection/methods/Sound/createSound'
-import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
-import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
-import { fetchFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForFeed'
-import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
-import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
+import { findFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForUser'
+import { findFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForGroup'
+import { findFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForFeed'
+import { findFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForDiscover'
+import { findSoundsForPlaylist } from '../../data/collection/methods/Sound/findSoundsForPlaylist'
 import { publishSound } from '../../data/collection/methods/Sound/publishSound'
 import { countSoundPlay } from '../../data/collection/methods/Sound/countSoundPlay'
 import { updateSoundCover } from '../../data/collection/methods/Sound/updateSoundCover'
@@ -40,27 +41,34 @@ export default {
 
         return fetchOneSoundForUser(context.userId)(_id)
       },
-      listSound(root, args, context) {
-        const { filters } = args
-        const { userId } = context
+      listSound: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { filters } = args
+          const { userId } = context
 
-        check(filters, Match.Maybe(Array))
+          check(filters, Match.Maybe(Array))
 
-        const getValue = get('value')
-        const compareKey = keyToCompare => ({ key }) => key === keyToCompare
-        const userFilterId = getValue(filters.filter(compareKey('user'))[0])
-        const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
-        const isFeed =
-          getValue(filters.filter(compareKey('loggedInFeed'))[0]) === 'true'
+          const getValue = get('value')
+          const compareKey = keyToCompare => ({ key }) => key === keyToCompare
+          const userFilterId = getValue(filters.filter(compareKey('user'))[0])
+          const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
+          const isFeed =
+            getValue(filters.filter(compareKey('loggedInFeed'))[0]) === 'true'
 
-        if (userFilterId) return fetchFeedSoundsForUser(userId)(userFilterId)
+          let findSoundsQuery
 
-        if (groupFilterId) return fetchFeedSoundsForGroup(userId)(groupFilterId)
+          if (userFilterId) { findSoundsQuery = findFeedSoundsForUser(userId)(userFilterId) }
 
-        if (isFeed) return fetchFeedSoundsForFeed(userId)
+          if (groupFilterId) { findSoundsQuery = findFeedSoundsForGroup(userId)(groupFilterId) }
 
-        return fetchFeedSoundsForDiscover(userId)
-      },
+          if (isFeed) findSoundsQuery = findFeedSoundsForFeed(userId)
+
+          if (!findSoundsQuery) { findSoundsQuery = findFeedSoundsForDiscover(userId) }
+
+          return resolveFindQuery(args)(findSoundsQuery)
+        },
+      }),
       searchSound: makePaginatableResolver({
         defaultLimit: SOUND_DEFAULT_LIMIT,
         resolver: (root, args, context) => {
@@ -83,14 +91,19 @@ export default {
           }
         },
       }),
-      listSoundForPlaylist: (root, args, context, ast) => {
-        const { playlistId } = args
-        check(playlistId, String)
+      listSoundForPlaylist: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { playlistId, limit, skip } = args
+          check(playlistId, String)
 
-        const { userId } = context
+          const { userId } = context
 
-        return fetchSoundsForPlaylist(userId)(playlistId)
-      },
+          return resolveFindQuery(args)(
+            findSoundsForPlaylist(userId)(playlistId)
+          )
+        },
+      }),
     },
     Mutation: {
       updateSound: (root, args, context) => {

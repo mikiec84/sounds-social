@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { defaultTo, reduce, flow, get } from 'lodash/fp'
+import { defaultTo, flow, get, reduce } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
 import { createPlaylist } from '../../data/collection/methods/Playlist/createPlaylist'
@@ -8,7 +8,6 @@ import { deletePlaylist } from '../../data/collection/methods/Playlist/deletePla
 import { fetchOnePlaylistForUser } from '../../data/collection/methods/Playlist/fetchOnePlaylistForUser'
 import { fetchPlaylistsForUser } from '../../data/collection/methods/Playlist/fetchPlaylistsForUser'
 import { addSoundToPlaylist } from '../../data/collection/methods/Playlist/addSoundToPlaylist'
-import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
 import { fetchOneSoundCoverFile } from '../../data/collection/methods/File/fetchOneSoundCoverFile'
 import { checkSound } from '../../lib/check/checkSound'
 
@@ -18,7 +17,6 @@ type Playlist {
   name: String!
   description: String
   isPublic: Boolean
-  sounds: [Sound]
   createdAt: Date
   image: File
   creator: User
@@ -57,9 +55,6 @@ export default {
       ),
       creator: root => {
         return Meteor.users.findOne({ _id: root.creatorId })
-      },
-      sounds: (root, args, context) => {
-        return fetchSoundsForPlaylist(context.userId)(root._id)
       },
       isEditable: isCreatorResolver,
       isRemovable: isCreatorResolver,
