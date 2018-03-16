@@ -1,3 +1,6 @@
+import { getPagesCount } from '../../lib/Pagination/getPagesCount'
+import { getCurrentPage } from '../../lib/Pagination/getCurrentPage'
+
 export default {
   typeDefs: [
     `
@@ -18,12 +21,8 @@ export default {
   ],
   resolvers: {
     PaginationInfo: {
-      pagesCount({ totalCount, limit }) {
-        return Math.ceil(totalCount / (limit === 0 ? 1 : limit))
-      },
-      currentPage({ limit, skip }) {
-        return 1 // TODO: implement functionality
-      },
+      pagesCount: getPagesCount,
+      currentPage: getCurrentPage,
     },
   },
 }
