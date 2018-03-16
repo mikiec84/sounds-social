@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get, flow } from 'lodash/fp'
+import { flow, get } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
@@ -58,13 +58,19 @@ export default {
 
           let findSoundsQuery
 
-          if (userFilterId) { findSoundsQuery = findFeedSoundsForUser(userId)(userFilterId) }
+          if (userFilterId) {
+            findSoundsQuery = findFeedSoundsForUser(userId)(userFilterId)
+          }
 
-          if (groupFilterId) { findSoundsQuery = findFeedSoundsForGroup(userId)(groupFilterId) }
+          if (groupFilterId) {
+            findSoundsQuery = findFeedSoundsForGroup(userId)(groupFilterId)
+          }
 
           if (isFeed) findSoundsQuery = findFeedSoundsForFeed(userId)
 
-          if (!findSoundsQuery) { findSoundsQuery = findFeedSoundsForDiscover(userId) }
+          if (!findSoundsQuery) {
+            findSoundsQuery = findFeedSoundsForDiscover(userId)
+          }
 
           return resolveFindQuery(args)(findSoundsQuery)
         },
@@ -94,7 +100,7 @@ export default {
       listSoundForPlaylist: makePaginatableResolver({
         defaultLimit: SOUND_DEFAULT_LIMIT,
         resolver: (root, args, context) => {
-          const { playlistId, limit, skip } = args
+          const { playlistId } = args
           check(playlistId, String)
 
           const { userId } = context

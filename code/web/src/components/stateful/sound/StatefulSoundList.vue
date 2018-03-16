@@ -92,6 +92,7 @@
         })
       },
       changePage (page) {
+        // TODO: displayl loading animation between change
         this.$router.replace({
           query: merge(this.$router.currentRoute.query)({ page }),
         })
