@@ -23,7 +23,6 @@
     data () {
       return {
         delayDisplayingContent: false,
-        loadedAtTime: (new Date()).getTime(),
       }
     },
     watch: {
@@ -40,6 +39,9 @@
       },
     },
     computed: {
+      loadedAtTime () {
+        return (new Date()).getTime()
+      },
       displayContent () {
         if (this.delayDisplayingContent) return false
 

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
-export const DEFAULT_SOUND_LIMIT = 2
+export const DEFAULT_SOUND_LIMIT = 10
 
 const listSoundFragment = gql`
   fragment ListSoundFields on Sound {
@@ -205,10 +205,22 @@ export const playlistSoundsQuery = gql`
   ${listSoundWithPaginationFragment}
 `
 
-export const groupSoundsQuery = gql`  
+export const groupSoundsQuery = gql`
   query GroupSoundsQuery($groupId: String! $skip: Int!) {
     listSound(
-      filters: [{ key: "group", value: $groupId }] 
+      filters: [{ key: "group", value: $groupId }]
+      pagination: { limit: ${DEFAULT_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
+    }
+  }
+  ${listSoundWithPaginationFragment}
+`
+
+export const userProfileSoundsQuery = gql`
+  query UserSoundsQuery($userId: String! $skip: Int!) {
+    listSound(
+      filters: [{ key: "user", value: $userId }]
       pagination: { limit: ${DEFAULT_SOUND_LIMIT} skip: $skip }
     ) {
       ...ListSoundWithPagination

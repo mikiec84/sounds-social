@@ -9,7 +9,10 @@
         <div v-if="isCurrentUser">
           <h2 class="f3 f2-ns mv3 gray" v-text="`(${$t('this is you')})`"></h2>
         </div>
-        <sound-list-component v-if="profileUserId" :userId="profileUserId"></sound-list-component>
+        <sound-list-component
+          :query="userProfileSoundsQuery"
+          :defineQueryVariables="defineSoundListQueryVariables"
+        ></sound-list-component>
       </div>
       <div v-if="!getUser && !userLoading">
         <div class="i" v-text="$t('User not found')"></div>
@@ -53,6 +56,7 @@
   import StatefulGroupForm from '../stateful/Group/StatefulGroupForm.vue'
   import { getUserId } from '../../api/AuthApi'
   import { profilePageQuery as query } from '../../api/ProfileApi'
+  import { userProfileSoundsQuery } from '../../api/SoundApi'
 
   export default {
     components: {
@@ -77,6 +81,7 @@
         getUser: null,
         userLoading: 0,
         userId: '',
+        userProfileSoundsQuery,
       }
     },
     mounted () {
@@ -111,6 +116,13 @@
 
         return id
       },
-    }
+    },
+    methods: {
+      defineSoundListQueryVariables () {
+        return {
+          userId: this.profileUserId,
+        }
+      },
+    },
   }
 </script>
