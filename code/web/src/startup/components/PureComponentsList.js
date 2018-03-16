@@ -2,13 +2,13 @@ import Button from '../../components/pure/PureButton.vue'
 import Error from '../../components/pure/PureError.vue'
 import Select from '../../components/pure/PureSelect.vue'
 import Header from '../../components/pure/PureHeader.vue'
-import IdentityHeader from '../../components/pure/identity/IdentityHeader.vue'
-import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
 import Input from '../../components/pure/Input/PureInput.vue'
-import LabelInput from '../../components/pure/Input/PureLabelInput.vue'
 import Modal from '../../components/pure/PureModal.vue'
 import Title from '../../components/pure/PureTitle.vue'
 import Icon from '../../components/pure/PureIcon.vue'
+import IdentityHeader from '../../components/pure/identity/IdentityHeader.vue'
+import PureMenuDropdown from '../../components/pure/Header/PureMenuDropdown.vue'
+import LabelInput from '../../components/pure/Input/PureLabelInput.vue'
 import SubHeader from '../../components/pure/PureSubHeader.vue'
 import ConfirmModal from '../../components/pure/PureConfirmModal.vue'
 import ConfirmModalButton from '../../components/pure/PureConfirmModalButton.vue'
@@ -36,6 +36,7 @@ import GroupList from '../../components/pure/Group/PureGroupList.vue'
 import FormError from '../../components/pure/Form/PureFormError.vue'
 import FormField from '../../components/pure/Form/PureFormField.vue'
 import NumberCount from '../../components/pure/User/PureNumberCount.vue'
+import PaginationButtons from '../../components/pure/Pagination/PaginationButtons.vue'
 
 export const ComponentsList = [
   { id: 'pure-button', component: Button },
@@ -75,5 +76,6 @@ export const ComponentsList = [
   { id: 'pure-loader-transition', component: LoaderTransition },
   { id: 'member-list', component: MemberList },
   { id: 'group-list', component: GroupList },
-  { id: 'number-count', component: NumberCount }
+  { id: 'number-count', component: NumberCount },
+  { id: 'pagination-buttons', component: PaginationButtons }
 ]
