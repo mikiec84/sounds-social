@@ -11,12 +11,16 @@
           @open-profile="$routeNavigator.openProfile(arguments[0].creatorUserId, arguments[0].ownerType)"
           :sounds="mapSounds(listSound.items)"></sound-list>
 
-        <div v-if="$_.isObject(listSound.paginationInfo) && listSound.paginationInfo.pagesCount > 1" class="mv3">
+        <div v-if="displayPagination" class="mv3">
           <pagination-buttons
-            :pages="listSound.paginationInfo.pagesCount"
+            :pages="pagesCount"
             :currentPage="listSound.paginationInfo.currentPage"
             @changePage="changePage"
           ></pagination-buttons>
+        </div>
+
+        <div v-if="displayMoreSoundsFound">
+          <div v-text="`${$t('More sounds found')}`" class="mv3 black-30 f7 i"></div>
         </div>
 
         <div v-if="!listSound.items || !listSound.items.length" v-text="$t('No sounds found')"></div>
@@ -25,8 +29,10 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { merge } from 'lodash/fp'
-  import { listSoundDefaultQuery as soundsQuery, DEFAULT_SOUND_LIMIT } from '../../../api/SoundApi'
+  import {
+    listSoundDefaultQuery as soundsQuery,
+    DEFAULT_PAGINATED_SOUND_LIMIT,
+  } from '../../../api/SoundApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
 
@@ -78,9 +84,29 @@
 
           return {
             ...this.defineQueryVariables(this),
-            skip: (page ? (page - 1) * DEFAULT_SOUND_LIMIT : 0),
+            skip: (page ? (page - 1) * DEFAULT_PAGINATED_SOUND_LIMIT : 0),
           }
         }
+      },
+    },
+    computed: {
+      hasPaginationCountInfo () {
+        return this.$_.isObject(this.listSound.paginationInfo) &&
+          this.listSound.paginationInfo.pagesCount
+      },
+      displayPagination () {
+        return this.pagesCount > 1
+      },
+      displayMoreSoundsFound () {
+        const hasMore = (this.listSound.paginationInfo || {}).hasMore
+        const isInFeed = !this.displayPagination
+
+        return isInFeed && hasMore
+      },
+      pagesCount () {
+        if (!this.hasPaginationCountInfo) return false
+
+        return this.listSound.paginationInfo.pagesCount
       },
     },
     methods: {
@@ -92,9 +118,9 @@
         })
       },
       changePage (page) {
-        // TODO: displayl loading animation between change
+        // FIXME display loading animation between change
         this.$router.replace({
-          query: merge(this.$router.currentRoute.query)({ page }),
+          query: this.$_fp.merge(this.$router.currentRoute.query)({ page }),
         })
       },
       mapSounds (sounds) {

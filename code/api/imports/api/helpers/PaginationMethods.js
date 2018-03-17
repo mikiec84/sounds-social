@@ -19,7 +19,7 @@ export const makePaginatableResolver = ({ resolver, defaultLimit }) => {
       items,
       paginationInfo: {
         totalCount,
-        hasMore: items.length < totalCount,
+        hasMore: items.length + args.skip < totalCount,
         // used in resolver
         limit: args.limit,
         skip: args.skip,
