@@ -9,15 +9,30 @@
           @play-sound="playSound"
           @open-sound="$router.push({ name: 'sound-detail', params: { id: arguments[0]._id } })"
           @open-profile="$routeNavigator.openProfile(arguments[0].creatorUserId, arguments[0].ownerType)"
-          :sounds="mapSounds(listSound)"></sound-list>
+          :sounds="mapSounds(listSound.items)"></sound-list>
 
-        <div v-if="!listSound || !listSound.length" v-text="$t('No sounds found')"></div>
+        <div v-if="displayPagination" class="mv3">
+          <pagination-buttons
+            :pages="pagesCount"
+            :currentPage="listSound.paginationInfo.currentPage"
+            @changePage="changePage"
+          ></pagination-buttons>
+        </div>
+
+        <div v-if="displayMoreSoundsFound">
+          <div v-text="`${$t('More sounds found')}`" class="mv3 black-30 f7 i"></div>
+        </div>
+
+        <div v-if="!listSound.items || !listSound.items.length" v-text="$t('No sounds found')"></div>
       </div>
     </pure-loader-transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { listSoundDefaultQuery as soundsQuery } from '../../../api/SoundApi'
+  import {
+    listSoundDefaultQuery as soundsQuery,
+    DEFAULT_PAGINATED_SOUND_LIMIT,
+  } from '../../../api/SoundApi'
   import { mapGraphlDataToSound } from '../../../func/mappers/mapSound'
   import { keepAfter } from '../../../func/filter/keepAfter'
 
@@ -65,16 +80,47 @@
         loadingKey: 'loading',
         fetchPolicy: 'network-only',
         variables () {
-          return this.defineQueryVariables(this)
+          const { page } = this.$router.currentRoute.query
+
+          return {
+            ...this.defineQueryVariables(this),
+            skip: (page ? (page - 1) * DEFAULT_PAGINATED_SOUND_LIMIT : 0),
+          }
         }
+      },
+    },
+    computed: {
+      hasPaginationCountInfo () {
+        return this.$_.isObject(this.listSound.paginationInfo) &&
+          this.listSound.paginationInfo.pagesCount
+      },
+      displayPagination () {
+        return this.pagesCount > 1
+      },
+      displayMoreSoundsFound () {
+        const hasMore = (this.listSound.paginationInfo || {}).hasMore
+        const isInFeed = !this.displayPagination
+
+        return isInFeed && hasMore
+      },
+      pagesCount () {
+        if (!this.hasPaginationCountInfo) return false
+
+        return this.listSound.paginationInfo.pagesCount
       },
     },
     methods: {
       playSound (data) {
-        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listSound)
+        const soundsToPlay = keepAfter(item => item._id === data._id)(this.listSound.items)
 
         this.$store.dispatch('playFeedWithReset', {
           sounds: soundsToPlay.map(s => mapGraphlDataToSound(s)),
+        })
+      },
+      changePage (page) {
+        // FIXME display loading animation between change
+        this.$router.replace({
+          query: this.$_fp.merge(this.$router.currentRoute.query)({ page }),
         })
       },
       mapSounds (sounds) {

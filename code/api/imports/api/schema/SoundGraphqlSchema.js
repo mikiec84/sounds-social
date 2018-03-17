@@ -1,8 +1,13 @@
 import moment from 'moment'
-import { get, flow } from 'lodash/fp'
+import { flow, get } from 'lodash/fp'
 import { check, Match } from 'meteor/check'
 import { Random } from 'meteor/random'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
+import {
+  addPaginationTypeDef,
+  makePaginatableResolver,
+  resolveFindQuery,
+} from '../helpers/PaginationMethods'
 import { soundCollection } from '../../data/collection/SoundCollection'
 import { soundSearchIndex } from '../../data/search/SoundSearchIndex'
 import { checkUserIdRequired } from '../../lib/check/checkUserData'
@@ -12,15 +17,17 @@ import { fetchOneGroupById } from '../../data/collection/methods/Group/fetchOneG
 import { fetchOneSoundForUser } from '../../data/collection/methods/Sound/fetchOneSoundForUser'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { createSound } from '../../data/collection/methods/Sound/createSound'
-import { fetchFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForUser'
-import { fetchFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForGroup'
-import { fetchFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForFeed'
-import { fetchFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/fetchFeedSoundsForDiscover'
-import { fetchSoundsForPlaylist } from '../../data/collection/methods/Sound/fetchSoundsForPlaylist'
+import { findFeedSoundsForUser } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForUser'
+import { findFeedSoundsForGroup } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForGroup'
+import { findFeedSoundsForFeed } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForFeed'
+import { findFeedSoundsForDiscover } from '../../data/collection/methods/Sound/Feed/findFeedSoundsForDiscover'
+import { findSoundsForPlaylist } from '../../data/collection/methods/Sound/findSoundsForPlaylist'
 import { publishSound } from '../../data/collection/methods/Sound/publishSound'
 import { countSoundPlay } from '../../data/collection/methods/Sound/countSoundPlay'
 import { updateSoundCover } from '../../data/collection/methods/Sound/updateSoundCover'
 import { updateSound } from '../../data/collection/methods/Sound/updateSound'
+
+const SOUND_DEFAULT_LIMIT = 10
 
 let soundsBeingPlayed = []
 
@@ -34,45 +41,75 @@ export default {
 
         return fetchOneSoundForUser(context.userId)(_id)
       },
-      listSound(root, args, context) {
-        const { filters } = args
-        const { userId } = context
+      listSound: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { filters } = args
+          const { userId } = context
 
-        check(filters, Match.Maybe(Array))
+          check(filters, Match.Maybe(Array))
 
-        const getValue = get('value')
-        const compareKey = keyToCompare => ({ key }) => key === keyToCompare
-        const userFilterId = getValue(filters.filter(compareKey('user'))[0])
-        const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
-        const isFeed =
-          getValue(filters.filter(compareKey('loggedInFeed'))[0]) === 'true'
+          const getValue = get('value')
+          const compareKey = keyToCompare => ({ key }) => key === keyToCompare
+          const userFilterId = getValue(filters.filter(compareKey('user'))[0])
+          const groupFilterId = getValue(filters.filter(compareKey('group'))[0])
+          const isFeed =
+            getValue(filters.filter(compareKey('loggedInFeed'))[0]) === 'true'
 
-        if (userFilterId) return fetchFeedSoundsForUser(userId)(userFilterId)
+          let findSoundsQuery
 
-        if (groupFilterId) return fetchFeedSoundsForGroup(userId)(groupFilterId)
+          if (userFilterId) {
+            findSoundsQuery = findFeedSoundsForUser(userId)(userFilterId)
+          }
 
-        if (isFeed) return fetchFeedSoundsForFeed(userId)
+          if (groupFilterId) {
+            findSoundsQuery = findFeedSoundsForGroup(userId)(groupFilterId)
+          }
 
-        return fetchFeedSoundsForDiscover(userId)
-      },
-      searchSound: (root, args, context, ast) => {
-        const { query } = args
-        check(query, String)
+          if (isFeed) findSoundsQuery = findFeedSoundsForFeed(userId)
 
-        let { userId } = context
+          if (!findSoundsQuery) {
+            findSoundsQuery = findFeedSoundsForDiscover(userId)
+          }
 
-        if (!userId) userId = null
+          return resolveFindQuery(args)(findSoundsQuery)
+        },
+      }),
+      searchSound: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { query } = args
+          check(query, String)
 
-        return soundSearchIndex.search(query, { limit: 50, userId }).fetch()
-      },
-      listSoundForPlaylist: (root, args, context, ast) => {
-        const { playlistId } = args
-        check(playlistId, String)
+          let { userId } = context
 
-        const { userId } = context
+          if (!userId) userId = null
 
-        return fetchSoundsForPlaylist(userId)(playlistId)
-      },
+          const searchQuery = soundSearchIndex.search(query, {
+            limit: args.limit,
+            skip: args.skip,
+            userId,
+          })
+
+          return {
+            items: searchQuery.fetch(),
+            totalCount: searchQuery.count(),
+          }
+        },
+      }),
+      listSoundForPlaylist: makePaginatableResolver({
+        defaultLimit: SOUND_DEFAULT_LIMIT,
+        resolver: (root, args, context) => {
+          const { playlistId } = args
+          check(playlistId, String)
+
+          const { userId } = context
+
+          return resolveFindQuery(args)(
+            findSoundsForPlaylist(userId)(playlistId)
+          )
+        },
+      }),
     },
     Mutation: {
       updateSound: (root, args, context) => {
@@ -189,6 +226,7 @@ export default {
     typeDef.get('Sound'),
     typeDef.update('Sound'),
     typeDef.delete('Sound'),
+    addPaginationTypeDef('Sound'),
     `
     type Sound {
       _id: String!
@@ -219,7 +257,7 @@ export default {
       soundPlayingId: String
       soundId: String
     }
-    
+
     extend type Mutation {
       createSound(data: SoundInput! groupId: String): Sound
       publishSound(soundId: String!): Sound
@@ -229,9 +267,20 @@ export default {
     }
     
     extend type Query {
-      searchSound(query: String!): [Sound]
-      listSoundForPlaylist(playlistId: String!): [Sound]
-      listSound(limit: Int, offset: Int, filters: [FilterInput]): [Sound]
+      searchSound(
+        query: String!
+        pagination: PaginationInput
+      ): PaginatableSoundResult
+      listSoundForPlaylist(
+        playlistId: String!
+        pagination: PaginationInput
+      ): PaginatableSoundResult
+      listSound(
+        limit: Int
+        offset: Int 
+        filters: [FilterInput] 
+        pagination: PaginationInput
+      ): PaginatableSoundResult
     }
     `,
   ],

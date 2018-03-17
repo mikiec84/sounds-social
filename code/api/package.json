@@ -8,6 +8,7 @@
     "dev": "meteor run",
     "prod": "meteor run --production",
     "test": "meteor test --once --port=4333 --driver-package=dispatch:mocha",
+    "test-watch": "meteor test --port=4333 --driver-package=dispatch:mocha",
     "deploy-dev": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy sounds-social-dev --settings prod-settings.json",
     "cli": "meteor npm run lint && meteor npm run test",
     "lint": "eslint --ignore-pattern '*.test.js' 'server/*.js' 'imports/**/*.js'",
@@ -15,9 +16,9 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.42",
     "apollo-client": "^2.2.6",
     "apollo-server-express": "^1.3.2",
-    "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.1",

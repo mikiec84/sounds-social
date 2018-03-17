@@ -29,19 +29,19 @@
           <pure-error><div v-text="$t('Could not {{action}}', { action: errorType })"></div></pure-error>
         </div>
 
-        <pure-input @onEnter="doLogin" @keyup="username = arguments[0]" placeholder="Username"></pure-input>
+        <pure-input @onEnter="doLogin" @keyup="username = arguments[0]" :placeholder="$t('Username')"></pure-input>
         <div class="mt2">
-          <pure-input @onEnter="doLogin" @keyup="password = arguments[0]" type="password" placeholder="Password"></pure-input>
+          <pure-input @onEnter="doLogin" @keyup="password = arguments[0]" type="password" :placeholder="$t('Password')"></pure-input>
         </div>
       </div>
 
       <div class="mw8 center tc">
         <div class="pv3 dib">
-          <pure-button @click="doLogin">Login</pure-button>
+          <pure-button @click="doLogin" v-text="$t('Login')"></pure-button>
         </div>
 
         <div class="pv3 dib">
-          <pure-button @click="startRegister">Register</pure-button>
+          <pure-button @click="startRegister" v-text="$t('Register')"></pure-button>
 
           <pure-modal @close="openRegisterModal = false" v-show="openRegisterModal">
             <div class="pa4 tc">

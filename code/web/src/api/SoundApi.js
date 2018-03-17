@@ -1,6 +1,9 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
 
+export const DEFAULT_PAGINATED_SOUND_LIMIT = 6
+export const DEFAULT_FEED_SOUND_LIMIT = 20
+
 const listSoundFragment = gql`
   fragment ListSoundFields on Sound {
     _id
@@ -23,6 +26,21 @@ const listSoundFragment = gql`
       username
     }
   }
+`
+
+const listSoundWithPaginationFragment = gql`
+  fragment ListSoundWithPagination on PaginatableSoundResult {
+    items {
+      ...ListSoundFields
+    }
+    paginationInfo {
+      pagesCount
+      currentPage
+      hasMore
+    }
+  }
+
+  ${listSoundFragment}
 `
 
 export const detailSoundQuery = gql`
@@ -137,8 +155,19 @@ export const countPlayingSound = (id, soundPlayingId) =>
 
 export const listSoundDefaultQuery = gql`
   query SoundListQuery($userId: String!, $loggedInFeed: String!) {
-    listSound(filters: [{ key: "user", value: $userId }, { key: "loggedInFeed", value: $loggedInFeed }]) {
-      ...ListSoundFields
+    listSound(
+      filters: [
+        { key: "user", value: $userId }, 
+        { key: "loggedInFeed", value: $loggedInFeed }
+      ]
+      pagination: { limit: ${DEFAULT_FEED_SOUND_LIMIT} }
+    ) {
+      items {
+        ...ListSoundFields
+      }
+      paginationInfo {
+        hasMore
+      }
     }
   }
   ${listSoundFragment}
@@ -153,37 +182,60 @@ export const exploreCoversQuery = gql`
         { key: "loggedInFeed", value: "false" }
       ]
     ) {
-      _id
-      coverFile {
-        url
+      items {
+        _id
+        coverFile {
+          url
+        }
       }
     }
   }
 `
 
 export const searchSoundQuery = gql`  
-  query SearchSoundsQuery($query: String!) {
-    listSound: searchSound(query: $query) {
-      ...ListSoundFields
+  query SearchSoundsQuery($query: String! $skip: Int!) {
+    listSound: searchSound(
+      query: $query
+      pagination: { limit: ${DEFAULT_PAGINATED_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
 `
 
 export const playlistSoundsQuery = gql`  
-  query PlaylistSoundsQuery($playlistId: String!) {
-    listSound: listSoundForPlaylist(playlistId: $playlistId) {
-      ...ListSoundFields
+  query PlaylistSoundsQuery($playlistId: String! $skip: Int!) {
+    listSound: listSoundForPlaylist(
+      playlistId: $playlistId
+      pagination: { limit: ${DEFAULT_PAGINATED_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
 `
 
-export const groupSoundsQuery = gql`  
-  query GroupSoundsQuery($groupId: String!) {
-    listSound(filters: [{ key: "group", value: $groupId }]) {
-      ...ListSoundFields
+export const groupSoundsQuery = gql`
+  query GroupSoundsQuery($groupId: String! $skip: Int!) {
+    listSound(
+      filters: [{ key: "group", value: $groupId }]
+      pagination: { limit: ${DEFAULT_PAGINATED_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
     }
   }
-  ${listSoundFragment}
+  ${listSoundWithPaginationFragment}
+`
+
+export const userProfileSoundsQuery = gql`
+  query UserSoundsQuery($userId: String! $skip: Int!) {
+    listSound(
+      filters: [{ key: "user", value: $userId }]
+      pagination: { limit: ${DEFAULT_PAGINATED_SOUND_LIMIT} skip: $skip }
+    ) {
+      ...ListSoundWithPagination
+    }
+  }
+  ${listSoundWithPaginationFragment}
 `

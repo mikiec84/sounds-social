@@ -8,6 +8,7 @@ import profileSchema from './ProfileGraphqlSchema'
 import playlistSchema from './PlaylistGraphqlSchema'
 import groupSchema from './GroupGraphqlSchema'
 import creatorSchema from './CreatorGraphqlSchema'
+import paginationSchema from './PaginationGraphqlSchema'
 
 const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
   schemas: [
@@ -19,6 +20,7 @@ const { typeDefs, resolvers } = generateTypeDefsAndResolvers({
     playlistSchema,
     groupSchema,
     creatorSchema,
+    paginationSchema,
   ],
 })
 

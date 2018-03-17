@@ -12,16 +12,15 @@ const mapToSoundIdSelector = userId =>
     }
   })
 
-export const fetchSoundsForPlaylist = userId => playlistId => {
+export const findSoundsForPlaylist = userId => playlistId => options => {
   const playlist = fetchOnePlaylistForUser(userId)(playlistId)
 
   if (playlist) {
     const { soundIds } = playlist
 
-    return soundCollection
-      .find({
-        $or: mapToSoundIdSelector(userId)(soundIds),
-      })
-      .fetch()
+    return soundCollection.find(
+      { $or: mapToSoundIdSelector(userId)(soundIds) },
+      options
+    )
   }
 }
