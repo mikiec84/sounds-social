@@ -10,38 +10,12 @@ import { fetchPlaylistsForUser } from '../../data/collection/methods/Playlist/fe
 import { addSoundToPlaylist } from '../../data/collection/methods/Playlist/addSoundToPlaylist'
 import { fetchOneSoundCoverFile } from '../../data/collection/methods/File/fetchOneSoundCoverFile'
 import { checkSound } from '../../lib/check/checkSound'
-
-const typeDef = `
-type Playlist {
-  _id: String!
-  name: String!
-  description: String
-  isPublic: Boolean
-  createdAt: Date
-  image: File
-  creator: User
-  isEditable: Boolean
-  isRemovable: Boolean
-}
-
-extend type Query {
-  listPlaylist(userId: String): [Playlist]
-  getPlaylist(playlistId: String!): Playlist
-}
-
-extend type Mutation {
-  createPlaylist(name: String! description: String isPublic: Boolean): Playlist
-  updatePlaylist(playlistId: String! name: String! description: String isPublic: Boolean soundIds: [String]): Playlist
-  removePlaylist(playlistId: String!): Playlist
-  addSoundToPlaylist(playlistId: String! soundId: String!): Playlist
-}
-`
-
-const isCreatorResolver = (root, args, context) =>
-  root.creatorId === context.userId
+import { PlaylistTypeDef } from './Playlist/PlaylistTypeDef'
+import { findSoundsForPlaylist } from '../../data/collection/methods/Sound/findSoundsForPlaylist'
+import { isCreatorResolver } from './generate/isCreatorResolver'
 
 export default {
-  typeDefs: [typeDef],
+  typeDefs: [PlaylistTypeDef],
   resolvers: {
     Playlist: {
       image: flow(
@@ -53,9 +27,9 @@ export default {
           return fetchOneSoundCoverFile(soundId)
         }, null)
       ),
-      creator: root => {
-        return Meteor.users.findOne({ _id: root.creatorId })
-      },
+      creator: root => Meteor.users.findOne({ _id: root.creatorId }),
+      sounds: ({ _id }, args, context) =>
+        findSoundsForPlaylist(context.userId)(_id)().fetch(),
       isEditable: isCreatorResolver,
       isRemovable: isCreatorResolver,
     },
