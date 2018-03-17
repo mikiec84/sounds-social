@@ -1,4 +1,5 @@
 import { flow, get, defaultTo } from 'lodash/fp'
+import { withCache } from 'graphql-resolver-cache'
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
@@ -40,7 +41,7 @@ export default {
       isFollowedByCurrentUser: (root, args, context) =>
         isFollowedByUser(root._id)(context.userId),
       profile: flow(get('_id'), fetchOneProfile, defaultTo({})),
-      followerCount: flow(get('_id'), fetchUserFollowerCount),
+      followerCount: withCache(flow(get('_id'), fetchUserFollowerCount)),
       groups: (root, args, context) =>
         fetchGroupsForUser(root._id)(context.grapherFields),
     },
