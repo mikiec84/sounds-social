@@ -2,6 +2,7 @@ import cors from 'cors'
 import { defaultTo } from 'lodash/fp'
 import { makeExecutableSchema } from 'graphql-tools'
 import { getSchema, loadSchema } from 'graphql-loader'
+import { LruCache } from 'graphql-resolver-cache'
 import { createApolloServer } from 'meteor/apollo'
 import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts'
 import { checkUserIdMaybe } from '../imports/lib/check/checkUserData'
@@ -19,6 +20,8 @@ const schema = makeExecutableSchema(getSchema())
 
 mongoFieldsMiddleware(schema)
 
+const lruCache = new LruCache(300)
+
 createApolloServer(
   req => {
     return {
@@ -30,6 +33,7 @@ createApolloServer(
 
         return {
           ...userContext,
+          resolverCache: lruCache,
           userLanguage: defaultTo('en')(req.header('accept-language')),
         }
       },

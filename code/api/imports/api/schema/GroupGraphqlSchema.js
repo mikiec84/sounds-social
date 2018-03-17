@@ -1,5 +1,6 @@
 import { flow, get, map } from 'lodash/fp'
 import { check } from 'meteor/check'
+import { withCache } from 'graphql-resolver-cache'
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { followGroup } from '../../data/collection/methods/Group/followGroup'
@@ -65,7 +66,7 @@ export default {
       isFollowedByCurrentUser: (root, args, context) => {
         return isFollowedByGroup(root._id)(context.userId)
       },
-      followerCount: flow(get('_id'), fetchGroupFollowerCount),
+      followerCount: withCache(flow(get('_id'), fetchGroupFollowerCount)),
     },
     Query: {
       listGroupForUser(root, args, context) {
