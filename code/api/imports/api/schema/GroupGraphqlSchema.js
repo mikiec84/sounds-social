@@ -1,6 +1,6 @@
 import { flow, get, map } from 'lodash/fp'
 import { check } from 'meteor/check'
-import { withCache } from 'graphql-resolver-cache'
+import { withCache } from 'graphql-resolver-cache-key-config' // FIXME use original pkg once in there
 import { fetchOneFileById } from '../../data/collection/methods/File/fetchOneFileById'
 import { fetchOneUserById } from '../../data/collection/methods/User/fetchOneUserById'
 import { followGroup } from '../../data/collection/methods/Group/followGroup'
@@ -12,6 +12,8 @@ import { updateGroup } from '../../data/collection/methods/Group/updateGroup'
 import { createGroup } from '../../data/collection/methods/Group/createGroup'
 import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
 import { fetchGroupFollowerCount } from '../../data/collection/methods/Group/fetchGroupFollowerCount'
+import { generateCacheKey } from '../helpers/generateCacheKey'
+import { fetchCreatorSoundPlayCount } from '../../data/collection/methods/Sound/fetchCreatorSoundPlayCount'
 
 const typeDef = `
 type Group {
@@ -28,6 +30,7 @@ type Group {
   canFollow: Boolean
   isEditable: Boolean
   followerCount: Int
+  playCount: Int
 }
 
 input GroupData {
@@ -66,7 +69,12 @@ export default {
       isFollowedByCurrentUser: (root, args, context) => {
         return isFollowedByGroup(root._id)(context.userId)
       },
-      followerCount: withCache(flow(get('_id'), fetchGroupFollowerCount)),
+      followerCount: withCache(flow(get('_id'), fetchGroupFollowerCount), {
+        key: generateCacheKey('followerCount'),
+      }),
+      playCount: withCache(flow(get('_id'), fetchCreatorSoundPlayCount), {
+        key: generateCacheKey('playCount'),
+      }),
     },
     Query: {
       listGroupForUser(root, args, context) {

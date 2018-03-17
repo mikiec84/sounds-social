@@ -15,6 +15,7 @@ export const ProfileBoxFieldsFragment = gql`
       }
     }
     followerCount
+    playCount
     groups {
       _id
       name

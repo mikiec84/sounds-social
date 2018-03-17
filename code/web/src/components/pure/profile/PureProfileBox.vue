@@ -8,7 +8,12 @@
 
     <div class="pl4">
       <div class="mv3">
-        <number-count :number="followerCount" :label="$t('followers')"></number-count>
+        <div class="dib mr3">
+          <number-count v-if="followerCount" :number="followerCount" :label="$t('followers')"></number-count>
+        </div>
+        <div class="dib">
+          <number-count v-if="playCount" :number="playCount" :label="$t('sound plays')"></number-count>
+        </div>
       </div>
 
       <div v-if="profile.description" v-text="profile.description" class="mt3 f5 lh-copy"></div>
@@ -49,6 +54,10 @@
         required: false,
       },
       followerCount: {
+        type: Number,
+        default: 0,
+      },
+      playCount: {
         type: Number,
         default: 0,
       },
