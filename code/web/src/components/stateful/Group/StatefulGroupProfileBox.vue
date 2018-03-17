@@ -4,6 +4,7 @@
     :profile="group"
     :canFollow="group.canFollow"
     :followerCount="group.followerCount"
+    :playCount="group.playCount"
     :isFollowedByCurrentUser="group.isFollowedByCurrentUser"
     @follow="follow"
     @unfollow="unfollow"

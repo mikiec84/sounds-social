@@ -1,5 +1,5 @@
-import { flow, get, defaultTo } from 'lodash/fp'
-import { withCache } from 'graphql-resolver-cache'
+import { defaultTo, flow, get } from 'lodash/fp'
+import { withCache } from 'graphql-resolver-cache-key-config' // FIXME use original pkg once in there
 import { check } from 'meteor/check'
 import { resolver, typeDef } from 'meteor/easy:graphqlizer'
 import { userCollection } from '../../data/collection/UserCollection'
@@ -10,6 +10,8 @@ import { isFollowedByUser } from '../../data/collection/methods/User/isFollowedB
 import { fetchGroupsForUser } from '../../data/collection/methods/Group/fetchGroupsForUser'
 import { fetchOneProfile } from '../../data/collection/methods/Profile/fetchOneProfile'
 import { fetchUserFollowerCount } from '../../data/collection/methods/User/fetchUserFollowerCount'
+import { fetchCreatorSoundPlayCount } from '../../data/collection/methods/Sound/fetchCreatorSoundPlayCount'
+import { generateCacheKey } from '../helpers/generateCacheKey'
 
 export default {
   resolvers: {
@@ -41,7 +43,13 @@ export default {
       isFollowedByCurrentUser: (root, args, context) =>
         isFollowedByUser(root._id)(context.userId),
       profile: flow(get('_id'), fetchOneProfile, defaultTo({})),
-      followerCount: withCache(flow(get('_id'), fetchUserFollowerCount)),
+      followerCount: withCache(flow(get('_id'), fetchUserFollowerCount), {
+        key: generateCacheKey('followerCount'),
+      }),
+      playCount: withCache(flow(get('_id'), fetchCreatorSoundPlayCount), {
+        key: ({ _id }) => `playCount${_id}`,
+        maxAge: 1000 * 60,
+      }),
       groups: (root, args, context) =>
         fetchGroupsForUser(root._id)(context.grapherFields),
     },
@@ -58,6 +66,7 @@ export default {
       profile: Profile!
       groups: [Group]
       followerCount: Int
+      playCount: Int
     }
     
     input UserInput {

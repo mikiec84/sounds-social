@@ -3,6 +3,7 @@
     :profile="user.profile"
     :canFollow="user.canFollow"
     :followerCount="user.followerCount"
+    :playCount="user.playCount"
     :isFollowedByCurrentUser="user.isFollowedByCurrentUser"
     @follow="follow"
     @unfollow="unfollow"
