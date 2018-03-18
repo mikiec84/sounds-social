@@ -13,6 +13,7 @@
     "format": "cd code/web && npm run precommit && cd ../api/ && npm run precommit",
     "prepush": "npm run lint",
     "precommit": "npm run format",
+    "release": "release",
     "test": "cd code/web && npm run unit && cd ../api/ && npm run test",
     "cli": "cd code/web && npm run cli && cd ../api/ && npm run cli"
   },
