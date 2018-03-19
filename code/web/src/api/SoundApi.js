@@ -153,6 +153,41 @@ export const countPlayingSound = (id, soundPlayingId) =>
     refetchQueries: ['DetailSound']
   })
 
+export const createSound = ({
+  name,
+  description,
+  file,
+  groupId,
+  creatorId,
+  isPublic
+}) =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation CreateSound(
+        $name: String!
+        $groupId: String
+        $description: String
+        $file: FileData!
+        $creatorId: String!
+        $isPublic: Boolean!
+      ) {
+        createSound(
+          groupId: $groupId
+          data: {
+            name: $name
+            creatorId: $creatorId
+            file: $file
+            isPublic: $isPublic
+            description: $description
+          }
+        ) {
+          _id
+        }
+      }
+    `,
+    variables: { name, description, file, groupId, creatorId, isPublic }
+  })
+
 export const listSoundDefaultQuery = gql`
   query SoundListQuery($userId: String!, $loggedInFeed: String!) {
     listSound(
