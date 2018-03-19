@@ -1,5 +1,7 @@
 # [![Sounds Social](docs/sound_social_logo.png)]()
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/matteodem/sounds-social.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/matteodem/sounds-social.svg?branch=master)](https://travis-ci.org/matteodem/sounds-social)
 [![Maintainability](https://api.codeclimate.com/v1/badges/06896afa34c72f4e4fcc/maintainability)](https://codeclimate.com/github/matteodem/sounds-social/maintainability)
 
