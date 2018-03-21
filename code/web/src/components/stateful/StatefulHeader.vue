@@ -36,11 +36,21 @@
         if (this.$route.name === 'search') return this.$route.query.q
       },
       menuItems () {
+        const { isUploading, hasFile } = this.$store.state.uploadSound
+
+        let uploadLabel = this.$t('Upload')
+
+        if (isUploading) {
+          uploadLabel = `${this.$t('Uploading')}...`
+        } else if (hasFile) {
+          uploadLabel = this.$t('Uploaded')
+        }
+
         return [
           {
             id: 'upload',
             href: { name: 'upload' },
-            label: this.$t('Upload'),
+            label: uploadLabel,
           },
           {
             id: 'sounds',

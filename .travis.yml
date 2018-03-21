@@ -15,3 +15,5 @@ before_script:
     - npm run setup
 script:
     - npm run cli
+notifications:
+    webhooks: https://app.fossa.io/hooks/travisci
