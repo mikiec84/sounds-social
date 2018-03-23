@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/matteodem/sounds-social.svg?branch=master)](https://travis-ci.org/matteodem/sounds-social)
 [![Maintainability](https://api.codeclimate.com/v1/badges/06896afa34c72f4e4fcc/maintainability)](https://codeclimate.com/github/matteodem/sounds-social/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmatteodem%2Fsounds-social.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmatteodem%2Fsounds-social?ref=badge_shield)
+![License](https://img.shields.io/github/license/matteodem/sounds-social.svg?type=shield)
 
 **The open and social music platform.**
 
