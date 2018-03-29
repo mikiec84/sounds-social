@@ -15,7 +15,7 @@
     "lint": "eslint --ext .js,.vue src",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-dev": "npm run build && cd dist && mv index.html 200.html && surge --domain sounds-social-dev.surge.sh .",
+    "deploy-dev": "npm run build && cd dist && mv index.html 200.html && surge --domain https://sounds-social-dev.surge.sh .",
     "format": "prettier-eslint --write 'src/**/*.js'",
     "precommit": "lint-staged"
   },
