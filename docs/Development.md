@@ -1,11 +1,15 @@
 # Development 
 
-This document explains the development workflow for each separate application.
+This document explains the development details and workflow for each application.
 
 ## API
 
-The api represents the backbone of Sounds Social.
-It's a [Meteor](https://www.meteor.com/) app that exposes a graphql endpoint where data can be changed and read.
+The api represents the backbone of Sounds Social. It's an app that exposes a graphql endpoint where data can be changed and read.
+
+* [Meteor](https://www.meteor.com/)
+* [MongoDB](https://www.mongodb.com)
+* [GraphQL](https://www.graphql.com/)
+* [Apollo](https://www.apollographql.com/)
 
 * Go into `code/api` directory
 * Run `npm run dev`
@@ -18,7 +22,11 @@ Tests can be run with `npm run test`.
 
 ## Web
 
-The responsive web app that is a [webpack](https://webpack.js.org/) project with [Vue](https://vuejs.org/) as the view layer.
+The simple, responsive web app.
+
+* [Webpack](https://webpack.js.org/)
+* [Vue](https://vuejs.org/)
+* [Apollo](https://www.apollographql.com/)
 
 * Go into `code/api` directory
 * Run `npm run dev`
