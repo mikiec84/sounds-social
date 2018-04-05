@@ -11,6 +11,8 @@ The api represents the backbone of Sounds Social. It's an app that exposes a gra
 * [GraphQL](https://www.graphql.com/)
 * [Apollo](https://www.apollographql.com/)
 
+### How to run
+
 * Go into `code/api` directory
 * Run `npm run dev`
 * Open `localhost:3000/graphiql` in the browser to see the GraphiQL interface
@@ -27,6 +29,8 @@ The simple, responsive web app.
 * [Webpack](https://webpack.js.org/)
 * [Vue](https://vuejs.org/)
 * [Apollo](https://www.apollographql.com/)
+
+### How to run
 
 * Go into `code/api` directory
 * Run `npm run dev`
