@@ -13,3 +13,7 @@ Collection of sounds that doesn't appear in the feed. Similiar to Likes on other
 ## Sound collection
 
 Collection of sounds that appears in the feed. For example an album or EP.
+
+## Alias 
+
+Group, Collective, Label or just a single alias for a user on Sounds Social.
