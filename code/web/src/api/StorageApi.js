@@ -1,32 +1,32 @@
 import { checkImageFileType, checkAudioFileType } from '../func/checkFileType'
+import { apiEndpointUrl } from '../config/ApiEndpointUrl'
 
-const uploadFile = file => {
+const uploadFile = (file, type) => {
   const data = new FormData()
   data.append('data', file)
 
   // use the file endpoint
-  return fetch('https://api.graph.cool/file/v1/cj9g4oifs7cct0120dy1w6j0p', {
-    method: 'POST',
-    body: data
-  })
-    .then(response => {
-      return response.json()
-    })
-    .then(({ id: _id, secret, url }) => ({ _id, secret, url }))
+  return fetch(
+    `${apiEndpointUrl}/file-api/${type}?userLoginToken=${localStorage.getItem(
+      'Meteor.loginToken'
+    )}`,
+    {
+      method: 'POST',
+      body: data
+    }
+  ).then(response => response.json())
 }
 
 const uploadImageFile = async file => {
   checkImageFileType(file)
-  return uploadFile(file)
+  return uploadFile(file, 'image')
 }
 
 export const addProfileAvatarFile = uploadImageFile
-
 export const addAliasAvatarFile = uploadImageFile
-
 export const addCoverFile = uploadImageFile
 
 export const addMusicFile = async file => {
   checkAudioFileType(file)
-  return uploadFile(file)
+  return uploadFile(file, 'sound')
 }

@@ -178,7 +178,7 @@
         const file = e.target.files[0]
 
         addCoverFile(file)
-          .then(({ _id, secret, url }) => uploadCover(this.getSound._id, { _id, secret, url }))
+          .then(({ result: { _id, hash, userId } }) => uploadCover(this.getSound._id, { _id, hash, userId }))
           .then(() => {
             this.$refs.coverFileUploadButton.modalOpen = false
           })
