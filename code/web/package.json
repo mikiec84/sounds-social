@@ -28,7 +28,7 @@
     "font-awesome": "^4.7.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
-    "howler": "^2.0.5",
+    "howler": "^2.0.9",
     "i18next": "^10.0.7",
     "lodash": "^4.17.4",
     "meteor-apollo-accounts": "^2.0.3",
