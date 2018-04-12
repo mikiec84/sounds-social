@@ -5,8 +5,9 @@ import { isMemberOfAlias } from '../Alias/isMemberOfAlias'
 import { fetchOneSoundById } from './fetchOneSoundById'
 import { checkSoundData } from '../../../../lib/check/checkSound'
 
+const omitFile = omit(['file'])
+
 export const createSound = currentUserId => data => optionalAliasId => {
-  const omitFile = omit(['file'])
   data.createdAt = new Date()
 
   checkSoundData(data)
@@ -19,8 +20,14 @@ export const createSound = currentUserId => data => optionalAliasId => {
     data.ownerType = 'alias'
   }
 
-  if (!data.file) throw new Error('Need file to add sound')
+  if (!data.file) {
+    throw new Error('Need file to add sound')
+  }
+
   data.fileId = fileCollection.insert({ ...data.file })
 
-  return fetchOneSoundById(soundCollection.insert(omitFile(data)))
+  const dataWithoutFile = omitFile(data)
+  const soundId = soundCollection.insert(dataWithoutFile)
+
+  return fetchOneSoundById(soundId)
 }

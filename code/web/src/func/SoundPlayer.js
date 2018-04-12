@@ -20,7 +20,8 @@ export const playSound = url => {
   soundPlayer = new Howl({
     src: [url],
     preload: true,
-    html5: true
+    html5: true,
+    format: 'webm'
   })
 
   setTimeout(() => {
@@ -40,14 +41,13 @@ export const playSound = url => {
 }
 
 const updateSoundData = update => () => {
-  const { seek, duration, isPlaying } = currentSoundData
-
   if (hasPaused) return null
 
-  if (seek === 0 && !isPlaying) {
+  if (currentSoundData.seek === 0 && !currentSoundData.isPlaying) {
     update('done')
     currentSoundData.seek = null
-  } else if (isNumber(seek)) {
+  } else if (isNumber(currentSoundData.seek)) {
+    const { seek, duration } = currentSoundData
     update('soundPosition', { duration, seek })
   }
 }
