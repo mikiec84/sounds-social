@@ -1,37 +1,23 @@
-import { clone, constant, filter, find, findKey, flow, get } from 'lodash/fp'
-import {
-  continueCurrentSound,
-  muteSound,
-  pauseCurrentSound,
-  playSound,
-  seekCurrentSound,
-  unmuteSound
-} from '../func/SoundPlayer'
+import { clone, filter, find, findKey, flow, get } from 'lodash/fp'
+import * as player from '../func/SoundPlayer'
 import { countPlayingSound, startPlayingSound } from '../api/SoundApi'
-import {
-  isValidMode,
-  LOOP_MODE,
-  LOOP_SINGLE_MODE,
-  RANDOM_MODE
-} from '../constants/PlayerConstants'
-import { collectionHasPlaylistFields } from '../func/collectionHasFields'
+import { isValidMode, RANDOM_MODE } from '../constants/PlayerConstants'
 import { playerPlayRelativeByKeyIndex } from './StoreSoundPlayerModule/playRelativeByKeyIndex'
 import { convertSoundPositionToPlayTime } from './StoreSoundPlayerModule/convertSoundPositionToPlayTime'
 import { getDecimalSoundProgress } from './StoreSoundPlayerModule/getDecimalSoundProgress'
 import { getSoundsList } from './StoreSoundPlayerModule/getSoundsList'
+import { addSoundToPlayerAction } from './StoreSoundPlayerModule/addSoundToPlayerAction'
+import { moveSoundAction } from './StoreSoundPlayerModule/moveSoundAction'
+import { changeSoundAfterFinishedAction } from './StoreSoundPlayerModule/changeSoundAfterFinishedAction'
+import { isFirstSound } from './StoreSoundPlayerModule/isAtNthSound'
 
 export const findSoundKeyById = soundId =>
   findKey(sound => sound.id === soundId)
-const findSoundById = soundId => find(sound => sound.id === soundId)
-const hasSounds = state => state.sounds.length > 0
+export const findSoundById = soundId => find(sound => sound.id === soundId)
+export const hasSounds = state => state.sounds.length > 0
 
 const filterOutSoundById = soundIdToFilter =>
   filter(sound => sound.id !== soundIdToFilter)
-const isAtNthSound = nthIndex => soundId => sounds =>
-  parseInt(findSoundKeyById(soundId)(sounds), 10) === nthIndex(sounds)
-
-const isFirstSound = isAtNthSound(constant(0))
-const isLastSound = isAtNthSound(sounds => sounds.length - 1)
 
 const initSoundPosition = {
   seek: 0,
@@ -62,6 +48,9 @@ export const soundPlayerModule = {
   },
 
   actions: {
+    addSoundToPlayer: addSoundToPlayerAction,
+    moveSound: moveSoundAction,
+    changeSoundAfterFinished: changeSoundAfterFinishedAction,
     playWithReset: ({ dispatch }, { sound }) => {
       dispatch('resetSound')
       dispatch('addSoundToPlayer', { sound })
@@ -72,30 +61,6 @@ export const soundPlayerModule = {
     },
     resetSound: ({ commit }) => {
       commit('RESET_SOUND')
-    },
-    addSoundToPlayer: (
-      { commit, state, getters, dispatch },
-      { sound, relativePosition }
-    ) => {
-      if (
-        collectionHasPlaylistFields([sound]) &&
-        sound &&
-        !findSoundById(sound.id)(state.sounds)
-      ) {
-        const hasSoundsInState = hasSounds(state)
-
-        commit('ADD_SOUND_TO_PLAYER_PLAYLIST', {
-          positionIndex:
-            parseInt(
-              findSoundKeyById(state.currentId)(getters.soundPlayerSounds),
-              10
-            ) + relativePosition,
-          sounds: [sound]
-        })
-
-        if (!hasSoundsInState) dispatch('playNew')
-        else dispatch('openPlayerPlayingNowList')
-      }
     },
     changeSoundToPlay: ({ commit, state, dispatch }, { soundId }) => {
       const sound = findSoundById(soundId)(state.sounds)
@@ -109,21 +74,6 @@ export const soundPlayerModule = {
     changeSoundPosition: ({ commit }, { duration, seek }) => {
       commit('CHANGE_SOUND_POSITION', { duration, seek })
     },
-    changeSoundAfterFinished: ({ dispatch, getters, state }) => {
-      const { soundPlayerSounds: sounds } = getters
-      const { mode, currentId } = state
-
-      if (mode === LOOP_SINGLE_MODE) {
-        dispatch('play')
-      } else if (
-        [LOOP_MODE, RANDOM_MODE].includes(mode) &&
-        isLastSound(currentId)(sounds)
-      ) {
-        dispatch('changeSoundToPlay', { soundId: sounds[0].id })
-      } else {
-        dispatch('playerPlayNext')
-      }
-    },
     removeSound: ({ state, commit }, { soundId }) => {
       const sound = findSoundById(soundId)(state.sounds)
 
@@ -131,32 +81,10 @@ export const soundPlayerModule = {
         commit('REMOVE_SOUND_FROM_PLAYER_PLAYLIST', soundId)
       }
     },
-    moveSound: ({ commit, state }, { soundId, relativePosition }) => {
-      const currentPositionIndex = parseInt(
-        findSoundKeyById(soundId)(state.sounds),
-        10
-      )
-      const newPositionIndex = currentPositionIndex + relativePosition
-
-      if (state.mode === RANDOM_MODE) {
-        throw new Error('Cannot move sounds in random mode')
-      }
-
-      if (!isNaN(currentPositionIndex) && state.sounds[newPositionIndex]) {
-        console.log({
-          newPositionIndex,
-          currentPositionIndex
-        })
-        commit('MOVE_SOUND_PLAYER_POSITION', {
-          newPositionIndex,
-          currentPositionIndex
-        })
-      }
-    },
     playNew: ({ commit, state }) => {
       const sound = findSoundById(state.currentId)(state.sounds)
 
-      playSound(sound.soundUrl)
+      player.playSound(sound.soundUrl)
       commit('PLAY_PLAYER', true)
       commit('RESET_SOUND_POSITION', true)
 
@@ -171,18 +99,18 @@ export const soundPlayerModule = {
     play: ({ commit, state }) => {
       if (!hasSounds(state)) return null
 
-      continueCurrentSound()
+      player.continueCurrentSound()
       commit('PLAY_PLAYER', true)
     },
     pause: ({ commit, state }) => {
       if (!hasSounds(state)) return null
 
-      pauseCurrentSound()
+      player.pauseCurrentSound()
       commit('PLAY_PLAYER', false)
     },
     playerSeekRelativeDecimal: ({ commit, state }, amountInRelativeDecimal) => {
       const newSeek = state.soundPosition.duration * amountInRelativeDecimal
-      seekCurrentSound(newSeek)
+      player.seekCurrentSound(newSeek)
       commit('CHANGE_SEEK', { seek: newSeek })
     },
     playerStepForward: ({ dispatch }) => dispatch('playerPlayNext'),
@@ -199,11 +127,11 @@ export const soundPlayerModule = {
       }
     },
     mutePlayer: ({ commit }) => {
-      muteSound()
+      player.muteSound()
       commit('MUTE_PLAYER', true)
     },
     unmutePlayer: ({ commit }) => {
-      unmuteSound()
+      player.unmuteSound()
       commit('MUTE_PLAYER', false)
     },
     changePlayerMode: ({ commit }, { mode }) => {

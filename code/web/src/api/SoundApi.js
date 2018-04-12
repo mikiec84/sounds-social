@@ -1,47 +1,12 @@
 import gql from 'graphql-tag'
 import { apolloClient } from './graphql/client'
+import {
+  listSoundFragment,
+  listSoundWithPaginationFragment
+} from './fragments/SoundFragment'
 
 export const DEFAULT_PAGINATED_SOUND_LIMIT = 6
 export const DEFAULT_FEED_SOUND_LIMIT = 20
-
-const listSoundFragment = gql`
-  fragment ListSoundFields on Sound {
-    _id
-    name
-    isPublic
-    ownerType
-    coverFile {
-      url
-    }
-    description
-    createdAt {
-      fromNow
-    }
-    file {
-      url
-    }
-    creator {
-      _id
-      type
-      username
-    }
-  }
-`
-
-const listSoundWithPaginationFragment = gql`
-  fragment ListSoundWithPagination on PaginatableSoundResult {
-    items {
-      ...ListSoundFields
-    }
-    paginationInfo {
-      pagesCount
-      currentPage
-      hasMore
-    }
-  }
-
-  ${listSoundFragment}
-`
 
 export const detailSoundQuery = gql`
   query DetailSound($id: String!) {
