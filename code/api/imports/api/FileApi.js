@@ -9,30 +9,30 @@ import { resolvePromiseForCallback } from '../lib/resolvePromiseForCallback'
 import { getRequiredUserFromToken } from '../lib/User/getRequiredUserFromToken'
 import { parseAndUploadFiles } from './FileApi/parseAndUploadFiles'
 
-const formidable = require('formidable')
-
 const Api = new Restivus({
   prettyJson: true,
   apiPath: 'file-api/',
 })
+
+const hasInvalidArgs = ({ username, type }) => {
+  return (
+    username.includes('/') ||
+    type.includes('/') ||
+    !['sound', 'image'].includes(type)
+  )
+}
 
 Api.addRoute(':type', {
   post() {
     const { type } = this.urlParams
 
     return Async.runSync(done => {
-      const form = new formidable.IncomingForm()
-
       getRequiredUserFromToken(this.queryParams.userLoginToken).then(user => {
         if (!user) return done('No user found')
 
         const { username } = user
 
-        if (
-          username.includes('/') ||
-          type.includes('/') ||
-          !['sound', 'image'].includes(type)
-        ) {
+        if (hasInvalidArgs({ username, type })) {
           return done('Invalid data')
         }
 
@@ -43,7 +43,6 @@ Api.addRoute(':type', {
 
         parseAndUploadFiles({
           request,
-          form,
           username,
           type,
           passphrase,

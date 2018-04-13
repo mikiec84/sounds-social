@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { gzip } from 'zlib'
+import formidable from 'formidable'
 import { Random } from 'meteor/random'
 import { ipfsFileStorage } from '../../data/ipfs/IPFSFileStorage'
 import { resolvePromiseForCallback } from '../../lib/resolvePromiseForCallback'
@@ -7,13 +8,14 @@ import { optimizeAudioFile } from './optimizeAudioFile'
 
 export const parseAndUploadFiles = ({
   request,
-  form,
   username,
   type,
   passphrase,
   done,
   user,
 }) => {
+  const form = new formidable.IncomingForm()
+
   form.parse(request, (err, fields, files) => {
     if (err) throw new Error(err.message)
 
