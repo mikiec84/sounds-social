@@ -14,12 +14,14 @@ export const AliasDetailedFieldsFragment = gql`
     websiteUrl
     followerCount
     playCount
+    isInvitedToJoin
     avatarFile {
       url
     }
     members {
       _id
       username
+      displayName
       profile {
         avatarFile {
           url
@@ -35,7 +37,9 @@ export const saveAlias = (
   type,
   websiteUrl,
   avatarFile,
-  description = ''
+  description = '',
+  memberIds,
+  invitedMemberIds
 ) => {
   const action = id ? 'update' : 'create'
 
@@ -43,20 +47,25 @@ export const saveAlias = (
     mutation: gql`
       mutation ${startCase(action)}Alias(
           ${id ? '$id: String!' : ''}
-          $name: String! 
-          $type: String
-          $websiteUrl: String 
-          $avatarFile: FileData 
-          $description: String
+          $data: AliasData!
       ) {
-        alias: ${action}Alias(${
-      id ? '_id: $id' : ''
-    } data: { name: $name type: $type websiteUrl: $websiteUrl avatarFile: $avatarFile description: $description }) {
+        alias: ${action}Alias(${id ? '_id: $id' : ''} data: $data) {
           _id
         }
       }
     `,
-    variables: { id, name, type, websiteUrl, avatarFile, description }
+    variables: {
+      id,
+      data: {
+        name,
+        type,
+        websiteUrl,
+        avatarFile,
+        description,
+        memberIds,
+        invitedMemberIds
+      }
+    }
   })
 }
 
@@ -98,6 +107,32 @@ export const unfollow = id =>
     refetchQueries: ['AliasPage']
   })
 
+export const acceptInvitation = aliasId =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation AcceptInvitationMutation($aliasId: String!) {
+        acceptInvitation(_id: $aliasId) {
+          _id
+        }
+      }
+    `,
+    variables: { aliasId },
+    refetchQueries: ['AliasPage']
+  })
+
+export const denyInvitation = aliasId =>
+  apolloClient.mutate({
+    mutation: gql`
+      mutation DenyInvitationMutation($aliasId: String!) {
+        denyInvitation(_id: $aliasId) {
+          _id
+        }
+      }
+    `,
+    variables: { aliasId },
+    refetchQueries: ['AliasPage']
+  })
+
 export const aliasPageQuery = gql`
   query AliasPage($id: String!) {
     singleAlias: getAlias(_id: $id) {
@@ -114,6 +149,16 @@ export const aliasFormDataQuery = gql`
       type
       description
       websiteUrl
+      members {
+        _id
+        displayName
+        username
+      }
+      invitedMembers {
+        _id
+        displayName
+        username
+      }
     }
   }
 `

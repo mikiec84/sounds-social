@@ -38,6 +38,48 @@
       <div v-if="hasUploadedFile" class="mt3 i mid-gray"><span v-text="$t('File uploaded')"></span>!</div>
     </div>
 
+    <form-field :label="$t('Members')" :error="$v.formData.members">
+      <div class="mt3 lh-copy pa3 b--black-10 ba">
+        <alias-member-list
+          alias="members"
+          :isRemovable="isMemberRemovable"
+          :members="formData.members"
+          @changeMembers="formData.members = arguments[0]"
+          @removeMember="removeMember(arguments[0])"
+        ></alias-member-list>
+
+        <div v-if="formData.invitedMembers && formData.invitedMembers.length">
+          <h5 class="f4 mt3 mb2" v-text="$t('Invited members')"></h5>
+
+          <alias-member-list
+            alias="invitedMembers"
+            :members="formData.invitedMembers"
+            @changeMembers="formData.invitedMembers = arguments[0]"
+            @removeMember="removeMember(arguments[0], 'invitedMembers')"
+          ></alias-member-list>
+        </div>
+
+        <!-- FIXME Create utility for array checking or see if theres an es2017 method -->
+        <div v-if="newlyInvitedMembers && newlyInvitedMembers.length">
+          <h5 class="f4 mt3 mb2" v-text="$t('Newly invited members')"></h5>
+
+          <draggable-list
+            alias="newlyInvitedMembers"
+            :data="newlyInvitedMembers"
+            getId="value"
+            getLabel="label"
+            @change="newlyInvitedMembers = arguments[0]"
+            @remove="removeInvitedMember(arguments[0].value)"
+          ></draggable-list>
+        </div>
+
+        <stateful-user-search-select
+          @addUser="addMember"
+          :placeholder="$t('Invite member')"
+        ></stateful-user-search-select>
+      </div>
+    </form-field>
+
     <div class="mv4">
       <pure-button
         @click="saveAlias"
@@ -58,15 +100,17 @@
   </div>
 </template>
 <script>
-  import { pick } from 'lodash/fp'
+  import { pick, filter, map, get, uniq } from 'lodash/fp'
   import { url, required, minLength, maxLength } from 'vuelidate/lib/validators'
-
   import { saveAlias, removeAlias, aliasFormDataQuery } from '../../../api/AliasApi'
   import { addAliasAvatarFile } from '../../../api/StorageApi'
+  import StatefulUserSearchSelect from '../User/StatefulUserSearchSelect.vue'
 
-  const pickFields = pick(['name', 'type', 'description', 'websiteUrl'])
+  const pickFields = pick(['name', 'type', 'description', 'websiteUrl', 'members', 'invitedMembers'])
+  const mapId = map(get('_id'))
 
   export default {
+    components: { StatefulUserSearchSelect },
     props: {
       aliasId: {
         type: String,
@@ -81,7 +125,10 @@
           type: '',
           description: '',
           websiteUrl: '',
+          members: [],
+          invitedMembers: [],
         },
+        newlyInvitedMembers: [],
       }
     },
     apollo: {
@@ -140,8 +187,9 @@
       },
       saveAlias () {
         const { name, type, avatarFile, description, websiteUrl } = this.formData
+        const { memberIds, invitedMemberIds } = this.getMemberSaveData()
 
-        saveAlias(this.aliasId, name, type, websiteUrl, avatarFile, description)
+        saveAlias(this.aliasId, name, type, websiteUrl, avatarFile, description, memberIds, invitedMemberIds)
           .then(({ data: { alias } }) => this.$router.push({
             name: 'alias-detail',
             params: { id: alias._id },
@@ -153,7 +201,37 @@
             name: 'profile-detail',
             params: { id: 'me' },
           }))
-      }
+      },
+      getMemberSaveData () {
+        return {
+          memberIds: mapId(this.formData.members),
+          invitedMemberIds: uniq([
+            ...mapId(this.formData.invitedMembers),
+            ...map(get('value'))(this.newlyInvitedMembers),
+          ]),
+        }
+      },
+      addMember (member) {
+        const { members, invitedMembers } = this.formData
+
+        if (mapId([...members, ...invitedMembers]).includes(member.value)) {
+          alert('User already a member or invited!')
+          return null
+        }
+
+        this.newlyInvitedMembers.push(member)
+      },
+      removeMember (_id, memberField = 'members') {
+        const filterOnSameId = filter(member => member._id !== _id)
+        this.formData[memberField] = filterOnSameId(this.formData[memberField])
+      },
+      removeInvitedMember (_id) {
+        const filterOnSameValue = filter(member => member.value !== _id)
+        this.newlyInvitedMembers = filterOnSameValue(this.newlyInvitedMembers)
+      },
+      isMemberRemovable ({ _id }) {
+        return _id !== this.currentUserId
+      },
     },
   }
 </script>

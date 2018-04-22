@@ -16,23 +16,19 @@ import { generateCacheKey } from '../helpers/generateCacheKey'
 import { fetchCreatorSoundPlayCount } from '../../data/collection/methods/Sound/fetchCreatorSoundPlayCount'
 import { AliasTypeDef } from './Alias/AliasTypeDef'
 import { isCreatorResolver } from './general/isCreatorResolver'
+import { currentUserIsInvitedToJoinAlias } from '../../data/collection/methods/Alias/currentUserIsInvitedToJoinAlias'
+import { getInvitationResolver } from './Alias/getInvitationResolver'
+import { doUserAliasMethod } from './Alias/doUserAliasMethod'
 
-const doUserAliasMethod = userMethod => argIdKey => (root, args, context) => {
-  if (!context.userId) return null
-
-  const aliasId = args[argIdKey]
-  check(aliasId, String)
-
-  userMethod(aliasId)(context.userId)
-  return fetchOneAliasById(aliasId)
-}
+const getMembersResolver = field => flow(get(field), map(fetchOneUserById))
 
 export default {
   typeDefs: [AliasTypeDef],
   resolvers: {
     Alias: {
       avatarFile: flow(get('avatarFileId'), fetchOneFileById),
-      members: flow(get('memberIds'), map(fetchOneUserById)),
+      members: getMembersResolver('memberIds'),
+      invitedMembers: getMembersResolver('invitedMemberIds'),
       canFollow: (root, args, context) =>
         context.userId && !root.memberIds.includes(context.userId),
       isEditable: isCreatorResolver,
@@ -42,14 +38,18 @@ export default {
       followerCount: withCache(flow(get('_id'), fetchAliasFollowerCount), {
         key: generateCacheKey('followerCount'),
       }),
+      // TODO: abstract getDocumentId func
       playCount: withCache(flow(get('_id'), fetchCreatorSoundPlayCount), {
         key: generateCacheKey('playCount'),
       }),
+      isInvitedToJoin: (root, args, context) => {
+        return currentUserIsInvitedToJoinAlias(context.userId)(root._id)
+      },
     },
     Query: {
       listAliasForUser(root, args, context) {
         const userId = args.userId || context.userId
-        return fetchAliasesForUser(userId)(context.grapherFields)
+        return fetchAliasesForUser(userId)(context.mongoFields)
       },
       getAlias(root, args, context) {
         check(args._id, String)
@@ -84,6 +84,8 @@ export default {
       },
       followAlias: doUserAliasMethod(followAlias)('toFollowId'),
       unfollowAlias: doUserAliasMethod(unfollowAlias)('toUnfollowId'),
+      acceptInvitation: getInvitationResolver(true),
+      denyInvitation: getInvitationResolver(false),
     },
   },
 }

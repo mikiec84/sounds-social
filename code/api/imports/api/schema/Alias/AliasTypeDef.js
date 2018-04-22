@@ -8,12 +8,14 @@ type Alias {
   websiteUrl: String
   avatarFile: File
   members: [User]
+  invitedMembers: [User]
   createdAt: Date
   isFollowedByCurrentUser: Boolean
   canFollow: Boolean
   isEditable: Boolean
   followerCount: Int
   playCount: Int
+  isInvitedToJoin: Boolean
 }
 
 input AliasData {
@@ -22,6 +24,8 @@ input AliasData {
   description: String
   websiteUrl: String
   avatarFile: FileData
+  memberIds: [String]
+  invitedMemberIds: [String]
 }
 
 extend type Query {
@@ -34,6 +38,8 @@ extend type Mutation {
   updateAlias(_id: String! data: AliasData!): Alias
   removeAlias(_id: String!): Alias
   followAlias(toFollowId: String!): Alias
+  acceptInvitation(_id: String!): Alias
+  denyInvitation(_id: String!): Alias
   unfollowAlias(toUnfollowId: String!): Alias
 }
 `
