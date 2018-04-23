@@ -9,5 +9,5 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   cd code/api/ && npm run deploy-dev
-    cd ../../code/web/ && npm run deploy-dev
+  cd ../../code/web/ && npm run deploy-dev
 fi

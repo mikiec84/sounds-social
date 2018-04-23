@@ -76,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
   Vue.prototype.userIsAuthenticated = authenticated
   Vue.prototype.currentUserId = await getUserId()
 
-  if (!authenticated && to.meta.needsAuth(to)) {
+  if (!authenticated && to.meta.needsAuth && to.meta.needsAuth(to)) {
     router.push({ name: 'home' })
   } else {
     closePlayerListIfVisible()

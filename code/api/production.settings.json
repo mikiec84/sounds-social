@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://apiDbUser:H7sYaGTWtLkpEdog2wfHuG9@ds129926.mlab.com:29926/sounds_social_dev"
+    }
+  }
+}

@@ -7,7 +7,7 @@ export const webUrl = isDevelopment
     path: '/reset-password',
     protocol: 'http',
   }
-  : { host: 'sounds-social-dev.surge.sh', port: '', protocol: 'https' }
+  : { host: 'dev-app.soundssocial.online', port: '', protocol: 'https' }
 
 const optionalWebUrlPort = webUrl.port ? `:${webUrl.port}` : ''
 

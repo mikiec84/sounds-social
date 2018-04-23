@@ -4,12 +4,15 @@
   "license": "GPL-3.0",
   "description": "Graphql API for Sounds Social",
   "author": "Matteo De Micheli <matteodem@protonmail.com>",
+  "engines": {
+    "node": "8.9.1"
+  },
   "scripts": {
     "dev": "meteor run",
     "prod": "meteor run --production",
     "test": "meteor test --once --port=4333 --driver-package=dispatch:mocha",
     "test-watch": "meteor test --port=4333 --driver-package=dispatch:mocha",
-    "deploy-dev": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy sounds-social-dev --settings prod-settings.json",
+    "deploy-dev": "meteor-now -e NODE_ENV=production",
     "cli": "meteor npm run lint && meteor npm run test",
     "lint": "eslint --ignore-pattern '*.test.js' 'server/*.js' 'imports/**/*.js'",
     "format": "prettier-eslint --write 'server/*.js' 'imports/**/*.js'",

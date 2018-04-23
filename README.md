@@ -22,7 +22,7 @@ Docs for the project can be found [here](./docs).
 
 ## Support
 
-You can play around on the [dev environment](https://sounds-social-dev.surge.sh/), have a look at the open [issues](https://github.com/matteodem/sounds-social/issues) or read through the [docs](/docs).
+You can play around on the [dev environment](https://dev-app.soundssocial.online), have a look at the open [issues](https://github.com/sounds-social/sounds-social/issues) or read through the [docs](/docs).
 
 Right now I'm doing this in my free time, so any support is greatly appreciated.
 
