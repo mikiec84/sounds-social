@@ -38,7 +38,7 @@
     "graphql-tools": "^2.21.0",
     "ipfs": "^0.28.2",
     "join-mongo": "0.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.5",
     "meteor-node-stubs": "^0.3.3",
     "moment": "^2.21.0",
